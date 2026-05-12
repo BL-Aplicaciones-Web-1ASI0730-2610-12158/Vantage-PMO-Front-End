@@ -6,6 +6,7 @@ import Home from './shared/presentation/views/home.vue';
 const pageNotFound = () => import('./shared/presentation/views/page-not-found.vue');
 const layout      = () => import('./shared/presentation/components/layout.vue');
 const profile     = () => import('./profile/presentation/views/profile.vue');
+const reports = () => import('./reports/presentation/views/reports.vue');
 
 /*
 // Routes version when IAM is implemented
@@ -36,7 +37,7 @@ const routes = [
         { path: 'chat-hub',        name: 'chat-hub',        component: pageNotFound, meta: { title: 'Chat Hub' } },
         { path: 'schedule',        name: 'schedule',        component: pageNotFound, meta: { title: 'Schedule' } },
         { path: 'meetings',        name: 'meetings',        component: pageNotFound, meta: { title: 'Meetings' } },
-        { path: 'reports',         name: 'reports',         component: pageNotFound, meta: { title: 'Reports' } },
+        { path: 'reports',         name: 'reports',         component: reports, meta: { title: 'Reports' } },
         { path: 'profile',         name: 'profile',         component: profile,      meta: { title: 'Profile' } },
         { path: 'support',         name: 'support',         component: pageNotFound, meta: { title: 'Support' } },
         { path: 'settings',        name: 'settings',        component: pageNotFound, meta: { title: 'Settings' } },

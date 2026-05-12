@@ -82,5 +82,87 @@
     { "id": 2, "name": "Development", "percent": 74 },
     { "id": 3, "name": "Marketing",   "percent": 58 },
     { "id": 4, "name": "Finance",     "percent": 81 }
+  ],
+  "reports": [
+    {
+      "id": 1,
+      "project": "Smart Energy Control",
+      "manager": "Alex Sterling",
+      "status": "Healthy",
+      "energyConsumption": 320,
+      "automations": 12,
+      "generatedAt": "2026-05-01",
+      "attachment": ""
+    },
+    {
+      "id": 2,
+      "project": "IoT Security Monitoring",
+      "manager": "Sarah Connor",
+      "status": "Warning",
+      "energyConsumption": 540,
+      "automations": 20,
+      "generatedAt": "2026-05-02",
+      "attachment": ""
+    },
+    {
+      "id": 3,
+      "project": "Business Automation Suite",
+      "manager": "Marcus Lee",
+      "status": "Healthy",
+      "energyConsumption": 210,
+      "automations": 9,
+      "generatedAt": "2026-05-03",
+      "attachment": ""
+    },
+    {
+      "id": 4,
+      "project": "Retail Smart Lighting",
+      "manager": "Emma Watson",
+      "status": "Critical",
+      "energyConsumption": 680,
+      "automations": 25,
+      "generatedAt": "2026-05-04",
+      "attachment": "lighting-report.pdf"
+    },
+    {
+      "id": 5,
+      "project": "Industrial Sensor Network",
+      "manager": "Daniel Brooks",
+      "status": "Healthy",
+      "energyConsumption": 410,
+      "automations": 15,
+      "generatedAt": "2026-05-05",
+      "attachment": "sensor-network.pdf"
+    },
+    {
+      "id": 6,
+      "project": "Warehouse Climate Control",
+      "manager": "Sophia Miller",
+      "status": "Warning",
+      "energyConsumption": 590,
+      "automations": 18,
+      "generatedAt": "2026-05-06",
+      "attachment": "climate-control.pdf"
+    },
+    {
+      "id": 7,
+      "project": "Smart Pharmacy Operations",
+      "manager": "Michael Reed",
+      "status": "Healthy",
+      "energyConsumption": 275,
+      "automations": 11,
+      "generatedAt": "2026-05-07",
+      "attachment": "pharmacy-ops.pdf"
+    },
+    {
+      "id": 8,
+      "project": "Remote Device Surveillance",
+      "manager": "Olivia Carter",
+      "status": "Critical",
+      "energyConsumption": 720,
+      "automations": 30,
+      "generatedAt": "2026-05-08",
+      "attachment": "surveillance.pdf"
+    }
   ]
 }
