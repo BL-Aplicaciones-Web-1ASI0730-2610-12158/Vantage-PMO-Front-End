@@ -1,0 +1,49 @@
+{
+  "app": {
+    "title": "Vantage PMO",
+    "subtitle": "PRECISION ARCHITECT"
+  },
+  "nav": {
+    "home": "Home",
+    "activeProjects": "Active Projects",
+    "team": "Team",
+    "chatHub": "Chat Hub",
+    "schedule": "Schedule",
+    "meetings": "Meetings",
+    "reports": "Reports",
+    "support": "Support",
+    "settings": "Settings",
+    "createProject": "Create Project"
+  },
+  "topbar": {
+    "search": "Search workspace, files, or tasks...",
+    "executiveDashboard": "Executive Dashboard",
+    "liveSync": "LIVE SYNC ACTIVE"
+  },
+  "home": {
+    "welcomeBack": "Welcome back, Alex",
+    "portfolioHealth": "Your portfolio health is currently",
+    "attentionItems": "There are {n} items requiring immediate attention from your team leaders.",
+    "totalProjects": "TOTAL PROJECTS",
+    "onTrack": "ON TRACK",
+    "atRisk": "AT RISK",
+    "aiInsights": "AI Portfolio Insights",
+    "aiText": "\"Resource contention detected in Neo-Nexus Project. Shifting 2 developers from 'Maintenance' could reduce delay by 4 days.\"",
+    "applyOptimization": "Apply Optimization",
+    "priorityTasks": "Team Priority Tasks",
+    "viewAll": "VIEW ALL",
+    "assignedTo": "Assigned to",
+    "manageCalendar": "MANAGE CALENDAR",
+    "portfolioVelocity": "Portfolio Velocity",
+    "velocitySub": "Across 5 different departments and 12 teams."
+  },
+  "profile": {
+    "title": "Profile",
+    "back": "Back",
+    "department": "Department",
+    "memberSince": "Member since",
+    "totalProjects": "Total Projects",
+    "onTrack": "On Track",
+    "atRisk": "At Risk"
+  }
+}

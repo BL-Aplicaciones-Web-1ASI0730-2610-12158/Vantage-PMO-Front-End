@@ -1,0 +1,49 @@
+{
+  "app": {
+    "title": "Vantage PMO",
+    "subtitle": "ARQUITECTO DE PRECISIÓN"
+  },
+  "nav": {
+    "home": "Inicio",
+    "activeProjects": "Proyectos Activos",
+    "team": "Equipo",
+    "chatHub": "Chat Hub",
+    "schedule": "Cronograma",
+    "meetings": "Reuniones",
+    "reports": "Reportes",
+    "support": "Soporte",
+    "settings": "Configuración",
+    "createProject": "Crear Proyecto"
+  },
+  "topbar": {
+    "search": "Buscar espacio de trabajo, archivos o tareas...",
+    "executiveDashboard": "Panel Ejecutivo",
+    "liveSync": "SINCRONIZACIÓN EN VIVO"
+  },
+  "home": {
+    "welcomeBack": "Bienvenido de nuevo, Alex",
+    "portfolioHealth": "La salud de tu portafolio es actualmente",
+    "attentionItems": "Hay {n} elementos que requieren atención inmediata de tus líderes de equipo.",
+    "totalProjects": "PROYECTOS TOTALES",
+    "onTrack": "EN CURSO",
+    "atRisk": "EN RIESGO",
+    "aiInsights": "Insights de IA del Portafolio",
+    "aiText": "\"Contención de recursos detectada en el Proyecto Neo-Nexus. Mover 2 desarrolladores de 'Mantenimiento' podría reducir el retraso en 4 días.\"",
+    "applyOptimization": "Aplicar Optimización",
+    "priorityTasks": "Tareas Prioritarias del Equipo",
+    "viewAll": "VER TODO",
+    "assignedTo": "Asignado a",
+    "manageCalendar": "GESTIONAR CALENDARIO",
+    "portfolioVelocity": "Velocidad del Portafolio",
+    "velocitySub": "En 5 departamentos diferentes y 12 equipos."
+  },
+  "profile": {
+    "title": "Perfil",
+    "back": "Volver",
+    "department": "Departamento",
+    "memberSince": "Miembro desde",
+    "totalProjects": "Proyectos Totales",
+    "onTrack": "En Curso",
+    "atRisk": "En Riesgo"
+  }
+}
