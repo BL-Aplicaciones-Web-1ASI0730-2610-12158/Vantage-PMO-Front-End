@@ -1,0 +1,86 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Alex Sterling",
+      "role": "Precision Lead",
+      "email": "alex.sterling@vantagepmo.io",
+      "department": "Executive",
+      "joined": "January 2022",
+      "avatarSeed": "Alex"
+    }
+  ],
+  "stats": [
+    {
+      "id": 1,
+      "userId": 1,
+      "totalProjects": 24,
+      "onTrack": 18,
+      "atRisk": 3,
+      "trend": 12,
+      "portfolioHealth": "Healthy",
+      "attentionItems": 2
+    }
+  ],
+  "tasks": [
+    {
+      "id": 1,
+      "title": "Review Brand Guidelines - Phase 2",
+      "assignee": "Sarah M.",
+      "department": "Marketing",
+      "priority": "CRITICAL",
+      "icon": "pi pi-palette",
+      "iconBg": "#f3f4f6",
+      "avatarSeeds": ["A", "B"]
+    },
+    {
+      "id": 2,
+      "title": "Finalize API Authentication Logic",
+      "assignee": "David L.",
+      "department": "Engineering",
+      "priority": "MEDIUM",
+      "icon": "pi pi-code",
+      "iconBg": "#d1fae5",
+      "avatarSeeds": ["A"]
+    },
+    {
+      "id": 3,
+      "title": "Budget Reconciliation Q3",
+      "assignee": "Marcus R.",
+      "department": "Finance",
+      "priority": "CRITICAL",
+      "icon": "pi pi-desktop",
+      "iconBg": "#ede9fe",
+      "avatarSeeds": ["A", "B"]
+    }
+  ],
+  "schedule": [
+    {
+      "id": 1,
+      "time": "09:00",
+      "title": "Stakeholder Briefing",
+      "detail": "Conf Room A • 45m",
+      "active": true
+    },
+    {
+      "id": 2,
+      "time": "11:30",
+      "title": "Project Deep Dive",
+      "detail": "Virtual • 1h",
+      "active": true
+    },
+    {
+      "id": 3,
+      "time": "14:00",
+      "title": "Deep Work Session",
+      "detail": "No distractions • 2h",
+      "active": false
+    }
+  ],
+  "departments": [
+    { "id": 1, "name": "Design",      "percent": 92 },
+    { "id": 2, "name": "Development", "percent": 74 },
+    { "id": 3, "name": "Marketing",   "percent": 58 },
+    { "id": 4, "name": "Finance",     "percent": 81 }
+  ]
+}
