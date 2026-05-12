@@ -45,5 +45,32 @@
     "totalProjects": "Total Projects",
     "onTrack": "On Track",
     "atRisk": "At Risk"
+  },
+  "reports": {
+    "title": "Reports Center",
+    "subtitle": "Monitor project performance and generate executive reports.",
+    "filterProject": "Filter by project",
+    "totalReports": "Total Reports",
+    "automations": "Automations",
+    "energyConsumption": "Energy Consumption",
+    "upload": "Upload",
+    "exportPdf": "Export PDF",
+    "exportAlert": "Generating PDF report for {project}",
+    "uploadAlert": "File \"{file}\" attached to {project}",
+    "columns": {
+      "project": "Project",
+      "manager": "Manager",
+      "status": "Status",
+      "energy": "Energy",
+      "automations": "Automations",
+      "generated": "Generated",
+      "attachment": "Attachment",
+      "actions": "Actions"
+    },
+    "status": {
+      "Healthy": "Healthy",
+      "Warning": "Warning",
+      "Critical": "Critical"
+    }
   }
 }

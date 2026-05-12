@@ -45,5 +45,32 @@
     "totalProjects": "Proyectos Totales",
     "onTrack": "En Curso",
     "atRisk": "En Riesgo"
+  },
+  "reports": {
+    "title": "Centro de Reportes",
+    "subtitle": "Monitorea el rendimiento del proyecto y genera reportes ejecutivos.",
+    "filterProject": "Filtrar por proyecto",
+    "totalReports": "Total de Reportes",
+    "automations": "Automatizaciones",
+    "energyConsumption": "Consumo Energético",
+    "upload": "Subir",
+    "exportPdf": "Exportar PDF",
+    "exportAlert": "Generando reporte PDF para {project}",
+    "uploadAlert": "Archivo \"{file}\" adjuntado a {project}",
+    "columns": {
+      "project": "Proyecto",
+      "manager": "Encargado",
+      "status": "Estado",
+      "energy": "Energía",
+      "automations": "Automatizaciones",
+      "generated": "Generado",
+      "attachment": "Adjunto",
+      "actions": "Acciones"
+    },
+    "status": {
+      "Healthy": "Saludable",
+      "Warning": "Advertencia",
+      "Critical": "Crítico"
+    }
   }
 }
