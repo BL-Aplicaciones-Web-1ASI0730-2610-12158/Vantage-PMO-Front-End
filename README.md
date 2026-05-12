@@ -151,11 +151,6 @@ server/
 - Node.js >= 18
 - npm >= 9
 - JSON Server 0.17.x installed globally
-
-```bash
-npm install -g json-server@0.17.4
-```
-
 ### Installation
 
 ```bash
@@ -171,7 +166,9 @@ You need **two terminals** — one for the fake API and one for the app:
 # Terminal 1 — Start the fake API server
 cd server
 sh start.sh
+```
 
+```bash
 # Terminal 2 — Start the Vue app
 npm run dev
 ```
