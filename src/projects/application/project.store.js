@@ -9,7 +9,6 @@ export const ProjectStore = defineStore('project', () => {
     async function fetchProjects() {
         loading.value = true;
         try {
-            // Usa getAllProjects para la colección correcta
             projects.value = await projectsApi.getAllProjects();
         } finally {
             loading.value = false;

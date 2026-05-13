@@ -168,35 +168,55 @@
   "projects": [
     {
       "id": 1,
-      "name": "Smart Energy Control",
-      "description": "Automated energy management for smart buildings.",
-      "status": "Healthy",
+      "name": "Project Aurora Phase 2",
+      "category": "Infrastructure Modernization",
+      "description": "Phase 2 of Aurora infrastructure modernization initiative.",
+      "status": "Critical",
       "progress": 64,
+      "manager": "Sarah Johnson",
+      "teamMembers": [
+        { "id": 1, "name": "Alexander", "avatar": "A" },
+        { "id": 2, "name": "Benjamin", "avatar": "B" },
+        { "id": 3, "name": "Catherine", "avatar": "C" }
+      ],
       "milestones": [
-        { "id": 1, "name": "Final Audit Submission", "date": "Oct 14" },
-        { "id": 2, "name": "Staging Deployment", "date": "Oct 28" }
+        { "id": 1, "name": "Final Audit Submission", "date": "Oct 14", "type": "warning" },
+        { "id": 2, "name": "Staging Deployment", "date": "Oct 28", "type": "pending" }
       ]
     },
     {
       "id": 2,
       "name": "Neo-Workspace Launch",
-      "description": "Commercial real estate fit-out and launch.",
+      "category": "Commercial Real Estate",
+      "description": "Commercial real estate fit-out and workspace launch platform.",
       "status": "Healthy",
       "progress": 82,
+      "manager": "Michael Chen",
+      "teamMembers": [
+        { "id": 1, "name": "Diana", "avatar": "D" },
+        { "id": 2, "name": "Elena", "avatar": "E" }
+      ],
       "milestones": [
-        { "id": 1, "name": "Interior Fit-out Done", "date": "Today" },
-        { "id": 2, "name": "Grand Opening", "date": "Nov 05" }
+        { "id": 1, "name": "Interior Fit-out Done", "date": "Today", "type": "success" },
+        { "id": 2, "name": "Grand Opening", "date": "Nov 05", "type": "pending" }
       ]
     },
     {
       "id": 3,
-      "name": "Global Supply Chain AI",
-      "description": "AI-powered logistics optimization.",
+      "name": "Global Supply Chain",
+      "category": "Logistics Optimization",
+      "description": "AI-powered global logistics optimization and supply chain management.",
       "status": "Critical",
       "progress": 31,
+      "manager": "Patricia Lee",
+      "teamMembers": [
+        { "id": 1, "name": "Frank", "avatar": "F" },
+        { "id": 2, "name": "Grace", "avatar": "G" },
+        { "id": 3, "name": "Henry", "avatar": "H" }
+      ],
       "milestones": [
-        { "id": 1, "name": "Data Integration Check", "date": "Oct 19" },
-        { "id": 2, "name": "Model Validation", "date": "Nov 12" }
+        { "id": 1, "name": "Data Integration Check", "date": "Oct 19", "type": "warning" },
+        { "id": 2, "name": "Model Validation", "date": "Nov 12", "type": "pending" }
       ]
     }
   ]

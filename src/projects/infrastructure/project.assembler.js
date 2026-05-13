@@ -4,13 +4,16 @@ export class ProjectAssembler {
     static toEntity(resource) {
         return new Project({
             id: resource.id,
-            name: resource.project || resource.name,
+            name: resource.name,
+            category: resource.category || 'Infrastructure',
             description: resource.description || 'No description provided.',
             progress: resource.progress ?? Math.floor(Math.random() * 100),
             status: ProjectAssembler.normalizeStatus(resource.status),
             startDate: resource.startDate,
             endDate: resource.endDate,
-            milestones: resource.milestones || ProjectAssembler.mockMilestones(resource)
+            milestones: resource.milestones || [],
+            teamMembers: resource.teamMembers || [],
+            manager: resource.manager
         });
     }
 
@@ -21,13 +24,6 @@ export class ProjectAssembler {
         if (s === 'healthy') return 'healthy';
         if (s === 'warning' || s === 'at risk' || s === 'at-risk') return 'at-risk';
         return 'healthy';
-    }
-
-    static mockMilestones(resource) {
-        return [
-            { id: 1, name: 'Milestone A', date: 'Oct 14' },
-            { id: 2, name: 'Milestone B', date: 'Oct 28' }
-        ];
     }
 
     static toEntities(resources) {
