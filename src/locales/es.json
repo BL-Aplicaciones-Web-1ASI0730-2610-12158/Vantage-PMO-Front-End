@@ -73,6 +73,17 @@
       "Critical": "Crítico"
     }
   },
+  "projects": {
+    "title": "Proyectos Activos",
+    "subtitle": "Bienvenido de nuevo, Líder. Tienes {n} hitos críticos hoy.",
+    "progress": "PROGRESO",
+    "upcomingMilestones": "PRÓXIMOS HITOS",
+    "viewAll": "Ver Todos",
+    "noProjects": "No hay proyectos activos para mostrar.",
+    "status": {
+      "critical": "Crítico",
+      "healthy": "Saludable",
+      "at-risk": "En Riesgo"
   "taskCollaboration": {
     "title": "Colaboración de Tareas",
     "subtitle": "Gestiona el flujo de trabajo del equipo y colabora visualmente con tableros Kanban.",

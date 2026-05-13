@@ -7,13 +7,13 @@ import i18n from './i18n.js'
 import PrimeVue from 'primevue/config'
 import Aura from '@primeuix/themes/aura'
 import {
-    Button, Card, Checkbox, Column,
+    Avatar, AvatarGroup, Button, Card, Checkbox, Column,
     ConfirmationService, ConfirmDialog,
     DataTable, Dialog, DialogService,
     Drawer, FileUpload, FloatLabel,
     IconField, InputIcon, InputNumber,
-    InputText, Menu, Rating, Row,
-    Select, SelectButton, Tag, Textarea,
+    InputText, Menu, ProgressBar, Rating, Row,
+    Select, SelectButton, Tag, Textarea, Timeline,
     Toast, ToastService, Toolbar, Tooltip
 } from 'primevue'
 import 'primeflex/primeflex.css'
@@ -52,6 +52,10 @@ app.component('pv-tag',            Tag)
 app.component('pv-textarea',       Textarea)
 app.component('pv-toast',          Toast)
 app.component('pv-toolbar',        Toolbar)
+app.component('pv-avatar',         Avatar)
+app.component('pv-avatar-group',   AvatarGroup)
+app.component('pv-progressbar',    ProgressBar)
+app.component('pv-timeline',       Timeline)
 app.directive('tooltip',           Tooltip)
 
 app.mount('#app')

@@ -73,6 +73,17 @@
       "Critical": "Critical"
     }
   },
+  "projects": {
+    "title": "Active Projects",
+    "subtitle": "Welcome back, Leader. You have {n} critical milestones today.",
+    "progress": "PROGRESS",
+    "upcomingMilestones": "UPCOMING MILESTONES",
+    "viewAll": "View All",
+    "noProjects": "No active projects to display.",
+    "status": {
+      "critical": "Critical",
+      "healthy": "Healthy",
+      "at-risk": "At Risk"
   "taskCollaboration": {
     "title": "Task Collaboration",
     "subtitle": "Manage team workflow and collaborate visually with Kanban boards.",
