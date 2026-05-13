@@ -1,5 +1,6 @@
 <script setup>
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 const props = defineProps({
   project: {
@@ -8,13 +9,12 @@ const props = defineProps({
   }
 });
 
+const emit = defineEmits(['edit-project']);
+const { t } = useI18n();
+
 const statusLabel = computed(() => {
-  const statusMap = {
-    'critical': 'CRITICAL',
-    'healthy': 'HEALTHY',
-    'at-risk': 'AT RISK'
-  };
-  return statusMap[props.project.status] || 'UNKNOWN';
+  const status = props.project.status ?? 'healthy';
+  return t(`projects.status.${status}`);
 });
 
 const tagSeverity = computed(() => {
@@ -34,6 +34,10 @@ const getMilestoneIcon = (type) => {
   };
   return iconMap[type] || 'pi pi-circle';
 };
+
+function editProject() {
+  emit('edit-project', props.project);
+}
 </script>
 
 <template>
@@ -53,7 +57,7 @@ const getMilestoneIcon = (type) => {
     <!-- Progress Section -->
     <div class="progress-section">
       <div class="progress-header">
-        <span class="label">PROGRESS</span>
+        <span class="label">{{ t('projects.progress') }}</span>
         <span class="percentage">{{ project.progress }}%</span>
       </div>
       <pv-progressbar :value="project.progress" class="progress-bar" :showValue="false"></pv-progressbar>
@@ -61,7 +65,7 @@ const getMilestoneIcon = (type) => {
 
     <!-- Milestones -->
     <div class="milestones-section">
-      <span class="label">UPCOMING MILESTONES</span>
+      <span class="label">{{ t('projects.upcomingMilestones') }}</span>
       <div class="milestones-list">
         <div v-for="milestone in project.milestones" :key="milestone.id" class="milestone-item">
           <div class="milestone-icon">
@@ -94,9 +98,19 @@ const getMilestoneIcon = (type) => {
           />
         </pv-avatar-group>
       </div>
+      <div class="project-due">
+        <i class="pi pi-calendar"></i>
+        <span>{{ project.endDate || t('projects.noDueDate') }}</span>
+      </div>
       <div class="action-buttons">
-        <pv-button icon="pi pi-calendar" severity="secondary" text size="small" />
-        <pv-button icon="pi pi-pencil" severity="secondary" text size="small" />
+        <pv-button
+          icon="pi pi-pencil"
+          :label="t('projects.editButton')"
+          severity="secondary"
+          text
+          size="small"
+          @click="editProject"
+        />
       </div>
     </div>
   </div>
@@ -149,6 +163,18 @@ const getMilestoneIcon = (type) => {
   font-size: 0.9rem;
   color: #6b7280;
   line-height: 1.4;
+}
+
+.project-due {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.project-due i {
+  font-size: 1rem;
 }
 
 .progress-section {

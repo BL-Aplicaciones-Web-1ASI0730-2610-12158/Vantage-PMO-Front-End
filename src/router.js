@@ -7,7 +7,8 @@ const pageNotFound = () => import('./shared/presentation/views/page-not-found.vu
 const layout      = () => import('./shared/presentation/components/layout.vue');
 const profile     = () => import('./profile/presentation/views/profile.vue');
 const reports = () => import('./reports/presentation/views/reports.vue');
-const projects = () => import('./projects/presentation/views/project.vue');
+const project = () => import('./projects/presentation/views/project.vue');
+const projectManagement = () => import('./projects/presentation/views/project-management.vue');
 const taskCollaboration = () => import('./task-collaboration/presentation/views/task-collaboration.vue');
 
 /*
@@ -33,18 +34,16 @@ const routes = [
 // Routes version when IAM is not implemented
 const routes = [
     { path: '/', component: layout, children: [
-        { path: '',                name: 'home',            component: Home,         meta: { title: 'Home' } },
-        { path: 'active-projects', name: 'active-projects', component: projects, meta: { title: 'Active Projects' } },
-        { path: 'team',            name: 'team',            component: pageNotFound, meta: { title: 'Team' } },
-        { path: 'active-projects', name: 'active-projects', component: pageNotFound, meta: { title: 'Active Projects' } },
-        { path: 'team',            name: 'team',            component: taskCollaboration, meta: { title: 'Team' } },
-        { path: 'chat-hub',        name: 'chat-hub',        component: pageNotFound, meta: { title: 'Chat Hub' } },
-        { path: 'schedule',        name: 'schedule',        component: pageNotFound, meta: { title: 'Schedule' } },
-        { path: 'meetings',        name: 'meetings',        component: pageNotFound, meta: { title: 'Meetings' } },
-        { path: 'reports',         name: 'reports',         component: reports, meta: { title: 'Reports' } },
-        { path: 'profile',         name: 'profile',         component: profile,      meta: { title: 'Profile' } },
-        { path: 'support',         name: 'support',         component: pageNotFound, meta: { title: 'Support' } },
-        { path: 'settings',        name: 'settings',        component: pageNotFound, meta: { title: 'Settings' } },
+        { path: '',                name: 'home',            component: Home,                meta: { title: 'Home' } },
+        { path: 'active-projects', name: 'active-projects', component: project,          meta: { title: 'Project Management' } },
+        { path: 'team',            name: 'team',            component: taskCollaboration,   meta: { title: 'Team' } },
+        { path: 'chat-hub',        name: 'chat-hub',        component: pageNotFound,        meta: { title: 'Chat Hub' } },
+        { path: 'schedule',        name: 'schedule',        component: pageNotFound,        meta: { title: 'Schedule' } },
+        { path: 'meetings',        name: 'meetings',        component: pageNotFound,        meta: { title: 'Meetings' } },
+        { path: 'reports',         name: 'reports',         component: reports,            meta: { title: 'Reports' } },
+        { path: 'profile',         name: 'profile',         component: profile,            meta: { title: 'Profile' } },
+        { path: 'support',         name: 'support',         component: pageNotFound,        meta: { title: 'Support' } },
+        { path: 'settings',        name: 'settings',        component: pageNotFound,        meta: { title: 'Settings' } },
     ]},
     { path: '/:pathMatch(.*)*', name: 'not-found', component: pageNotFound, meta: { title: 'Page Not Found' } }
 ];

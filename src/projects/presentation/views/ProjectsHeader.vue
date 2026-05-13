@@ -22,7 +22,8 @@ const filters = ref({
 
 const filterLabel = computed(() => {
   const activeFilters = Object.values(filters.value).filter(Boolean).length;
-  return activeFilters === 3 ? 'Filter' : `Filter (${activeFilters})`;
+  const baseLabel = t('projects.filter');
+  return activeFilters === 3 ? baseLabel : `${baseLabel} (${activeFilters})`;
 });
 
 const toggleFilter = () => {
@@ -52,7 +53,7 @@ const toggleSort = () => {
       />
       <pv-button
         icon="pi pi-sort-alt"
-        label="Sort By Health"
+        :label="t('projects.sortByHealth')"
         severity="secondary"
         @click="toggleSort"
       />
@@ -64,21 +65,21 @@ const toggleSort = () => {
         <pv-checkbox
           v-model="filters.critical"
           :binary="true"
-          label="Critical"
+          :label="t('projects.status.critical')"
         />
       </div>
       <div class="filter-option">
         <pv-checkbox
           v-model="filters.healthy"
           :binary="true"
-          label="Healthy"
+          :label="t('projects.status.healthy')"
         />
       </div>
       <div class="filter-option">
         <pv-checkbox
           v-model="filters.atRisk"
           :binary="true"
-          label="At Risk"
+          :label="t('projects.status.at-risk')"
         />
       </div>
     </div>
