@@ -164,5 +164,40 @@
       "generatedAt": "2026-05-08",
       "attachment": "surveillance.pdf"
     }
+  ],
+  "projects": [
+    {
+      "id": 1,
+      "name": "Smart Energy Control",
+      "description": "Automated energy management for smart buildings.",
+      "status": "Healthy",
+      "progress": 64,
+      "milestones": [
+        { "id": 1, "name": "Final Audit Submission", "date": "Oct 14" },
+        { "id": 2, "name": "Staging Deployment", "date": "Oct 28" }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Neo-Workspace Launch",
+      "description": "Commercial real estate fit-out and launch.",
+      "status": "Healthy",
+      "progress": 82,
+      "milestones": [
+        { "id": 1, "name": "Interior Fit-out Done", "date": "Today" },
+        { "id": 2, "name": "Grand Opening", "date": "Nov 05" }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Global Supply Chain AI",
+      "description": "AI-powered logistics optimization.",
+      "status": "Critical",
+      "progress": 31,
+      "milestones": [
+        { "id": 1, "name": "Data Integration Check", "date": "Oct 19" },
+        { "id": 2, "name": "Model Validation", "date": "Nov 12" }
+      ]
+    }
   ]
 }

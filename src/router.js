@@ -7,7 +7,7 @@ const pageNotFound = () => import('./shared/presentation/views/page-not-found.vu
 const layout      = () => import('./shared/presentation/components/layout.vue');
 const profile     = () => import('./profile/presentation/views/profile.vue');
 const reports = () => import('./reports/presentation/views/reports.vue');
-
+const projects = () => import('./projects/presentation/views/project.vue');
 /*
 // Routes version when IAM is implemented
 const routes = [
@@ -32,7 +32,7 @@ const routes = [
 const routes = [
     { path: '/', component: layout, children: [
         { path: '',                name: 'home',            component: Home,         meta: { title: 'Home' } },
-        { path: 'active-projects', name: 'active-projects', component: pageNotFound, meta: { title: 'Active Projects' } },
+        { path: 'active-projects', name: 'active-projects', component: projects, meta: { title: 'Active Projects' } },
         { path: 'team',            name: 'team',            component: pageNotFound, meta: { title: 'Team' } },
         { path: 'chat-hub',        name: 'chat-hub',        component: pageNotFound, meta: { title: 'Chat Hub' } },
         { path: 'schedule',        name: 'schedule',        component: pageNotFound, meta: { title: 'Schedule' } },
