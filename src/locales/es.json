@@ -84,6 +84,8 @@
       "critical": "Crítico",
       "healthy": "Saludable",
       "at-risk": "En Riesgo"
+    }
+  },
   "taskCollaboration": {
     "title": "Colaboración de Tareas",
     "subtitle": "Gestiona el flujo de trabajo del equipo y colabora visualmente con tableros Kanban.",
