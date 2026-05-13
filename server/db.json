@@ -242,6 +242,8 @@
         { "id": 1, "name": "Data Integration Check", "date": "Oct 19", "type": "warning" },
         { "id": 2, "name": "Model Validation", "date": "Nov 12", "type": "pending" }
       ]
+    }
+  ],
   "collaborationTasks": [
     {
       "id": 1,
@@ -332,6 +334,79 @@
       "status": "Done",
       "priority": "High",
       "completed": false
+    }
+  ],
+  "branding": {
+    "id": 1,
+    "companyName": "Vantage PMO",
+    "logoUrl": "https://via.placeholder.com/200",
+    "primaryColor": "#3b82f6",
+    "secondaryColor": "#10b981",
+    "createdAt": "2026-01-15",
+    "updatedAt": "2026-05-13"
+  },
+  "subscription": {
+    "id": 1,
+    "plan": "professional",
+    "activeUsers": 45,
+    "billingCycle": "monthly",
+    "expirationDate": "2026-06-15",
+    "status": "active",
+    "createdAt": "2026-01-15",
+    "updatedAt": "2026-05-13"
+  },
+  "admin-policy": {
+    "id": 1,
+    "passwordPolicy": "moderate",
+    "mfaRequired": true,
+    "sessionTimeout": 30,
+    "apiRequestLimits": 1000,
+    "notificationPermissions": true,
+    "jwtEnabled": true,
+    "encryptedPasswords": true,
+    "apiProtection": true,
+    "createdAt": "2026-01-15",
+    "updatedAt": "2026-05-13"
+  },
+  "system-settings": {
+    "id": 1,
+    "emailNotifications": true,
+    "pushNotifications": true,
+    "reportAlerts": true,
+    "adminAlerts": true,
+    "createdAt": "2026-01-15",
+    "updatedAt": "2026-05-13"
+  },
+  "login-attempts": [
+    {
+      "id": 1,
+      "user": "alex.sterling@vantagepmo.io",
+      "timestamp": "2026-05-13T14:30:00Z",
+      "status": "success"
+    },
+    {
+      "id": 2,
+      "user": "sarah.johnson@vantagepmo.io",
+      "timestamp": "2026-05-13T14:25:00Z",
+      "status": "success"
+    },
+    {
+      "id": 3,
+      "user": "marcus.lee@vantagepmo.io",
+      "timestamp": "2026-05-13T14:15:00Z",
+      "status": "failed"
+    },
+    {
+      "id": 4,
+      "user": "emily.watson@vantagepmo.io",
+      "timestamp": "2026-05-13T14:10:00Z",
+      "status": "success"
+    },
+    {
+      "id": 5,
+      "user": "daniel.brooks@vantagepmo.io",
+      "timestamp": "2026-05-13T14:05:00Z",
+      "status": "success"
     }
   ]
 }
