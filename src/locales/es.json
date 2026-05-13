@@ -72,5 +72,16 @@
       "Warning": "Advertencia",
       "Critical": "Crítico"
     }
+  },
+  "taskCollaboration": {
+    "title": "Colaboración de Tareas",
+    "subtitle": "Gestiona el flujo de trabajo del equipo y colabora visualmente con tableros Kanban.",
+    "progress": "Progreso",
+
+    "columns": {
+      "todo": "Por Hacer",
+      "inProgress": "En Progreso",
+      "done": "Completado"
+    }
   }
 }

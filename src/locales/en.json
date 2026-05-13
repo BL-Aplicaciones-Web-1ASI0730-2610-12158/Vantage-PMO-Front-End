@@ -72,5 +72,16 @@
       "Warning": "Warning",
       "Critical": "Critical"
     }
+  },
+  "taskCollaboration": {
+    "title": "Task Collaboration",
+    "subtitle": "Manage team workflow and collaborate visually with Kanban boards.",
+    "progress": "Progress",
+
+    "columns": {
+      "todo": "To Do",
+      "inProgress": "In Progress",
+      "done": "Done"
+    }
   }
 }
