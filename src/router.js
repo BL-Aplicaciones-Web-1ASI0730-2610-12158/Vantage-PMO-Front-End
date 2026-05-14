@@ -46,7 +46,7 @@ const routes = [
         { path: 'profile',         name: 'profile',         component: profile,      meta: { title: 'Profile' } },
         { path: 'support',         name: 'support',         component: pageNotFound, meta: { title: 'Support' } },
         { path: 'settings',        name: 'settings',        component: pageNotFound, meta: { title: 'Settings' } },
-        { path: 'system-administration', name: 'system-administration', component: systemAdministration, meta: { title: 'System Administration' } },
+        { path: 'system-administration/:section?', name: 'system-administration', component: systemAdministration, meta: { title: 'System Administration' } },
     ]},
     { path: '/:pathMatch(.*)*', name: 'not-found', component: pageNotFound, meta: { title: 'Page Not Found' } }
 ];

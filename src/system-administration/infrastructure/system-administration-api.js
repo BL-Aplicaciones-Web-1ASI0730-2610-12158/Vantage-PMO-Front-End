@@ -15,55 +15,55 @@ class SystemAdministrationApi extends BaseEndpoint {
 
     // Branding endpoints
     async getBranding() {
-        const data = await super.getById('branding');
+        const data = await this.api.get('/branding');
         return BrandingAssembler.toEntity(data);
     }
 
     async updateBranding(brandingData) {
-        const data = await super.update('branding', brandingData);
+        const data = await this.api.put('/branding', brandingData);
         return BrandingAssembler.toEntity(data);
     }
 
     // Subscription endpoints
     async getSubscription() {
-        const data = await super.getById('subscription');
+        const data = await this.api.get('/subscription');
         return SubscriptionAssembler.toEntity(data);
     }
 
     async updateSubscription(subscriptionData) {
-        const data = await super.update('subscription', subscriptionData);
+        const data = await this.api.put('/subscription', subscriptionData);
         return SubscriptionAssembler.toEntity(data);
     }
 
     async renewSubscription(subscriptionId) {
-        const data = await super.getById(`subscription/${subscriptionId}/renew`);
+        const data = await this.api.get(`/subscription/${subscriptionId}/renew`);
         return SubscriptionAssembler.toEntity(data);
     }
 
     // Admin Policy endpoints
     async getAdminPolicy() {
-        const data = await super.getById('admin-policy');
+        const data = await this.api.get('/admin-policy');
         return AdminPolicyAssembler.toEntity(data);
     }
 
     async updateAdminPolicy(policyData) {
-        const data = await super.update('admin-policy', policyData);
+        const data = await this.api.put('/admin-policy', policyData);
         return AdminPolicyAssembler.toEntity(data);
     }
 
     // System Settings endpoints
     async getSystemSettings() {
-        const data = await super.getById('system-settings');
+        const data = await this.api.get('/system-settings');
         return SystemSettingAssembler.toEntity(data);
     }
 
     async updateSystemSettings(settingsData) {
-        const data = await super.update('system-settings', settingsData);
+        const data = await this.api.put('/system-settings', settingsData);
         return SystemSettingAssembler.toEntity(data);
     }
 
     async getRecentLoginAttempts() {
-        const data = await super.getByQuery('login-attempts', { limit: 10 });
+        const data = await this.api.get('/login-attempts');
         return Array.isArray(data) ? data : [];
     }
 }

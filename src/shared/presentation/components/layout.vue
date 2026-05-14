@@ -15,6 +15,7 @@ const navItems = [
   { labelKey: 'nav.schedule',       icon: 'pi pi-calendar',    name: 'schedule' },
   { labelKey: 'nav.meetings',       icon: 'pi pi-video',       name: 'meetings' },
   { labelKey: 'nav.reports',        icon: 'pi pi-chart-bar',   name: 'reports' },
+  { labelKey: 'nav.systemAdministration', icon: 'pi pi-cog', name: 'system-administration' },
 ]
 
 const bottomItems = [
