@@ -35,8 +35,6 @@ const routes = [
     { path: '/', component: layout, children: [
         { path: '',                name: 'home',            component: Home,         meta: { title: 'Home' } },
         { path: 'active-projects', name: 'active-projects', component: projects, meta: { title: 'Active Projects' } },
-        { path: 'team',            name: 'team',            component: pageNotFound, meta: { title: 'Team' } },
-        { path: 'active-projects', name: 'active-projects', component: pageNotFound, meta: { title: 'Active Projects' } },
         { path: 'team',            name: 'team',            component: taskCollaboration, meta: { title: 'Team' } },
         { path: 'chat-hub',        name: 'chat-hub',        component: pageNotFound, meta: { title: 'Chat Hub' } },
         { path: 'schedule',        name: 'schedule',        component: pageNotFound, meta: { title: 'Schedule' } },
