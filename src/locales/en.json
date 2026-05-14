@@ -72,6 +72,66 @@
       "Healthy": "Healthy",
       "Warning": "Warning",
       "Critical": "Critical"
+    },
+    "export": {
+      "title": "Export Project Report",
+      "desc": "Generate a comprehensive overview of your project status, financial performance, and team velocity.",
+      "feat1": "Automated summary generation",
+      "feat2": "Stakeholder-ready formatting",
+      "feat3": "Dynamic charts & visuals",
+      "fileFormat": "File Format Selection",
+      "period": "Report Period",
+      "configurations": "Report Configurations",
+      "cancel": "Cancel",
+      "download": "Download Report",
+      "recentActivity": "Recent Activity",
+      "automateTitle": "Automate Your Reports",
+      "automateDesc": "Schedule weekly report exports directly to your email inbox or Slack channel.",
+      "setupAutomation": "Setup Automation",
+      "config": {
+        "teamPerformance":  "Team Performance",
+        "taskProgress":     "Task Progress",
+        "financialSummary": "Financial Summary",
+        "riskAssessment":   "Risk Assessment",
+        "companyLogo":      "Include Company Logo"
+      },
+      "configDesc": {
+        "teamPerformance":  "Velocity, burnout, and capacity",
+        "taskProgress":     "Burndown and completion rates",
+        "financialSummary": "Budget tracking and ROI analysis",
+        "riskAssessment":   "Open issues and mitigation logs",
+        "companyLogo":      "Adds brand identity to report header"
+      }
+    },
+    "export": {
+      "title": "Export Project Report",
+      "desc": "Generate a comprehensive overview of your project status, financial performance, and team velocity.",
+      "feat1": "Automated summary generation",
+      "feat2": "Stakeholder-ready formatting",
+      "feat3": "Dynamic charts & visuals",
+      "fileFormat": "File Format Selection",
+      "period": "Report Period",
+      "configurations": "Report Configurations",
+      "cancel": "Cancel",
+      "download": "Download Report",
+      "recentActivity": "Recent Activity",
+      "automateTitle": "Automate Your Reports",
+      "automateDesc": "Schedule weekly report exports directly to your email inbox or Slack channel.",
+      "setupAutomation": "Setup Automation",
+      "config": {
+        "teamPerformance":  "Team Performance",
+        "taskProgress":     "Task Progress",
+        "financialSummary": "Financial Summary",
+        "riskAssessment":   "Risk Assessment",
+        "companyLogo":      "Include Company Logo"
+      },
+      "configDesc": {
+        "teamPerformance":  "Velocity, burnout, and capacity",
+        "taskProgress":     "Burndown and completion rates",
+        "financialSummary": "Budget tracking and ROI analysis",
+        "riskAssessment":   "Open issues and mitigation logs",
+        "companyLogo":      "Adds brand identity to report header"
+      }
     }
   },
   "projects": {
@@ -236,6 +296,143 @@
     "activeSessions": "Active Sessions",
     "failedLoginAttempts": "Failed Login Attempts",
     "securityActivityLog": "Security Activity Log"
+  },
+  "schedule": {
+    "title": "Schedule",
+    "subtitle": "Visual calendar of your events, meetings and focus blocks.",
+    "today": "Today",
+    "week": "Week",
+    "month": "Month",
+    "active": "Active",
+    "inactive": "Inactive",
+    "more": "more",
+    "meeting": "Meeting",
+    "event": "Event",
+    "kinds": {
+      "meeting": "Meeting",
+      "review": "Review",
+      "work": "Work",
+      "focus": "Focus",
+      "planning": "Planning",
+      "workshop": "Workshop"
+    }
+  },
+  "meetings": {
+    "title": "Meetings & Agreements",
+    "subtitle": "Organize and track all team meetings, minutes and decisions.",
+    "scheduleMeeting": "Schedule Meeting",
+    "exportMinutes": "Export Minutes",
+    "recentSessions": "Recent Sessions",
+    "total": "Total",
+    "activeSelection": "Active Selection",
+    "agreements": "Agreements",
+    "participants": "Participants",
+    "sessionMinutes": "Session Minutes",
+    "decisionsAgreements": "Decisions & Agreements",
+    "pointsOfConsensus": "Points of Consensus",
+    "convertToTask": "Convert to Task",
+    "convertedTo": "Converted to Task",
+    "viewTask": "View Task",
+    "deadline": "Deadline",
+    "verifiedBy": "Verified by",
+    "minutesPending": "Minutes will be recorded after the meeting.",
+    "selectSession": "Select a session to view details.",
+    "upcoming": "Upcoming",
+    "completed": "Completed",
+    "dialog": {
+      "title": "Schedule New Meeting",
+      "subtitle": "Define parameters for your strategic session.",
+      "meetingTitle": "Meeting Title",
+      "titlePlaceholder": "e.g., Monthly Strategic Review",
+      "date": "Date",
+      "startTime": "Start Time",
+      "endTime": "End Time",
+      "environment": "Meeting Environment",
+      "virtual": "Virtual",
+      "inPerson": "In-Person",
+      "autoZoom": "Auto-generate Zoom link",
+      "agenda": "Agenda & Objectives",
+      "agendaPlaceholder": "Add agenda item...",
+      "cancel": "Cancel",
+      "schedule": "Schedule Meeting",
+      "participants": "Participants",
+      "addTeamMembers": "Add team members...",
+      "available": "Available",
+      "inMeeting": "In Meeting",
+      "availabilityInsights": "Availability Insights",
+      "schedulingConflict": "Scheduling Conflict",
+      "conflictMsg": "is busy during your selected time. Suggested slots:",
+      "allAvailable": "All participants are available"
+    },
+    "export": {
+      "title": "Export Meeting Minutes",
+      "desc": "Generate a full record of your session including minutes, agreements and action items.",
+      "feat1": "Complete minutes transcript",
+      "feat2": "Decisions & agreements included",
+      "feat3": "Stakeholder-ready formatting",
+      "fileFormat": "File Format Selection",
+      "period": "Meeting Period",
+      "configurations": "Export Configurations",
+      "cancel": "Cancel",
+      "download": "Download Minutes",
+      "recentActivity": "Recent Activity",
+      "config": {
+        "attendees":   "Attendees List",
+        "agenda":      "Agenda & Objectives",
+        "minutes":     "Session Minutes",
+        "agreements":  "Decisions & Agreements",
+        "companyLogo": "Include Company Logo"
+      },
+      "configDesc": {
+        "attendees":   "Full list of meeting participants",
+        "agenda":      "All agenda items discussed",
+        "minutes":     "Time-stamped meeting notes",
+        "agreements":  "Action items and decisions taken",
+        "companyLogo": "Adds brand identity to document header"
+      }
+    }
+  },
+  "support": {
+    "title": "Support Center",
+    "subtitle": "Submit and track your support requests and bug reports.",
+    "newTicket": "New Ticket",
+    "open": "Open",
+    "inProgress": "In Progress",
+    "resolved": "Resolved",
+    "columns": {
+      "title": "Title",
+      "category": "Category",
+      "priority": "Priority",
+      "status": "Status",
+      "assignee": "Assignee",
+      "createdAt": "Created At"
+    },
+    "form": {
+      "title": "Title",
+      "description": "Description",
+      "category": "Category",
+      "priority": "Priority",
+      "submit": "Submit Ticket",
+      "cancel": "Cancel"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Manage your personal preferences, notifications, and account security.",
+    "appearance": "Appearance",
+    "theme": "Theme",
+    "language": "Language",
+    "regional": "Regional",
+    "timezone": "Timezone",
+    "dateFormat": "Date Format",
+    "notifications": "Notifications",
+    "emailNotifications": "Email Notifications",
+    "pushNotifications": "Push Notifications",
+    "weeklyDigest": "Weekly Digest",
+    "security": "Security",
+    "twoFactor": "Two-Factor Authentication",
+    "profileVisibility": "Profile Visibility",
+    "save": "Save Changes"
   }
 }
 

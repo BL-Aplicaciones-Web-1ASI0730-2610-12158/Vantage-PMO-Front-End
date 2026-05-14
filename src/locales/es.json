@@ -72,6 +72,36 @@
       "Healthy": "Saludable",
       "Warning": "Advertencia",
       "Critical": "Crítico"
+    },
+    "export": {
+      "title": "Exportar Reporte de Proyecto",
+      "desc": "Genera una visión completa del estado de tus proyectos, rendimiento financiero y velocidad del equipo.",
+      "feat1": "Generación automática de resumen",
+      "feat2": "Formato listo para stakeholders",
+      "feat3": "Gráficos y visuales dinámicos",
+      "fileFormat": "Selección de Formato",
+      "period": "Período del Reporte",
+      "configurations": "Configuraciones del Reporte",
+      "cancel": "Cancelar",
+      "download": "Descargar Reporte",
+      "recentActivity": "Actividad Reciente",
+      "automateTitle": "Automatiza tus Reportes",
+      "automateDesc": "Programa exportaciones semanales directamente a tu correo o canal de Slack.",
+      "setupAutomation": "Configurar Automatización",
+      "config": {
+        "teamPerformance":  "Rendimiento del Equipo",
+        "taskProgress":     "Progreso de Tareas",
+        "financialSummary": "Resumen Financiero",
+        "riskAssessment":   "Evaluación de Riesgos",
+        "companyLogo":      "Incluir Logo de Empresa"
+      },
+      "configDesc": {
+        "teamPerformance":  "Velocidad, agotamiento y capacidad",
+        "taskProgress":     "Tasas de burndown y completación",
+        "financialSummary": "Seguimiento de presupuesto y ROI",
+        "riskAssessment":   "Problemas abiertos y registros de mitigación",
+        "companyLogo":      "Agrega identidad de marca al encabezado"
+      }
     }
   },
   "projects": {
@@ -236,5 +266,142 @@
     "activeSessions": "Sesiones Activas",
     "failedLoginAttempts": "Intentos de Inicio de Sesión Fallidos",
     "securityActivityLog": "Registro de Actividad de Seguridad"
+  },
+  "schedule": {
+    "title": "Cronograma",
+    "subtitle": "Calendario visual de tus eventos, reuniones y bloques de enfoque.",
+    "today": "Hoy",
+    "week": "Semana",
+    "month": "Mes",
+    "active": "Activo",
+    "inactive": "Inactivo",
+    "more": "más",
+    "meeting": "Reunión",
+    "event": "Evento",
+    "kinds": {
+      "meeting": "Reunión",
+      "review": "Revisión",
+      "work": "Trabajo",
+      "focus": "Enfoque",
+      "planning": "Planificación",
+      "workshop": "Taller"
+    }
+  },
+  "meetings": {
+    "title": "Reuniones y Acuerdos",
+    "subtitle": "Organiza y rastrea todas las reuniones del equipo, minutas y decisiones.",
+    "scheduleMeeting": "Agendar Reunión",
+    "exportMinutes": "Exportar Minuta",
+    "recentSessions": "Sesiones Recientes",
+    "total": "Total",
+    "activeSelection": "Selección Activa",
+    "agreements": "Acuerdos",
+    "participants": "Participantes",
+    "sessionMinutes": "Minuta de la Sesión",
+    "decisionsAgreements": "Decisiones y Acuerdos",
+    "pointsOfConsensus": "Puntos de Consenso",
+    "convertToTask": "Convertir en Tarea",
+    "convertedTo": "Convertido en Tarea",
+    "viewTask": "Ver Tarea",
+    "deadline": "Fecha Límite",
+    "verifiedBy": "Verificado por",
+    "minutesPending": "Las minutas se registrarán después de la reunión.",
+    "selectSession": "Selecciona una sesión para ver los detalles.",
+    "upcoming": "Próximas",
+    "completed": "Completadas",
+    "dialog": {
+      "title": "Agendar Nueva Reunión",
+      "subtitle": "Define los parámetros de tu sesión estratégica.",
+      "meetingTitle": "Título de la Reunión",
+      "titlePlaceholder": "ej., Revisión Estratégica Mensual",
+      "date": "Fecha",
+      "startTime": "Hora de Inicio",
+      "endTime": "Hora de Fin",
+      "environment": "Ambiente de Reunión",
+      "virtual": "Virtual",
+      "inPerson": "Presencial",
+      "autoZoom": "Auto-generar enlace de Zoom",
+      "agenda": "Agenda y Objetivos",
+      "agendaPlaceholder": "Agregar punto de agenda...",
+      "cancel": "Cancelar",
+      "schedule": "Agendar Reunión",
+      "participants": "Participantes",
+      "addTeamMembers": "Agregar miembros del equipo...",
+      "available": "Disponible",
+      "inMeeting": "En Reunión",
+      "availabilityInsights": "Disponibilidad del Equipo",
+      "schedulingConflict": "Conflicto de Horario",
+      "conflictMsg": "está ocupado durante el horario seleccionado. Slots sugeridos:",
+      "allAvailable": "Todos los participantes están disponibles"
+    },
+    "export": {
+      "title": "Exportar Actas de Reunión",
+      "desc": "Genera un registro completo de tu sesión incluyendo actas, acuerdos y puntos de acción.",
+      "feat1": "Transcripción completa de actas",
+      "feat2": "Decisiones y acuerdos incluidos",
+      "feat3": "Formato listo para stakeholders",
+      "fileFormat": "Selección de Formato",
+      "period": "Período de Reunión",
+      "configurations": "Configuraciones de Exportación",
+      "cancel": "Cancelar",
+      "download": "Descargar Actas",
+      "recentActivity": "Actividad Reciente",
+      "config": {
+        "attendees":   "Lista de Asistentes",
+        "agenda":      "Agenda y Objetivos",
+        "minutes":     "Actas de Sesión",
+        "agreements":  "Decisiones y Acuerdos",
+        "companyLogo": "Incluir Logo de Empresa"
+      },
+      "configDesc": {
+        "attendees":   "Lista completa de participantes",
+        "agenda":      "Todos los puntos de agenda discutidos",
+        "minutes":     "Notas de reunión con marca de tiempo",
+        "agreements":  "Acciones y decisiones tomadas",
+        "companyLogo": "Agrega identidad de marca al encabezado"
+      }
+    }
+  },
+  "support": {
+    "title": "Centro de Soporte",
+    "subtitle": "Envía y rastrea tus solicitudes de soporte y reportes de errores.",
+    "newTicket": "Nuevo Ticket",
+    "open": "Abiertos",
+    "inProgress": "En Progreso",
+    "resolved": "Resueltos",
+    "columns": {
+      "title": "Título",
+      "category": "Categoría",
+      "priority": "Prioridad",
+      "status": "Estado",
+      "assignee": "Asignado a",
+      "createdAt": "Creado el"
+    },
+    "form": {
+      "title": "Título",
+      "description": "Descripción",
+      "category": "Categoría",
+      "priority": "Prioridad",
+      "submit": "Enviar Ticket",
+      "cancel": "Cancelar"
+    }
+  },
+  "settings": {
+    "title": "Configuración",
+    "subtitle": "Gestiona tus preferencias personales, notificaciones y seguridad de cuenta.",
+    "appearance": "Apariencia",
+    "theme": "Tema",
+    "language": "Idioma",
+    "regional": "Regional",
+    "timezone": "Zona Horaria",
+    "dateFormat": "Formato de Fecha",
+    "notifications": "Notificaciones",
+    "emailNotifications": "Notificaciones por Correo",
+    "pushNotifications": "Notificaciones Push",
+    "weeklyDigest": "Resumen Semanal",
+    "security": "Seguridad",
+    "twoFactor": "Autenticación de Dos Factores",
+    "profileVisibility": "Visibilidad del Perfil",
+    "save": "Guardar Cambios"
   }
 }
