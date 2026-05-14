@@ -2,14 +2,16 @@
 import { computed, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useReportsStore } from '../../application/reports.store.js';
+import ExportReportDialog from '../components/export-report-dialog.vue';
 
 const { t } = useI18n();
-
 const store = useReportsStore();
 
 onMounted(() => store.fetchReports());
 
-const selectedProject = ref(null);
+const selectedProject   = ref(null);
+const showExportDialog  = ref(false);
+const exportingReport   = ref(null);
 
 const reports = computed(() => {
   if (!selectedProject.value) return store.reports;
@@ -23,12 +25,13 @@ const projectOptions = computed(() => {
   return [...new Set(store.reports.map(r => r.project))];
 });
 
-function exportPdf(report) {
-  alert(
-      t('reports.exportAlert', {
-        project: report.project
-      })
-  );
+function openExportDialog(report) {
+  exportingReport.value = report;
+  showExportDialog.value = true;
+}
+
+function onExportDone(payload) {
+  alert(t('reports.exportAlert', { project: payload.report?.project ?? '' }) + ` (${payload.format})`);
 }
 
 function uploadDocument(event, report) {
@@ -155,9 +158,10 @@ function uploadDocument(event, report) {
 
           <pv-button
               :label="t('reports.exportPdf')"
-              icon="pi pi-file-pdf"
-              severity="danger"
-              @click="exportPdf(slotProps.data)"
+              icon="pi pi-file-export"
+              severity="secondary"
+              outlined
+              @click="openExportDialog(slotProps.data)"
           />
 
         </template>
@@ -166,6 +170,12 @@ function uploadDocument(event, report) {
     </pv-data-table>
 
   </div>
+
+  <ExportReportDialog
+      v-model:visible="showExportDialog"
+      :report="exportingReport"
+      @export="onExportDone"
+  />
 </template>
 
 <style scoped>
