@@ -65,23 +65,142 @@
   "schedule": [
     {
       "id": 1,
+      "date": "2026-05-11",
       "time": "09:00",
+      "duration": 45,
       "title": "Stakeholder Briefing",
       "detail": "Conf Room A • 45m",
+      "type": "meeting",
       "active": true
     },
     {
       "id": 2,
-      "time": "11:30",
+      "date": "2026-05-11",
+      "time": "14:00",
+      "duration": 60,
       "title": "Project Deep Dive",
       "detail": "Virtual • 1h",
+      "type": "work",
       "active": true
     },
     {
       "id": 3,
-      "time": "14:00",
+      "date": "2026-05-12",
+      "time": "10:00",
+      "duration": 30,
+      "title": "Design Review",
+      "detail": "Conf Room B • 30m",
+      "type": "review",
+      "active": true
+    },
+    {
+      "id": 4,
+      "date": "2026-05-12",
+      "time": "15:00",
+      "duration": 120,
       "title": "Deep Work Session",
       "detail": "No distractions • 2h",
+      "type": "focus",
+      "active": false
+    },
+    {
+      "id": 5,
+      "date": "2026-05-13",
+      "time": "11:00",
+      "duration": 45,
+      "title": "Sprint Retrospective",
+      "detail": "Virtual • 45m",
+      "type": "meeting",
+      "active": true
+    },
+    {
+      "id": 6,
+      "date": "2026-05-14",
+      "time": "09:30",
+      "duration": 60,
+      "title": "Portfolio Health Check",
+      "detail": "Exec Suite • 1h",
+      "type": "review",
+      "active": true
+    },
+    {
+      "id": 7,
+      "date": "2026-05-14",
+      "time": "13:00",
+      "duration": 90,
+      "title": "Cross-team Sync",
+      "detail": "Conf Room A • 1.5h",
+      "type": "meeting",
+      "active": true
+    },
+    {
+      "id": 8,
+      "date": "2026-05-15",
+      "time": "10:00",
+      "duration": 60,
+      "title": "Sprint Planning Q3",
+      "detail": "Conf Room A • 1h",
+      "type": "planning",
+      "active": true
+    },
+    {
+      "id": 9,
+      "date": "2026-05-15",
+      "time": "15:00",
+      "duration": 30,
+      "title": "1:1 with Sarah",
+      "detail": "Virtual • 30m",
+      "type": "meeting",
+      "active": false
+    },
+    {
+      "id": 10,
+      "date": "2026-05-16",
+      "time": "14:00",
+      "duration": 90,
+      "title": "Stakeholder Review",
+      "detail": "Virtual • 1.5h",
+      "type": "review",
+      "active": false
+    },
+    {
+      "id": 11,
+      "date": "2026-05-17",
+      "time": "09:00",
+      "duration": 120,
+      "title": "Risk Assessment Workshop",
+      "detail": "Board Room • 2h",
+      "type": "workshop",
+      "active": false
+    },
+    {
+      "id": 12,
+      "date": "2026-05-19",
+      "time": "10:00",
+      "duration": 45,
+      "title": "Weekly Kickoff",
+      "detail": "Conf Room A • 45m",
+      "type": "meeting",
+      "active": false
+    },
+    {
+      "id": 13,
+      "date": "2026-05-20",
+      "time": "14:00",
+      "duration": 60,
+      "title": "Product Roadmap Review",
+      "detail": "Board Room • 1h",
+      "type": "review",
+      "active": false
+    },
+    {
+      "id": 14,
+      "date": "2026-05-21",
+      "time": "09:00",
+      "duration": 30,
+      "title": "Engineering Stand-up",
+      "detail": "Virtual • 30m",
+      "type": "meeting",
       "active": false
     }
   ],
@@ -314,7 +433,7 @@
       "assignee": "Alex Sterling",
       "status": "Done",
       "priority": "High",
-      "completed": false
+      "completed": true
     },
     {
       "id": 2,
@@ -350,7 +469,7 @@
       "assignee": "Daniel Brooks",
       "status": "In Progress",
       "priority": "High",
-      "completed": true
+      "completed": false
     },
     {
       "id": 6,
@@ -359,7 +478,7 @@
       "assignee": "Sophia Turner",
       "status": "Done",
       "priority": "Medium",
-      "completed": false
+      "completed": true
     },
     {
       "id": 7,
@@ -377,7 +496,7 @@
       "assignee": "Olivia Harris",
       "status": "Done",
       "priority": "Low",
-      "completed": false
+      "completed": true
     },
     {
       "id": 9,
@@ -437,6 +556,376 @@
     "reportAlerts": true,
     "adminAlerts": true,
     "createdAt": "2026-01-15",
+    "updatedAt": "2026-05-13"
+  },
+  "meetings": [
+    {
+      "id": 1,
+      "title": "Q3 Strategic Resource Allocation",
+      "segment": "Segment 1 (Leaders) Executive Board",
+      "date": "2026-05-14",
+      "time": "09:00",
+      "duration": 45,
+      "location": "Conf Room A",
+      "type": "Strategic",
+      "status": "Active",
+      "organizer": "Alex Sterling",
+      "attendees": [
+        "Alex Sterling",
+        "Sarah Johnson",
+        "Marcus Lee",
+        "Emily Watson",
+        "Daniel Brooks"
+      ],
+      "description": "Reviewing engineering capacity across all Segment 1 initiatives. Focus on accelerating the Vantage migration while maintaining uptime for legacy clients. Discussion on hiring freeze implications for H1 2026.",
+      "minutes": [
+        {
+          "id": 1,
+          "time": "09:05",
+          "title": "Introductions",
+          "body": "Marcus opened the floor confirming the $2.4M Q3 budget cap."
+        },
+        {
+          "id": 2,
+          "time": "09:15",
+          "title": "Vantage Status",
+          "body": "Sarah reported a 3-week delay due to infrastructure bottleneck in West-2 region."
+        },
+        {
+          "id": 3,
+          "time": "09:30",
+          "title": "Resource Shift",
+          "body": "Agreement reached to pivot 3 DevOps engineers from Maintenance to Vantage."
+        },
+        {
+          "id": 4,
+          "time": "09:45",
+          "title": "Hiring",
+          "body": "Executive board confirmed hiring freeze, but allowed one 'Critical Replacement' role."
+        }
+      ],
+      "agreements": [
+        {
+          "id": 1,
+          "title": "Pivot 3 DevOps engineers to Project Vantage",
+          "owner": "Sarah J.",
+          "deadline": "May 30",
+          "tag": "Task",
+          "status": "open"
+        },
+        {
+          "id": 2,
+          "title": "Cap Q3 variable spending at $2.4M across all units",
+          "owner": "Finance Dept",
+          "verified": "Board",
+          "tag": "Policy",
+          "status": "open"
+        },
+        {
+          "id": 3,
+          "title": "Maintain full hiring freeze until end of Q3",
+          "owner": "Marcus T.",
+          "note": "Policy Change",
+          "tag": "Policy",
+          "status": "open"
+        },
+        {
+          "id": 4,
+          "title": "Release memo regarding H2 2026 strategy",
+          "owner": "Alex S.",
+          "taskRef": "#4492",
+          "tag": "Task",
+          "status": "converted"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Project Vantage Risk Assessment",
+      "segment": "Engineering Leadership",
+      "date": "2026-05-12",
+      "time": "14:00",
+      "duration": 60,
+      "location": "Virtual",
+      "type": "Review",
+      "status": "Completed",
+      "organizer": "Sarah Johnson",
+      "attendees": [
+        "Sarah Johnson",
+        "Daniel Brooks",
+        "Olivia Carter",
+        "Marcus Lee"
+      ],
+      "description": "Deep dive into technical risks for Project Vantage Phase 2. Identified critical blockers in the data migration pipeline and alignment on mitigation strategies.",
+      "minutes": [
+        {
+          "id": 1,
+          "time": "14:00",
+          "title": "Risk Register Review",
+          "body": "Daniel walked through the updated risk register with 3 high-priority items."
+        },
+        {
+          "id": 2,
+          "time": "14:20",
+          "title": "Data Migration Blocker",
+          "body": "Olivia presented a 2-week delay risk in the data migration pipeline due to schema mismatches."
+        },
+        {
+          "id": 3,
+          "time": "14:45",
+          "title": "Mitigation Plan",
+          "body": "Team agreed to allocate 2 additional backend engineers to resolve schema issues before June 1."
+        }
+      ],
+      "agreements": [
+        {
+          "id": 1,
+          "title": "Allocate 2 backend engineers to data migration",
+          "owner": "Sarah J.",
+          "deadline": "Jun 1",
+          "tag": "Task",
+          "status": "open"
+        },
+        {
+          "id": 2,
+          "title": "Update risk register weekly during Phase 2",
+          "owner": "Daniel B.",
+          "tag": "Policy",
+          "status": "open"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Monthly Stakeholder Sync",
+      "segment": "All Segments",
+      "date": "2026-05-09",
+      "time": "11:00",
+      "duration": 90,
+      "location": "Board Room",
+      "type": "Sync",
+      "status": "Completed",
+      "organizer": "Alex Sterling",
+      "attendees": [
+        "Alex Sterling",
+        "Sarah Johnson",
+        "Michael Chen",
+        "Patricia Lee",
+        "Emma Watson",
+        "Marcus Lee",
+        "Daniel Brooks",
+        "Sophia Miller"
+      ],
+      "description": "Monthly cross-segment alignment on portfolio health, budget status, and upcoming milestones across all active projects.",
+      "minutes": [
+        {
+          "id": 1,
+          "time": "11:00",
+          "title": "Portfolio Health",
+          "body": "Overall portfolio health rated Healthy with 2 at-risk projects flagged."
+        },
+        {
+          "id": 2,
+          "time": "11:25",
+          "title": "Budget Review",
+          "body": "Q2 budget utilization at 74%. Finance confirmed Q3 allocations are approved."
+        },
+        {
+          "id": 3,
+          "time": "11:50",
+          "title": "Upcoming Milestones",
+          "body": "5 major milestones due in the next 30 days across 3 projects."
+        }
+      ],
+      "agreements": [
+        {
+          "id": 1,
+          "title": "Review at-risk projects weekly with PMs",
+          "owner": "Alex S.",
+          "deadline": "Ongoing",
+          "tag": "Policy",
+          "status": "open"
+        },
+        {
+          "id": 2,
+          "title": "Prepare Q3 budget allocation breakdown",
+          "owner": "Finance Dept",
+          "deadline": "May 25",
+          "tag": "Task",
+          "status": "converted"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Architectural Review: Infrastructure V2",
+      "segment": "Engineering",
+      "date": "2026-04-30",
+      "time": "10:00",
+      "duration": 120,
+      "location": "Conf Room B",
+      "type": "Workshop",
+      "status": "Completed",
+      "organizer": "Michael Chen",
+      "attendees": [
+        "Michael Chen",
+        "Daniel Brooks",
+        "Olivia Carter"
+      ],
+      "description": "Technical architecture review for the Infrastructure V2 upgrade. Focus on scalability, security posture, and cloud cost optimization.",
+      "minutes": [
+        {
+          "id": 1,
+          "time": "10:00",
+          "title": "Current Architecture",
+          "body": "Michael presented the current state diagram and identified 4 scalability bottlenecks."
+        },
+        {
+          "id": 2,
+          "time": "10:40",
+          "title": "Proposed V2 Design",
+          "body": "Daniel walked through the proposed microservices decomposition."
+        },
+        {
+          "id": 3,
+          "time": "11:20",
+          "title": "Security Review",
+          "body": "Olivia raised concerns about API gateway exposure. Decision to add WAF layer."
+        }
+      ],
+      "agreements": [
+        {
+          "id": 1,
+          "title": "Add WAF layer to API gateway",
+          "owner": "Olivia C.",
+          "deadline": "May 20",
+          "tag": "Task",
+          "status": "converted"
+        },
+        {
+          "id": 2,
+          "title": "Share V2 architecture doc with all team leads",
+          "owner": "Michael C.",
+          "deadline": "May 5",
+          "tag": "Task",
+          "status": "converted"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Sprint Planning Q3",
+      "segment": "Product & Engineering",
+      "date": "2026-05-15",
+      "time": "10:00",
+      "duration": 60,
+      "location": "Conf Room A",
+      "type": "Planning",
+      "status": "Upcoming",
+      "organizer": "Alex Sterling",
+      "attendees": [
+        "Sarah Johnson",
+        "Michael Chen",
+        "Patricia Lee"
+      ],
+      "description": "Kickoff planning session for Q3 sprint cycle. Scope finalization, story pointing and team capacity alignment.",
+      "minutes": [],
+      "agreements": []
+    },
+    {
+      "title": "sdsddfsf",
+      "segment": "General",
+      "date": "2026-04-30",
+      "time": "10:30",
+      "duration": 480,
+      "location": "Virtual",
+      "type": "Planning",
+      "status": "Upcoming",
+      "organizer": "Alex Sterling",
+      "attendees": [
+        "Alex Sterling",
+        "Michael Chen",
+        "Daniel Brooks"
+      ],
+      "description": "fsdfsd",
+      "minutes": [],
+      "agreements": [],
+      "id": 6
+    }
+  ],
+  "support-tickets": [
+    {
+      "id": 1,
+      "title": "Cannot export PDF reports",
+      "description": "The export button in the Reports section does not generate a PDF file.",
+      "category": "Bug",
+      "priority": "High",
+      "status": "Open",
+      "createdAt": "2026-05-10",
+      "assignee": "Support Team"
+    },
+    {
+      "id": 2,
+      "title": "Dashboard loading slowly",
+      "description": "The home dashboard takes more than 10 seconds to load all widgets.",
+      "category": "Performance",
+      "priority": "Medium",
+      "status": "In Progress",
+      "createdAt": "2026-05-11",
+      "assignee": "Engineering"
+    },
+    {
+      "id": 3,
+      "title": "Add dark mode option",
+      "description": "Users have requested a dark mode theme for better accessibility.",
+      "category": "Feature Request",
+      "priority": "Low",
+      "status": "Open",
+      "createdAt": "2026-05-12",
+      "assignee": "Design Team"
+    },
+    {
+      "id": 4,
+      "title": "Email notifications not received",
+      "description": "Configured email alerts are not being delivered to user inboxes.",
+      "category": "Bug",
+      "priority": "High",
+      "status": "Resolved",
+      "createdAt": "2026-05-08",
+      "assignee": "Support Team"
+    },
+    {
+      "id": 5,
+      "title": "Integrate with Jira",
+      "description": "Request to connect Vantage PMO with Jira for issue tracking synchronization.",
+      "category": "Feature Request",
+      "priority": "Medium",
+      "status": "Open",
+      "createdAt": "2026-05-13",
+      "assignee": "Product Team"
+    },
+    {
+      "title": "Risk",
+      "description": "",
+      "category": "Performance",
+      "priority": "Low",
+      "status": "Open",
+      "createdAt": "2026-05-14",
+      "assignee": "Support Team",
+      "id": 6
+    }
+  ],
+  "user-settings": {
+    "id": 1,
+    "theme": "light",
+    "language": "en",
+    "timezone": "America/New_York",
+    "dateFormat": "MM/DD/YYYY",
+    "emailNotifications": true,
+    "pushNotifications": true,
+    "weeklyDigest": false,
+    "twoFactorEnabled": false,
+    "profileVisibility": "team",
     "updatedAt": "2026-05-13"
   },
   "login-attempts": [
