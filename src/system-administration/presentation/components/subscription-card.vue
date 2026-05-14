@@ -8,91 +8,118 @@
                 </h2>
             </div>
         </template>
-
-        <div class="subscription-content">
-            <div class="subscription-info">
-                <div class="info-group">
-                    <span class="info-label">{{ $t('systemAdministration.currentPlan') }}</span>
-                    <span class="info-value">
-                        <Tag
-                            :value="subscription?.plan || 'N/A'"
-                            :severity="getPlanSeverity(subscription?.plan)"
-                            class="plan-badge"
-                        />
-                    </span>
+        <template #content>
+            <div class="subscription-content">
+            <div class="subscription-topcards">
+                <div class="metric-card plan-card">
+                    <span class="metric-label">{{ $t('systemAdministration.currentPlan') }}</span>
+                    <Tag :value="subscription.plan || 'Starter'" :severity="getPlanSeverity(subscription.plan)" />
                 </div>
-
-                <div class="info-group">
-                    <span class="info-label">{{ $t('systemAdministration.activeUsers') }}</span>
-                    <span class="info-value">{{ subscription?.activeUsers || 0 }}</span>
+                <div class="metric-card">
+                    <span class="metric-label">{{ $t('systemAdministration.activeUsers') }}</span>
+                    <span class="metric-value">{{ subscription.activeUsers || 12 }}</span>
                 </div>
-
-                <div class="info-group">
-                    <span class="info-label">{{ $t('systemAdministration.billingCycle') }}</span>
-                    <span class="info-value">{{ formatBillingCycle(subscription?.billingCycle) }}</span>
+                <div class="metric-card">
+                    <span class="metric-label">{{ $t('systemAdministration.storageUsage') }}</span>
+                    <span class="metric-value">{{ subscription.storageUsage || '85 / 100 GB' }}</span>
                 </div>
-
-                <div class="info-group">
-                    <span class="info-label">{{ $t('systemAdministration.expirationDate') }}</span>
-                    <span class="info-value" :class="{ 'text-danger': isExpiringSoon }">
-                        {{ formatDate(subscription?.expirationDate) }}
-                    </span>
-                </div>
-
-                <div class="info-group">
-                    <span class="info-label">{{ $t('systemAdministration.status') }}</span>
-                    <span class="info-value">
-                        <Tag
-                            :value="subscription?.status || 'unknown'"
-                            :severity="getStatusSeverity(subscription?.status)"
-                        />
-                    </span>
+                <div class="metric-card">
+                    <span class="metric-label">{{ $t('systemAdministration.workspaceStatus') }}</span>
+                    <Tag :value="subscription.workspaceStatus || 'Operational'" severity="success" />
                 </div>
             </div>
 
-            <Divider />
+            <div class="subscription-grid">
+                <div class="billing-panel">
+                    <div class="billing-row">
+                        <span>{{ $t('systemAdministration.billingCycle') }}</span>
+                        <strong>{{ formatBillingCycle(subscription.billingCycle) || 'Monthly' }}</strong>
+                    </div>
+                    <div class="billing-row">
+                        <span>{{ $t('systemAdministration.renewalDate') }}</span>
+                        <strong>{{ formatDate(subscription.expirationDate) }}</strong>
+                    </div>
+                    <div class="billing-row">
+                        <span>{{ $t('systemAdministration.paymentMethod') }}</span>
+                        <strong>{{ subscription.paymentMethod || 'Visa •••• 2371' }}</strong>
+                    </div>
+                    <div class="billing-row status-row">
+                        <span>{{ $t('systemAdministration.status') }}</span>
+                        <Tag :value="subscription.status || 'active'" :severity="getStatusSeverity(subscription.status)" />
+                    </div>
+                </div>
+
+                <div class="summary-card">
+                    <div class="summary-card-header">
+                        <span>{{ $t('systemAdministration.upgrade') }}</span>
+                        <p>{{ $t('systemAdministration.upgradeCTA') }}</p>
+                    </div>
+                    <div class="analytics-list">
+                        <div class="analytics-item">
+                            <span>{{ $t('systemAdministration.usageAnalytics') }}</span>
+                            <strong>{{ subscription.activeUsers || 12 }} active seats</strong>
+                        </div>
+                        <div class="analytics-item">
+                            <span>Invoice history</span>
+                            <strong>{{ subscription.invoices || '4 invoices' }}</strong>
+                        </div>
+                        <div class="analytics-item">
+                            <span>Renewal readiness</span>
+                            <strong>{{ subscription.renewalStatus || 'On track' }}</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <div class="subscription-actions">
-                <Button
-                    :label="$t('systemAdministration.renew')"
-                    icon="pi pi-refresh"
-                    @click="handleRenew"
-                    :loading="isRenewing"
-                    class="p-button-primary"
-                />
-                <Button
-                    :label="$t('systemAdministration.upgrade')"
-                    icon="pi pi-arrow-up"
-                    class="p-button-success"
-                />
+                <Button label="$t('systemAdministration.renewAction')" icon="pi pi-refresh" class="p-button-primary" @click="handleRenew" :loading="isRenewing" />
+                <Button label="$t('systemAdministration.manageBilling')" icon="pi pi-wallet" class="p-button-secondary" />
             </div>
         </div>
+        </template>
     </Card>
 </template>
 
 <script setup>
-import { ref, computed, watch } from 'vue';
+import { ref, computed } from 'vue';
 import Card from 'primevue/card';
 import Button from 'primevue/button';
-import Divider from 'primevue/divider';
 import Tag from 'primevue/tag';
 
 const props = defineProps({
-    subscription: Object,
+    subscription: {
+        type: Object,
+        default: () => ({
+            plan: 'Professional',
+            activeUsers: 18,
+            billingCycle: 'yearly',
+            expirationDate: new Date(Date.now() + 1000 * 60 * 60 * 24 * 45).toISOString(),
+            status: 'active',
+            storageUsage: '75 / 100 GB',
+            workspaceStatus: 'Operational',
+            paymentMethod: 'Visa •••• 2371',
+            invoices: '4 invoices',
+            renewalStatus: 'On track'
+        })
+    },
     loading: Boolean
 });
 
 const emit = defineEmits(['renew']);
-
 const isRenewing = ref(false);
 
-const isExpiringSoon = computed(() => {
-    if (!props.subscription?.expirationDate) return false;
-    const expirationDate = new Date(props.subscription.expirationDate);
-    const today = new Date();
-    const daysUntilExpiration = Math.floor((expirationDate - today) / (1000 * 60 * 60 * 24));
-    return daysUntilExpiration <= 30 && daysUntilExpiration > 0;
-});
+const subscription = computed(() => ({
+    plan: props.subscription?.plan || 'Professional',
+    activeUsers: props.subscription?.activeUsers || 18,
+    billingCycle: props.subscription?.billingCycle || 'yearly',
+    expirationDate: props.subscription?.expirationDate,
+    status: props.subscription?.status || 'active',
+    storageUsage: props.subscription?.storageUsage || '75 / 100 GB',
+    workspaceStatus: props.subscription?.workspaceStatus || 'Operational',
+    paymentMethod: props.subscription?.paymentMethod || 'Visa •••• 2371',
+    invoices: props.subscription?.invoices || '4 invoices',
+    renewalStatus: props.subscription?.renewalStatus || 'On track'
+}));
 
 const formatDate = (date) => {
     if (!date) return 'N/A';
@@ -101,26 +128,29 @@ const formatDate = (date) => {
 
 const formatBillingCycle = (cycle) => {
     const cycleMap = {
-        'monthly': 'Monthly',
-        'yearly': 'Yearly'
+        monthly: 'Monthly',
+        yearly: 'Yearly'
     };
     return cycleMap[cycle] || cycle;
 };
 
 const getPlanSeverity = (plan) => {
     const severityMap = {
-        'starter': 'info',
-        'professional': 'warning',
-        'enterprise': 'success'
+        Starter: 'info',
+        Professional: 'warning',
+        Enterprise: 'success',
+        starter: 'info',
+        professional: 'warning',
+        enterprise: 'success'
     };
     return severityMap[plan] || 'info';
 };
 
 const getStatusSeverity = (status) => {
     const severityMap = {
-        'active': 'success',
-        'expired': 'danger',
-        'pending': 'warning'
+        active: 'success',
+        expired: 'danger',
+        pending: 'warning'
     };
     return severityMap[status] || 'info';
 };
@@ -161,54 +191,148 @@ const handleRenew = async () => {
 
 .subscription-content {
     padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
 }
 
-.subscription-info {
+.subscription-topcards {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 2rem;
-    margin-bottom: 1.5rem;
+    gap: 1rem;
 }
 
-.info-group {
+.metric-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-height: 120px;
+}
+
+.plan-card {
+    border-left: 4px solid #10b981;
+}
+
+.metric-label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #6b7280;
+    font-weight: 700;
+}
+
+.metric-value {
+    font-size: 1.85rem;
+    font-weight: 700;
+    color: #111827;
+}
+
+.subscription-grid {
+    display: grid;
+    grid-template-columns: minmax(320px, 1.4fr) minmax(260px, 1fr);
+    gap: 1.5rem;
+}
+
+.billing-panel,
+.summary-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.billing-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #f0f4f8;
+}
+
+.billing-row:last-child {
+    border-bottom: none;
+}
+
+.billing-row span {
+    color: #64748b;
+    font-size: 0.9rem;
+}
+
+.billing-row strong {
+    color: #111827;
+    font-size: 1rem;
+}
+
+.status-row {
+    padding-top: 1rem;
+}
+
+.summary-card-header {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
 }
 
-.info-label {
-    font-size: 0.85rem;
-    color: #999;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    font-weight: 600;
+.summary-card-header span {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #111827;
 }
 
-.info-value {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #1a1a1a;
+.summary-card-header p {
+    margin: 0;
+    color: #64748b;
+    font-size: 0.9rem;
+    line-height: 1.5;
 }
 
-.info-value.text-danger {
-    color: #ef4444;
+.analytics-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
-.plan-badge {
-    display: inline-block;
+.analytics-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: #f8fafc;
+    border-radius: 12px;
+}
+
+.analytics-item span {
+    color: #64748b;
+    font-size: 0.9rem;
+}
+
+.analytics-item strong {
+    color: #111827;
 }
 
 .subscription-actions {
     display: flex;
     gap: 0.75rem;
+    justify-content: flex-end;
+    margin-top: 1rem;
+}
+
+@media (max-width: 960px) {
+    .subscription-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 @media (max-width: 768px) {
-    .subscription-info {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-    }
-
     .subscription-actions {
         flex-direction: column;
     }

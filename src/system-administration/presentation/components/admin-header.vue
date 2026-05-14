@@ -6,7 +6,8 @@
                 <p class="admin-subtitle">{{ $t('systemAdministration.subtitle') }}</p>
             </div>
         </template>
-        <div class="admin-stats">
+        <template #content>
+            <div class="admin-stats">
             <div class="stat-item">
                 <span class="stat-label">{{ $t('systemAdministration.activeUsers') }}</span>
                 <span class="stat-value">{{ activeUsers }}</span>
@@ -20,6 +21,7 @@
                 <span class="stat-value">{{ lastUpdate }}</span>
             </div>
         </div>
+        </template>
     </Card>
 </template>
 
