@@ -21,28 +21,53 @@ export class IamApi {
     }
 
     /**
-     * Sends a sign-in command to the authentication endpoint.
+     * Queries users matching the provided credentials.
+     * Supports sign-in by username or by email address.
      * @param {import('../domain/sign-in.command.js').SignInCommand} signInRequest - Sign-in command.
-     * @returns {Promise<import('axios').AxiosResponse<Object>>} HTTP response with authentication payload.
+     * @returns {Promise<Array<Object>>} Filtered users array from the server.
      */
     signIn(signInRequest) {
-        return this.#signInEndpoint.create(signInRequest);
+        const isEmail = signInRequest.username.includes('@');
+        const query = isEmail
+            ? { email: signInRequest.username, password: signInRequest.password }
+            : { username: signInRequest.username, password: signInRequest.password };
+        return this.#signInEndpoint.getByQuery(query);
     }
 
     /**
      * Sends a sign-up command to the registration endpoint.
      * @param {import('../domain/sign-up.command.js').SignUpCommand} signUpRequest - Sign-up command.
-     * @returns {Promise<import('axios').AxiosResponse<Object>>} HTTP response with registration payload.
+     * @returns {Promise<Object>} Created user object.
      */
     signUp(signUpRequest) {
         return this.#signUpEndpoint.create(signUpRequest);
     }
 
     /**
+     * Finds a user by email address for account recovery.
+     * @param {string} email - Email to search.
+     * @returns {Promise<Array<Object>>} Matching users array.
+     */
+    findUserByEmail(email) {
+        return this.#usersEndpoint.getByQuery({ email });
+    }
+
+    /**
+     * Partially updates a user's password by ID (PATCH — preserves all other fields).
+     * @param {number} userId - The user's ID.
+     * @param {string} newPassword - New plain-text password.
+     * @returns {Promise<Object>} Updated user object.
+     */
+    updatePassword(userId, newPassword) {
+        return this.#usersEndpoint.patch(userId, { password: newPassword });
+    }
+
+    /**
      * Retrieves users visible to the IAM context.
-     * @returns {Promise<import('axios').AxiosResponse<Array<Object>|Object>>} HTTP response with user resources.
+     * @returns {Promise<Array<Object>|Object>} User resources.
      */
     getUsers() {
         return this.#usersEndpoint.getAll();
     }
 }
+

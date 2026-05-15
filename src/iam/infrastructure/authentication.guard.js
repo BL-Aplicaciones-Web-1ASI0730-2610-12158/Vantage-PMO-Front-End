@@ -16,7 +16,7 @@ export const authenticationGuard = (to, from, next) => {
 
     if (isAnonymous && !isPublicRoute) {
         console.log('User is not authenticated, redirecting to sign-in');
-        return next({ name: 'sign-in' });
+        return next({ name: 'iam-sign-in' });
     } else {
         next();
     }
