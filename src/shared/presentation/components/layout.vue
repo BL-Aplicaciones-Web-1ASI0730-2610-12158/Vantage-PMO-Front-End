@@ -1,12 +1,14 @@
 <script setup>
 import { useRouter, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import LanguageSwitcher from './language-switcher.vue'
-import AuthenticationSection from "../../../iam/presentation/components/authentication-section.vue";
+import { ref } from 'vue'
+import CreateProjectDialog from '../../../projects/presentation/components/create-project-dialog.vue'
 
 const router = useRouter()
 const route  = useRoute()
 const { t }  = useI18n()
+const sidebarOpen = ref(false)
+const createDialogOpen = ref(false)
 
 const navItems = [
   { labelKey: 'nav.home',           icon: 'pi pi-home',        name: 'home' },
@@ -30,19 +32,26 @@ function navigate(name) {
   } else {
     router.push({ name: name });
   }
+  sidebarOpen.value = false;
 }
 function isActive(name)  { return route.name === name }
 </script>
 
 <template>
   <div class="app-shell">
+    <!-- Mobile overlay -->
+    <div class="sidebar-overlay" :class="{ active: sidebarOpen }" @click="sidebarOpen = false"></div>
+
     <!-- Sidebar -->
-    <aside class="sidebar">
+    <aside class="sidebar" :class="{ open: sidebarOpen }">
+      <!-- Close btn (mobile) -->
+      <button class="sidebar-close" @click="sidebarOpen = false">
+        <i class="pi pi-times"></i>
+      </button>
+
       <!-- Logo -->
       <div class="sidebar-logo">
-        <div class="logo-icon">
-          <i class="pi pi-compass"></i>
-        </div>
+        <div class="logo-icon"><i class="pi pi-compass"></i></div>
         <div class="logo-text">
           <span class="logo-title">{{ $t('app.title') }}</span>
           <span class="logo-subtitle">{{ $t('app.subtitle') }}</span>
@@ -90,16 +99,20 @@ function isActive(name)  { return route.name === name }
     <div class="main-area">
       <!-- Top Bar -->
       <header class="topbar">
+        <!-- Hamburger (mobile only) -->
+        <button class="hamburger" @click="sidebarOpen = !sidebarOpen">
+          <i class="pi pi-bars"></i>
+        </button>
+
         <div class="topbar-search">
           <i class="pi pi-search search-icon"></i>
           <input type="text" :placeholder="$t('topbar.search')" class="search-input" />
         </div>
         <div class="topbar-actions">
           <button class="icon-btn"><i class="pi pi-bell"></i></button>
-          <button class="icon-btn"><i class="pi pi-history"></i></button>
-          <button class="icon-btn"><i class="pi pi-sliders-h"></i></button>
-          <language-switcher />
-          <button class="dashboard-btn">{{ $t('topbar.executiveDashboard') }} <i class="pi pi-chevron-down"></i></button>
+          <button class="icon-btn hide-sm"><i class="pi pi-history"></i></button>
+          <button class="icon-btn hide-sm"><i class="pi pi-sliders-h"></i></button>
+          <button class="dashboard-btn hide-md">{{ $t('topbar.executiveDashboard') }} <i class="pi pi-chevron-down"></i></button>
           <button class="profile-btn" @click="navigate('profile')">
             <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Alex" alt="Profile" class="avatar" />
           </button>
@@ -377,5 +390,106 @@ function isActive(name)  { return route.name === name }
   padding: 28px;
   background: var(--bg-content);
   transition: background .3s;
+}
+
+/* ── RESPONSIVE ── */
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  color: var(--text-primary);
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+.hamburger:hover { background: var(--hover-bg); }
+
+.sidebar-close {
+  display: none;
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  color: var(--text-secondary);
+}
+
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 99;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s;
+}
+
+@media (max-width: 768px) {
+  .hamburger { display: flex; align-items: center; }
+  .sidebar-close { display: block; }
+
+  .sidebar-overlay {
+    display: block;
+  }
+  .sidebar-overlay.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .sidebar {
+    position: fixed;
+    left: -220px;
+    top: 0;
+    height: 100vh;
+    z-index: 100;
+    transition: left 0.25s ease;
+    box-shadow: 4px 0 20px rgba(0,0,0,0.15);
+  }
+  .sidebar.open { left: 0; }
+
+  /* Allow the shell and main area to grow and let the body scroll */
+  .app-shell {
+    height: auto;
+    min-height: 100vh;
+    overflow: visible;
+  }
+
+  .main-area {
+    height: auto;
+    min-height: 100vh;
+    overflow: visible;
+  }
+
+  .content {
+    flex: none;
+    height: auto;
+    overflow-y: visible;
+    padding: 16px;
+  }
+
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    padding: 10px 14px;
+    gap: 10px;
+  }
+
+  .topbar-search {
+    max-width: unset;
+    flex: 1;
+  }
+
+
+  .hide-sm { display: none !important; }
+}
+
+@media (max-width: 480px) {
+  .hide-md { display: none !important; }
+  .search-input { font-size: 12px; }
 }
 </style>

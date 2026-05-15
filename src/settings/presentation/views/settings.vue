@@ -1004,4 +1004,9 @@ async function save() {
   .st-field-grid { grid-template-columns: 1fr; }
   .st-theme-grid, .st-density-grid { flex-wrap: wrap; }
 }
+
+@media (max-width: 480px) {
+  .st-section-title { font-size: 1rem; }
+  .st-save-row { flex-direction: column; gap: 8px; }
+}
 </style>

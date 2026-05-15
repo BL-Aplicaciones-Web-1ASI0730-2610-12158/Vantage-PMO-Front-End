@@ -369,4 +369,23 @@ const viewOptions = computed(() => [
 .legend { display: flex; gap: 1.25rem; flex-wrap: wrap; }
 .legend-item { display: flex; align-items: center; gap: .4rem; font-size: .8rem; color: #6b7280; }
 .legend-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .month-cells { grid-template-columns: repeat(7, 1fr); gap: 2px; }
+  .month-cell { min-height: 60px; padding: .25rem; }
+  .month-day-header { font-size: .65rem; padding: .3rem; }
+  .cell-chip { display: none; }
+  .cell-number { font-size: .75rem; }
+  .week-gutter, .week-gutter-col { width: 36px; }
+  .hour-label { font-size: .6rem; padding-right: .3rem; }
+  .panel-header { flex-direction: column; align-items: flex-start; gap: .5rem; }
+  .legend { gap: .75rem; }
+}
+
+@media (max-width: 480px) {
+  .month-header-row { display: none; }
+  .month-cells { grid-template-columns: repeat(7, 1fr); }
+  .month-cell { min-height: 40px; }
+}
 </style>

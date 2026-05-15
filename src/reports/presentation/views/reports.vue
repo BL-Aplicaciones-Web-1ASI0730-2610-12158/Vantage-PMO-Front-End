@@ -688,5 +688,12 @@ function onShare() {
   .rp-kpis { flex-direction: column; }
   .rp-kpi-divider { width: 100%; height: 1px; }
 }
+
+@media (max-width: 768px) {
+  .rp-header { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .rp-header-actions { width: 100%; }
+  .rp-preview-footer { flex-direction: column; gap: 10px; align-items: flex-start; }
+  .rp-insight { flex-direction: column; }
+}
 </style>
 

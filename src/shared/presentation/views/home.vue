@@ -1,7 +1,10 @@
 <script setup>
 import { onMounted, computed } from 'vue';
 import { useDashboardStore } from '../../application/dashboard.store.js';
+import useIamStore from '../../../iam/application/iam.store.js';
+
 const store = useDashboardStore();
+const iamStore = useIamStore();
 
 onMounted(() => store.fetchAll());
 
@@ -9,6 +12,7 @@ const priorityTasks = computed(() => store.tasks);
 const scheduleItems = computed(() => store.schedule);
 const departments   = computed(() => store.departments);
 const stats         = computed(() => store.stats);
+const currentUsername = computed(() => iamStore.currentUsername || 'User');
 </script>
 
 <template>
@@ -16,7 +20,7 @@ const stats         = computed(() => store.stats);
     <!-- Welcome Header -->
     <div class="welcome-row">
       <div>
-        <h1 class="welcome-title">{{ $t('home.welcomeBack') }}</h1>
+        <h1 class="welcome-title">{{ $t('home.welcomeBack', { name: currentUsername }) }}</h1>
         <p class="welcome-sub" v-if="stats">
           {{ $t('home.portfolioHealth') }}
           <span class="healthy">{{ stats.portfolioHealth }}</span>.
@@ -603,5 +607,76 @@ const stats         = computed(() => store.stats);
   height: 100%;
   background: #2563eb;
   border-radius: 4px;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1024px) {
+  .stats-row {
+    flex-direction: column;
+  }
+  .ai-card {
+    width: 100%;
+    min-width: unset;
+  }
+  .velocity-content {
+    flex-direction: column;
+    gap: 20px;
+  }
+  .velocity-chart {
+    width: 100%;
+    justify-content: space-around;
+  }
+}
+
+@media (max-width: 768px) {
+  .home {
+    gap: 16px;
+  }
+  .welcome-title {
+    font-size: 20px;
+  }
+  .welcome-row {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .live-sync {
+    font-size: 11px;
+  }
+  .stats-cards {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .stat-card {
+    padding: 14px;
+  }
+  .stat-value {
+    font-size: 26px;
+  }
+  .mid-row {
+    flex-direction: column;
+  }
+  .schedule-section {
+    width: 100%;
+  }
+  .task-card {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .task-right {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
+
+@media (max-width: 480px) {
+  .section-title {
+    font-size: 14px;
+  }
+  .velocity-chart {
+    height: 70px;
+  }
+  .bar {
+    width: 20px;
+  }
 }
 </style>

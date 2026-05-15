@@ -34,6 +34,15 @@ export class BaseEndpoint {
         return this.api.put(`${this.resourcePath}/${id}`, data).then(res => res.data);
     }
 
+    /**
+     * Partially updates a resource (PATCH) — only the provided fields are updated.
+     * @param {number|string} id - Resource identifier.
+     * @param {Object} data - Fields to update.
+     */
+    patch(id, data) {
+        return this.api.patch(`${this.resourcePath}/${id}`, data).then(res => res.data);
+    }
+
     delete(id) {
         return this.api.delete(`${this.resourcePath}/${id}`).then(res => res.data);
     }
