@@ -3,17 +3,17 @@ import { SettingsAssembler } from './settings.assembler.js';
 
 class SettingsApi extends BaseEndpoint {
     constructor() {
-        super(import.meta.env.VITE_USER_SETTINGS_ENDPOINT_PATH);
+        super(import.meta.env.VITE_USER_SETTINGS_ENDPOINT_PATH || '/user-settings');
     }
 
     async getSettings() {
-        const data = await super.getById(1);
-        return SettingsAssembler.toEntity(data);
+        const response = await this.api.get(this.resourcePath);
+        return SettingsAssembler.toEntity(response.data);
     }
 
     async updateSettings(settings) {
-        const data = await super.update(1, settings);
-        return SettingsAssembler.toEntity(data);
+        const response = await this.api.put(this.resourcePath, settings);
+        return SettingsAssembler.toEntity(response.data);
     }
 }
 

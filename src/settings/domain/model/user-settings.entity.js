@@ -9,23 +9,45 @@ export class UserSettings {
         language,
         timezone,
         dateFormat,
+        timeFormat,
+        firstDayOfWeek,
+        currency,
+        accentColor,
+        density,
         emailNotifications,
         pushNotifications,
         weeklyDigest,
+        mentionAlerts,
         twoFactorEnabled,
         profileVisibility,
+        displayName,
+        jobTitle,
+        bio,
+        phone,
+        department,
         updatedAt
     }) {
-        this.id = id;
-        this.theme = theme;
-        this.language = language;
-        this.timezone = timezone;
-        this.dateFormat = dateFormat;
-        this.emailNotifications = emailNotifications;
-        this.pushNotifications = pushNotifications;
-        this.weeklyDigest = weeklyDigest;
-        this.twoFactorEnabled = twoFactorEnabled;
-        this.profileVisibility = profileVisibility;
-        this.updatedAt = updatedAt;
+        this.id                  = id;
+        this.theme               = theme               ?? 'light';
+        this.language            = language            ?? 'en';
+        this.timezone            = timezone            ?? 'America/New_York';
+        this.dateFormat          = dateFormat          ?? 'MM/DD/YYYY';
+        this.timeFormat          = timeFormat          ?? '12h';
+        this.firstDayOfWeek      = firstDayOfWeek      ?? 'Sunday';
+        this.currency            = currency            ?? 'USD';
+        this.accentColor         = accentColor         ?? '#3b82f6';
+        this.density             = density             ?? 'comfortable';
+        this.emailNotifications  = emailNotifications  ?? true;
+        this.pushNotifications   = pushNotifications   ?? true;
+        this.weeklyDigest        = weeklyDigest        ?? false;
+        this.mentionAlerts       = mentionAlerts       ?? true;
+        this.twoFactorEnabled    = twoFactorEnabled    ?? false;
+        this.profileVisibility   = profileVisibility   ?? 'team';
+        this.displayName         = displayName         ?? 'Alex Sterling';
+        this.jobTitle            = jobTitle            ?? 'Lead Architect';
+        this.bio                 = bio                 ?? '';
+        this.phone               = phone               ?? '';
+        this.department          = department          ?? 'Executive';
+        this.updatedAt           = updatedAt;
     }
 }
