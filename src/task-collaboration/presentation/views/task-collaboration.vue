@@ -529,5 +529,13 @@ function statusColor(s) { return { online:'#22c55e', busy:'#f59e0b', offline:'#9
 .hm-td-stat { text-align: center; padding: .85rem .75rem; font-size: .88rem; font-weight: 700; color: #374151; border-left: 1px solid #f3f4f6; }
 .hm-done-badge { display: inline-block; background: #d1fae5; color: #065f46; font-size: .78rem; font-weight: 700; border-radius: 99px; padding: 2px 10px; }
 .hm-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .75rem; padding: 3rem; color: #9ca3af; background: #f9fafb; border-radius: 12px; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .hm-table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .hm-th-member, .hm-td-member { min-width: 120px; padding: .6rem .75rem; }
+  .hm-th-day, .hm-td-cell { min-width: 36px; padding: .4rem .2rem; }
+  .hm-cell { width: 9px; height: 9px; }
+}
 </style>
 

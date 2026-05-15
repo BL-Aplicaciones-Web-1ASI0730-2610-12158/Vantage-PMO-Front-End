@@ -567,5 +567,8 @@ function relativeDate(d) {
 @media (max-width: 768px) {
   .sp-detail { width: 100%; }
   .sp-body--split { flex-direction: column; }
+  .sp-header { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .sp-ticket { flex-wrap: wrap; }
+  .sp-ticket-right { width: 100%; justify-content: flex-end; }
 }
 </style>
