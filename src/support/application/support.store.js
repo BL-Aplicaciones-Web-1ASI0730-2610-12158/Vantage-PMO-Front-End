@@ -6,17 +6,14 @@ export const useSupportStore = defineStore('support', () => {
     const tickets = ref([]);
     const loading = ref(false);
 
-    const openTickets = computed(() => tickets.value.filter(t => t.status === 'Open'));
+    const openTickets       = computed(() => tickets.value.filter(t => t.status === 'Open'));
     const inProgressTickets = computed(() => tickets.value.filter(t => t.status === 'In Progress'));
-    const resolvedTickets = computed(() => tickets.value.filter(t => t.status === 'Resolved'));
+    const resolvedTickets   = computed(() => tickets.value.filter(t => t.status === 'Resolved'));
 
     async function fetchTickets() {
         loading.value = true;
-        try {
-            tickets.value = await supportApi.getAllTickets();
-        } finally {
-            loading.value = false;
-        }
+        try { tickets.value = await supportApi.getAllTickets(); }
+        finally { loading.value = false; }
     }
 
     async function submitTicket(ticket) {
@@ -29,5 +26,13 @@ export const useSupportStore = defineStore('support', () => {
         tickets.value.unshift(created);
     }
 
-    return { tickets, loading, openTickets, inProgressTickets, resolvedTickets, fetchTickets, submitTicket };
+    async function updateTicketStatus(ticket, status) {
+        ticket.status = status;
+        await supportApi.updateTicket(ticket.id, ticket);
+    }
+
+    return { tickets, loading, openTickets, inProgressTickets, resolvedTickets,
+             fetchTickets, submitTicket, updateTicketStatus };
 });
+
+

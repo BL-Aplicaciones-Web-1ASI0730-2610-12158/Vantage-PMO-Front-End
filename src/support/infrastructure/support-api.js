@@ -15,6 +15,11 @@ class SupportApi extends BaseEndpoint {
         const data = await super.create(ticket);
         return SupportAssembler.toEntity(data);
     }
+
+    async updateTicket(id, ticket) {
+        const data = await super.update(id, ticket);
+        return SupportAssembler.toEntity(data);
+    }
 }
 
 export const supportApi = new SupportApi();
