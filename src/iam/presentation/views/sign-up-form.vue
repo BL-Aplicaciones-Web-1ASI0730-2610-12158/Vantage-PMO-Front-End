@@ -1,27 +1,39 @@
 <script setup>
 import useIamStore from "../../application/iam.store.js";
-import {reactive} from "vue";
+import {reactive, ref} from "vue";
 import {SignUpCommand} from "../../domain/sign-up.command.js";
 import {useRouter} from "vue-router";
 
 const router = useRouter();
 const store = useIamStore();
 const {signUp} = store;
+const showPassword = ref(false);
+const showConfirmPassword = ref(false);
+const errorMsg = ref('');
+
 const form = reactive({
+  name: '',
+  username: '',
+  role: '',
+  birthDate: '',
   email: '',
   password: '',
   confirmPassword: ''
 })
 
 function performSignUp() {
+  errorMsg.value = '';
   if (form.password !== form.confirmPassword) {
-    alert('Passwords do not match');
+    errorMsg.value = 'Passwords do not match. Please check and try again.';
     return;
   }
   let signUpCommand = new SignUpCommand({
+    name: form.name,
     email: form.email,
     password: form.password,
-    username: form.email.split('@')[0]
+    username: form.username || form.email.split('@')[0],
+    role: form.role,
+    birthDate: form.birthDate
   });
   console.log(signUpCommand);
   signUp(signUpCommand, router);
@@ -65,6 +77,69 @@ function contactAdmin() {
         </div>
 
         <form @submit.prevent="performSignUp" class="auth-form">
+
+          <!-- Two-column row: Name + Username -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="name">Full Name</label>
+              <div class="input-wrapper">
+                <i class="pi pi-id-card input-icon"></i>
+                <pv-input-text
+                  id="name"
+                  v-model="form.name"
+                  placeholder="Your full name"
+                  class="form-input"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="username">Username</label>
+              <div class="input-wrapper">
+                <i class="pi pi-at input-icon"></i>
+                <pv-input-text
+                  id="username"
+                  v-model="form.username"
+                  placeholder="Choose a username"
+                  class="form-input"
+                  required
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Two-column row: Role + Date of Birth -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="role">Role / Position</label>
+              <div class="input-wrapper">
+                <i class="pi pi-briefcase input-icon"></i>
+                <pv-input-text
+                  id="role"
+                  v-model="form.role"
+                  placeholder="e.g. Project Manager"
+                  class="form-input"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="birthDate">Date of Birth</label>
+              <div class="input-wrapper">
+                <i class="pi pi-calendar input-icon"></i>
+                <input
+                  id="birthDate"
+                  v-model="form.birthDate"
+                  type="date"
+                  class="form-input date-input"
+                  required
+                />
+              </div>
+            </div>
+          </div>
+
           <!-- Email Field -->
           <div class="form-group">
             <label for="email">Email Address</label>
@@ -89,9 +164,12 @@ function contactAdmin() {
                 id="password"
                 v-model="form.password"
                 placeholder="Create a strong password"
-                type="password"
+                :type="showPassword ? 'text' : 'password'"
                 class="form-input"
               />
+              <button type="button" class="eye-btn" @click="showPassword = !showPassword" tabindex="-1">
+                <i :class="showPassword ? 'pi pi-eye-slash' : 'pi pi-eye'"></i>
+              </button>
             </div>
           </div>
 
@@ -104,10 +182,19 @@ function contactAdmin() {
                 id="confirm-password"
                 v-model="form.confirmPassword"
                 placeholder="Confirm your password"
-                type="password"
+                :type="showConfirmPassword ? 'text' : 'password'"
                 class="form-input"
               />
+              <button type="button" class="eye-btn" @click="showConfirmPassword = !showConfirmPassword" tabindex="-1">
+                <i :class="showConfirmPassword ? 'pi pi-eye-slash' : 'pi pi-eye'"></i>
+              </button>
             </div>
+          </div>
+
+          <!-- Error message -->
+          <div v-if="errorMsg" class="error-msg">
+            <i class="pi pi-exclamation-triangle"></i>
+            {{ errorMsg }}
           </div>
 
           <!-- Terms Checkbox -->
@@ -277,7 +364,19 @@ function contactAdmin() {
 .auth-form {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 20px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 480px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
 }
 
 .form-group {
@@ -306,6 +405,44 @@ function contactAdmin() {
   color: #94a3b8;
   font-size: 16px;
   pointer-events: none;
+}
+
+.eye-btn {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #94a3b8;
+  font-size: 16px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  transition: color 0.2s;
+}
+.eye-btn:hover { color: #2563eb; }
+
+.date-input {
+  padding-left: 44px !important;
+  color: #1e293b;
+  cursor: pointer;
+}
+.date-input::-webkit-calendar-picker-indicator {
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+.error-msg {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
 }
 
 .form-input {

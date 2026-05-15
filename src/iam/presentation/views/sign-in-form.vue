@@ -1,25 +1,33 @@
 <script setup>
 import useIamStore from "../../application/iam.store.js";
-import {reactive} from "vue";
+import {reactive, ref} from "vue";
 import {SignInCommand} from "../../domain/sign-in.command.js";
 import {useRouter} from "vue-router";
 
 const router = useRouter();
 const store = useIamStore();
-const {signIn} = store;
-const form = reactive({
-  username: '',
-  password: ''
-})
+const showPassword = ref(false);
+const errorMsg = ref('');
+const loading = ref(false);
 
-function performSignIn() {
-  let signInCommand = new SignInCommand(form);
-  console.log(signInCommand);
-  signIn(signInCommand, router);
+const form = reactive({ username: '', password: '' });
+
+async function performSignIn() {
+  errorMsg.value = '';
+  loading.value = true;
+  const ok = await store.signIn(new SignInCommand(form), router);
+  loading.value = false;
+  if (!ok) {
+    errorMsg.value = 'Incorrect username / email or password. Please try again.';
+  }
 }
 
 function goToSignUp() {
   router.push({name: 'iam-sign-up'});
+}
+
+function goToForgotPassword() {
+  router.push({ name: 'iam-forgot-password' });
 }
 </script>
 
@@ -75,9 +83,12 @@ function goToSignUp() {
                 id="password"
                 v-model="form.password"
                 placeholder="Enter your password"
-                type="password"
+                :type="showPassword ? 'text' : 'password'"
                 class="form-input"
               />
+              <button type="button" class="eye-btn" @click="showPassword = !showPassword" tabindex="-1">
+                <i :class="showPassword ? 'pi pi-eye-slash' : 'pi pi-eye'"></i>
+              </button>
             </div>
           </div>
 
@@ -87,14 +98,21 @@ function goToSignUp() {
               <input type="checkbox" />
               <span>Remember me</span>
             </label>
-            <a href="#" class="forgot-link">Forgot password?</a>
+            <a class="forgot-link" @click.prevent="goToForgotPassword" href="#">Forgot password?</a>
+          </div>
+
+          <!-- Error message -->
+          <div v-if="errorMsg" class="error-msg">
+            <i class="pi pi-exclamation-triangle"></i>
+            {{ errorMsg }}
           </div>
 
           <!-- Sign In Button -->
           <pv-button
             type="submit"
             class="sign-in-btn"
-            label="Sign In"
+            :label="loading ? 'Signing in...' : 'Sign In'"
+            :disabled="loading"
           />
         </form>
 
@@ -268,6 +286,34 @@ function goToSignUp() {
   color: #94a3b8;
   font-size: 16px;
   pointer-events: none;
+}
+
+.eye-btn {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #94a3b8;
+  font-size: 16px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  transition: color 0.2s;
+}
+.eye-btn:hover { color: #2563eb; }
+
+.error-msg {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
 }
 
 .form-input {
