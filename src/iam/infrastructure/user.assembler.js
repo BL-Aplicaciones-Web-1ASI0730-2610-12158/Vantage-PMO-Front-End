@@ -15,16 +15,15 @@ export class UserAssembler {
     }
 
     /**
-     * @param {import('axios').AxiosResponse<Array<Object>|Object>} response - HTTP response containing user resources.
+     * @param {Array<Object>|Object} data - Raw data returned by the users endpoint.
      * @returns {User[]} Collection of user entities.
      */
-    static toEntitiesFromResponse(response) {
-        if (response.status !== 200) {
-            console.error(`${response.status}, ${response.statusText}`);
+    static toEntitiesFromResponse(data) {
+        if (!data) {
+            console.error('No user data received');
             return [];
         }
-        let resources = response.data instanceof Array ? response.data : response.data['users'];
-
+        const resources = Array.isArray(data) ? data : (data['users'] ?? []);
         return resources.map(resource => this.toEntityFromResource(resource));
     }
 }

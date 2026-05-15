@@ -5,10 +5,14 @@
  */
 export class SignUpResource {
     /**
-     * @param {Object} params - Resource payload.
-     * @param {string} params.message - Outcome message from the registration endpoint.
+     * @param {Object} params - Resource payload (created user object).
+     * @param {number} params.id - Newly created user identifier.
+     * @param {string} params.username - Registered username.
+     * @param {string} [params.email] - Registered email address.
      */
-    constructor({message}) {
-        this.message = message;
+    constructor({id, username, email}) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
     }
 }

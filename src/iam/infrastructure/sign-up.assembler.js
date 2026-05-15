@@ -7,14 +7,14 @@ import {SignUpResource} from "./sign-up.resource.js";
  */
 export class SignUpAssembler {
     /**
-     * @param {import('axios').AxiosResponse<Object>} response - HTTP response from sign-up endpoint.
-     * @returns {SignUpResource|null} Parsed resource when the response is successful; otherwise null.
+     * @param {Object} data - Created user object returned by the registration endpoint.
+     * @returns {SignUpResource|null} Parsed resource when the user was created; otherwise null.
      */
-    static toResourceFromResponse(response) {
-        if (response.status !== 200) {
-            console.error(`${response.status}, ${response.statusText}`);
+    static toResourceFromResponse(data) {
+        if (!data || !data.id) {
+            console.error('Sign-up failed: no user data returned');
             return null;
         }
-        return new SignUpResource(response.data);
+        return new SignUpResource(data);
     }
 }
