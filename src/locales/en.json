@@ -22,7 +22,7 @@
     "liveSync": "LIVE SYNC ACTIVE"
   },
   "home": {
-    "welcomeBack": "Welcome back, Alex",
+    "welcomeBack": "Welcome back, {name}",
     "portfolioHealth": "Your portfolio health is currently",
     "attentionItems": "There are {n} items requiring immediate attention from your team leaders.",
     "totalProjects": "TOTAL PROJECTS",
