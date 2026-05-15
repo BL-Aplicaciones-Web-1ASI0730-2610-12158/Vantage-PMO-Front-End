@@ -116,19 +116,21 @@ function isActive(name)  { return route.name === name }
   width: 100vw;
   overflow: hidden;
   font-family: 'Inter', sans-serif;
-  background: #f5f6fa;
+  background: var(--bg-shell);
+  transition: background .3s;
 }
 
 /* Sidebar */
 .sidebar {
   width: 200px;
   min-width: 200px;
-  background: #fff;
-  border-right: 1px solid #e9ecef;
+  background: var(--bg-sidebar);
+  border-right: 1px solid var(--border-color);
   display: flex;
   flex-direction: column;
   padding: 20px 0;
   gap: 0;
+  transition: background .3s, border-color .3s;
 }
 
 .sidebar-logo {
@@ -158,8 +160,9 @@ function isActive(name)  { return route.name === name }
 .logo-title {
   font-weight: 700;
   font-size: 14px;
-  color: #1e293b;
+  color: var(--logo-title);
   line-height: 1.2;
+  transition: color .3s;
 }
 
 .logo-subtitle {
@@ -212,11 +215,11 @@ function isActive(name)  { return route.name === name }
   border-radius: 8px;
   cursor: pointer;
   font-size: 13px;
-  color: #64748b;
+  color: var(--text-secondary);
   font-weight: 500;
   width: 100%;
   text-align: left;
-  transition: background 0.15s, color 0.15s;
+  transition: background .15s, color .15s;
 }
 
 .nav-item i {
@@ -224,13 +227,13 @@ function isActive(name)  { return route.name === name }
 }
 
 .nav-item:hover {
-  background: #f1f5f9;
-  color: #1e293b;
+  background: var(--hover-bg);
+  color: var(--text-primary);
 }
 
 .nav-item.active {
-  background: #eff6ff;
-  color: #2563eb;
+  background: var(--active-bg);
+  color: var(--active-color);
   font-weight: 600;
 }
 
@@ -239,9 +242,10 @@ function isActive(name)  { return route.name === name }
   display: flex;
   flex-direction: column;
   gap: 2px;
-  border-top: 1px solid #e9ecef;
+  border-top: 1px solid var(--border-color);
   padding-top: 12px;
   margin-top: 8px;
+  transition: border-color .3s;
 }
 
 /* Main area */
@@ -258,10 +262,11 @@ function isActive(name)  { return route.name === name }
   align-items: center;
   justify-content: space-between;
   padding: 12px 24px;
-  background: #fff;
-  border-bottom: 1px solid #e9ecef;
+  background: var(--bg-topbar);
+  border-bottom: 1px solid var(--border-color);
   gap: 16px;
   min-height: 60px;
+  transition: background .3s, border-color .3s;
 }
 
 .topbar-search {
@@ -282,17 +287,18 @@ function isActive(name)  { return route.name === name }
 .search-input {
   width: 100%;
   padding: 8px 12px 8px 36px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--input-border);
   border-radius: 8px;
   font-size: 13px;
-  color: #475569;
+  color: var(--search-color);
   outline: none;
-  background: #f8fafc;
+  background: var(--input-bg);
+  transition: background .3s, border-color .15s, color .3s;
 }
 
 .search-input:focus {
   border-color: #2563eb;
-  background: white;
+  background: var(--bg-card);
 }
 
 .topbar-actions {
@@ -311,13 +317,13 @@ function isActive(name)  { return route.name === name }
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #64748b;
+  color: var(--btn-icon-color);
   font-size: 16px;
-  transition: background 0.15s;
+  transition: background .15s;
 }
 
 .icon-btn:hover {
-  background: #f1f5f9;
+  background: var(--hover-bg);
 }
 
 .dashboard-btn {
@@ -325,18 +331,19 @@ function isActive(name)  { return route.name === name }
   align-items: center;
   gap: 6px;
   background: none;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--dashboard-border);
   border-radius: 8px;
   padding: 7px 12px;
   font-size: 13px;
   font-weight: 500;
-  color: #374151;
+  color: var(--dashboard-color);
   cursor: pointer;
   white-space: nowrap;
+  transition: background .15s, border-color .3s, color .3s;
 }
 
 .dashboard-btn:hover {
-  background: #f1f5f9;
+  background: var(--hover-bg);
 }
 
 .profile-btn {
@@ -361,5 +368,7 @@ function isActive(name)  { return route.name === name }
   flex: 1;
   overflow-y: auto;
   padding: 28px;
+  background: var(--bg-content);
+  transition: background .3s;
 }
 </style>
