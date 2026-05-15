@@ -2,6 +2,7 @@
 import { useRouter, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import LanguageSwitcher from './language-switcher.vue'
+import AuthenticationSection from "../../../iam/presentation/components/authentication-section.vue";
 
 const router = useRouter()
 const route  = useRoute()
@@ -23,7 +24,13 @@ const bottomItems = [
   { labelKey: 'nav.settings', icon: 'pi pi-cog',             name: 'settings' },
 ]
 
-function navigate(name) { router.push({ name }) }
+function navigate(name) {
+  if (name === 'home') {
+    router.push({ path: '/dashboard' });
+  } else {
+    router.push({ name: name });
+  }
+}
 function isActive(name)  { return route.name === name }
 </script>
 
