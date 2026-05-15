@@ -473,5 +473,13 @@ function formatShortDate(dateStr) {
   .meetings-body { flex-direction: column; height: auto; }
   .sessions-panel { width: 100%; border-right: none; border-bottom: 1px solid #e5e7eb; max-height: 300px; }
   .minutes-grid { grid-template-columns: 1fr; }
+  .meetings-header { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .meetings-header-actions { width: 100%; justify-content: flex-end; }
+  .ag-meta { flex-direction: column; gap: .4rem; }
+}
+
+@media (max-width: 480px) {
+  .sessions-panel { max-height: 240px; }
+  .ag-action { flex-direction: row; align-items: center; }
 }
 </style>

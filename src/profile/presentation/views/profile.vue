@@ -221,4 +221,12 @@ onMounted(() => store.fetchProfile(1));
   color: #64748b;
   font-weight: 500;
 }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .profile-header { flex-direction: column; align-items: center; text-align: center; gap: 16px; }
+  .profile-stats  { flex-direction: column; gap: 10px; }
+  .profile-stat-card { padding: 14px; }
+  .stat-num { font-size: 22px; }
+}
 </style>
