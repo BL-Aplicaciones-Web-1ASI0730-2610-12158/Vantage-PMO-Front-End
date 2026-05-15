@@ -281,11 +281,11 @@
     {
       "id": 9,
       "boardId": 1,
-      "project": "",
-      "title": "dsfds",
-      "description": "dsfdsf",
-      "assignee": "Dylan",
-      "assigneeAvatar": "DY",
+      "project": "Projecto American Airlines",
+      "title": "Actualizar perfil del usuario",
+      "description": "Se debe actulizar el perfil de los usuarios premium",
+      "assignee": "Diego",
+      "assigneeAvatar": "DI",
       "assigneeColor": "#6b7280",
       "status": "To Do",
       "priority": "URGENT",
@@ -293,8 +293,8 @@
       "completed": false,
       "comments": 0,
       "attachments": 0,
-      "dueDate": "2026-05-15",
-      "progress": 41,
+      "dueDate": "2026-06-15",
+      "progress": 5,
       "department": ""
     }
   ],
