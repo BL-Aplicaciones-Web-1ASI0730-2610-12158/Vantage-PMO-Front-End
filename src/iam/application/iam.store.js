@@ -37,9 +37,8 @@ const useIamStore = defineStore('iam', () => {
      * @returns {void}
      */
     function signIn(signInCommand, router) {
-        // Implementation for sign-in action
         console.log(signInCommand);
-        iamApi.signIn(signInCommand)
+        return iamApi.signIn(signInCommand)
             .then(response => {
                 let signInResource = SignInAssembler.toResourceFromResponse(response);
                 if (signInResource) {
@@ -51,19 +50,18 @@ const useIamStore = defineStore('iam', () => {
                     console.log(`User signed in: ${currentUsername.value}`);
                     errors.value = [];
                     router.push({name: 'home'});
+                    return true;
                 } else {
                     isSignedIn.value = false;
-                    console.log('Sign-in failed');
                     errors.value.push(new Error('Sign-in failed'));
-                    router.push({name: 'iam-sign-in'});
+                    return false;
                 }
             })
             .catch(error => {
                 isSignedIn.value = false;
-                currentUsername.value = error.name;
                 console.log(error);
                 errors.value.push(error);
-                router.push({name: 'iam-sign-in'});
+                return false;
             });
     }
 
@@ -79,7 +77,7 @@ const useIamStore = defineStore('iam', () => {
             .then(response => {
                 let signUpResource = SignUpAssembler.toResourceFromResponse(response);
                 if (signUpResource) {
-                    console.log(signUpResource.message);
+                    console.log(`User registered: ${signUpResource.username}`);
                     errors.value = [];
                     router.push({name: 'iam-sign-in'});
                 } else {
@@ -93,6 +91,52 @@ const useIamStore = defineStore('iam', () => {
                 errors.value.push(error);
                 router.push({name: 'iam-sign-up'});
             });
+    }
+
+    /** @type {import('vue').Ref<number|null>} ID of the user pending password reset. */
+    const recoveryUserId = ref(null);
+
+    // ...existing code...
+
+    /**
+     * Looks up an account by email to start the recovery flow.
+     * @param {string} email - Email address to recover.
+     * @returns {Promise<boolean>} True if the account was found.
+     */
+    function recoverAccount(email) {
+        return iamApi.findUserByEmail(email).then(data => {
+            if (Array.isArray(data) && data.length > 0) {
+                recoveryUserId.value = data[0].id;
+                errors.value = [];
+                return true;
+            } else {
+                errors.value.push(new Error('No account found with that email.'));
+                return false;
+            }
+        }).catch(error => {
+            errors.value.push(error);
+            return false;
+        });
+    }
+
+    /**
+     * Resets the password for the user currently in the recovery flow.
+     * @param {string} newPassword - New password.
+     * @returns {Promise<boolean>} True if the password was updated successfully.
+     */
+    function resetPassword(newPassword) {
+        if (!recoveryUserId.value) return Promise.resolve(false);
+        return iamApi.updatePassword(recoveryUserId.value, newPassword).then(data => {
+            if (data && data.id) {
+                recoveryUserId.value = null;
+                errors.value = [];
+                return true;
+            }
+            return false;
+        }).catch(error => {
+            errors.value.push(error);
+            return false;
+        });
     }
 
     /** Clears the active IAM session and local auth artifacts. */
@@ -129,10 +173,13 @@ const useIamStore = defineStore('iam', () => {
         currentUserId,
         currentToken,
         isSignedIn,
+        recoveryUserId,
         signIn,
         signUp,
         signOut,
-        fetchUsers
+        fetchUsers,
+        recoverAccount,
+        resetPassword
     };
 });
 
