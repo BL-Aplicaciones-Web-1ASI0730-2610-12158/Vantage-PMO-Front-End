@@ -1,46 +1,44 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Home from './shared/presentation/views/home.vue';
-// import iamRoutes from './iam/presentation/iam-routes.js';
+import iamRoutes from './iam/presentation/iam-routes.js';
+import { authenticationGuard } from './iam/infrastructure/authentication.guard.js';
 
 // Define lazy-loaded components for routes
 const pageNotFound = () => import('./shared/presentation/views/page-not-found.vue');
 const layout      = () => import('./shared/presentation/components/layout.vue');
 const profile     = () => import('./profile/presentation/views/profile.vue');
+const reports = () => import('./reports/presentation/views/reports.vue');
+const projects = () => import('./projects/presentation/views/project.vue');
+const taskCollaboration = () => import('./task-collaboration/presentation/views/task-collaboration.vue');
+const systemAdministration = () => import('./system-administration/presentation/pages/system-administration-page.vue');
+const signInForm = () => import('./iam/presentation/views/sign-in-form.vue');
+const schedule     = () => import('./schedule/presentation/views/schedule.vue');
+const meetings     = () => import('./meetings/presentation/views/meetings.vue');
+const support      = () => import('./support/presentation/views/support.vue');
+const settings     = () => import('./settings/presentation/views/settings.vue');
 
-/*
-// Routes version when IAM is implemented
-const routes = [
-    { path: '/', component: layout, children: [
-        { path: '',                name: 'home',            component: Home,         meta: { title: 'Home' } },
-        { path: 'active-projects', name: 'active-projects', component: pageNotFound, meta: { title: 'Active Projects' } },
-        { path: 'team',            name: 'team',            component: pageNotFound, meta: { title: 'Team' } },
-        { path: 'chat-hub',        name: 'chat-hub',        component: pageNotFound, meta: { title: 'Chat Hub' } },
-        { path: 'schedule',        name: 'schedule',        component: pageNotFound, meta: { title: 'Schedule' } },
-        { path: 'meetings',        name: 'meetings',        component: pageNotFound, meta: { title: 'Meetings' } },
-        { path: 'reports',         name: 'reports',         component: pageNotFound, meta: { title: 'Reports' } },
-        { path: 'profile',         name: 'profile',         component: profile,      meta: { title: 'Profile' } },
-        { path: 'support',         name: 'support',         component: pageNotFound, meta: { title: 'Support' } },
-        { path: 'settings',        name: 'settings',        component: pageNotFound, meta: { title: 'Settings' } },
-    ]},
-    { path: '/iam', name: 'iam', children: iamRoutes },
-    { path: '/:pathMatch(.*)*', name: 'not-found', component: pageNotFound, meta: { title: 'Page Not Found' } }
-];
-*/
 
 // Routes version when IAM is not implemented
 const routes = [
-    { path: '/', component: layout, children: [
+    // Public route: Sign-in (root)
+    { path: '/', name: 'sign-in', component: signInForm, meta: { title: 'Sign-In' } },
+    { path: '/iam', name: 'iam', children: iamRoutes },
+
+    // Protected routes: Main dashboard with layout
+    { path: '/dashboard', component: layout, children: [
         { path: '',                name: 'home',            component: Home,         meta: { title: 'Home' } },
-        { path: 'active-projects', name: 'active-projects', component: pageNotFound, meta: { title: 'Active Projects' } },
-        { path: 'team',            name: 'team',            component: pageNotFound, meta: { title: 'Team' } },
+        { path: 'active-projects', name: 'active-projects', component: projects, meta: { title: 'Active Projects' } },
+        { path: 'team',            name: 'team',            component: taskCollaboration, meta: { title: 'Team' } },
         { path: 'chat-hub',        name: 'chat-hub',        component: pageNotFound, meta: { title: 'Chat Hub' } },
-        { path: 'schedule',        name: 'schedule',        component: pageNotFound, meta: { title: 'Schedule' } },
-        { path: 'meetings',        name: 'meetings',        component: pageNotFound, meta: { title: 'Meetings' } },
-        { path: 'reports',         name: 'reports',         component: pageNotFound, meta: { title: 'Reports' } },
+        { path: 'schedule',        name: 'schedule',        component: schedule,     meta: { title: 'Schedule' } },
+        { path: 'meetings',        name: 'meetings',        component: meetings,     meta: { title: 'Meetings' } },
+        { path: 'reports',         name: 'reports',         component: reports, meta: { title: 'Reports' } },
         { path: 'profile',         name: 'profile',         component: profile,      meta: { title: 'Profile' } },
-        { path: 'support',         name: 'support',         component: pageNotFound, meta: { title: 'Support' } },
-        { path: 'settings',        name: 'settings',        component: pageNotFound, meta: { title: 'Settings' } },
+        { path: 'support',         name: 'support',         component: support,      meta: { title: 'Support' } },
+        { path: 'settings',        name: 'settings',        component: settings,     meta: { title: 'Settings' } },
+        { path: 'system-administration/:section?', name: 'system-administration', component: systemAdministration, meta: { title: 'System Administration' } },
     ]},
+
     { path: '/:pathMatch(.*)*', name: 'not-found', component: pageNotFound, meta: { title: 'Page Not Found' } }
 ];
 
@@ -62,10 +60,8 @@ router.beforeEach((to, from, next) => {
     // Set the page title
     let baseTitle = 'Vantage PMO';
     document.title = `${baseTitle} - ${to.meta['title']}`;
-    // When IAM is implemented, use:
-    // return authenticationGuard(to, from, next);
-    // if not, use:
-    return next();
+    // Use authentication guard to protect routes
+    return authenticationGuard(to, from, next);
 });
 
 export default router;
