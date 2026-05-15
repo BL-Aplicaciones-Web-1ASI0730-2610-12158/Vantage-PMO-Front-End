@@ -8,6 +8,15 @@
       "department": "Executive",
       "joined": "January 2022",
       "avatarSeed": "Alex"
+    },
+    {
+      "id": 2,
+      "username": "alex",
+      "password": "password123",
+      "name": "Alex Sterling",
+      "email": "alex.sterling@vantagepmo.io",
+      "role": "Project Manager",
+      "department": "Executive"
     }
   ],
   "stats": [
