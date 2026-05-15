@@ -1,5 +1,4 @@
 import {BaseEndpoint} from "../../shared/infrastructure/base-endpoint.js";
-import BaseApi from "../../shared/infrastructure/base-api.js";
 const signInEndpointPath = import.meta.env.VITE_SIGNIN_ENDPOINT_PATH;
 const signUpEndpointPath = import.meta.env.VITE_SIGNUP_ENDPOINT_PATH;
 const usersEndpointPath   = import.meta.env.VITE_USERS_ENDPOINT_PATH;
@@ -8,19 +7,17 @@ const usersEndpointPath   = import.meta.env.VITE_USERS_ENDPOINT_PATH;
  * Infrastructure gateway for IAM bounded-context endpoints.
  *
  * @class IamApi
- * @extends BaseApi
  */
-export class IamApi extends BaseApi {
+export class IamApi {
     #signInEndpoint;
     #signUpEndpoint;
     #usersEndpoint;
 
     /** Creates endpoint clients for sign-in, sign-up, and user listing. */
     constructor() {
-        super();
-        this.#signInEndpoint = new BaseEndpoint(this, signInEndpointPath);
-        this.#signUpEndpoint = new BaseEndpoint(this, signUpEndpointPath);
-        this.#usersEndpoint = new BaseEndpoint(this, usersEndpointPath);
+        this.#signInEndpoint = new BaseEndpoint(signInEndpointPath);
+        this.#signUpEndpoint = new BaseEndpoint(signUpEndpointPath);
+        this.#usersEndpoint = new BaseEndpoint(usersEndpointPath);
     }
 
     /**
