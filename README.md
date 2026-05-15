@@ -9,6 +9,7 @@
 - [Overview](#overview)
 - [Tech Stack](#tech-stack)
 - [Architecture](#architecture)
+- [API Infrastructure Patterns](#api-infrastructure-patterns)
 - [Project Structure](#project-structure)
 - [Bounded Contexts](#bounded-contexts)
 - [Getting Started](#getting-started)
@@ -22,7 +23,7 @@
 
 ## Overview
 
-Vantage PMO is a web-based Project Management Office platform that gives executive teams a real-time view of portfolio health, active projects, team performance, scheduling, and reporting.
+Vantage PMO is a web-based Project Management Office platform that gives executive teams a real-time view of portfolio health, active projects, team performance, scheduling, meetings and reporting.
 
 The front end is built with **Vue 3** following **Domain-Driven Design (DDD)** principles, keeping each business domain isolated and independently maintainable as the team grows.
 
@@ -52,20 +53,77 @@ bounded-context/
 ├── application/        # Pinia stores — orchestrates use cases
 ├── domain/
 │   └── model/          # Entities — pure domain objects
-└── infrastructure/
-    ├── *-api.js        # Extends BaseEndpoint, maps via assemblers
-    ├── *.assembler.js  # Maps raw API response → domain entity
-    └── *.entity.js     # (optionally co-located)
+├── infrastructure/
+│   ├── *-api.js        # Extends BaseEndpoint, maps via assemblers
+│   └── *.assembler.js  # Maps raw API response → domain entity
+└── presentation/
+    ├── components/     # Reusable UI components for this context
+    └── views/          # Route-level page components
 ```
 
 ### Shared Kernel
 
 The `shared/` module provides the infrastructure foundation used by **all** bounded contexts:
 
-- `base-api.js` — Axios instance configured from `.env`
+- `base-api.js` — shared Axios instance configured from `.env`
 - `base-endpoint.js` — Generic CRUD class (`getAll`, `getById`, `getByQuery`, `create`, `update`, `delete`)
 
+Important: `base-api.js` exports the reusable Axios client (`baseApi`) used internally by `BaseEndpoint`; it is **not** a class to extend.
+
 Every bounded context API class **extends `BaseEndpoint`** and uses its own assembler to convert raw data into domain entities.
+
+---
+
+## API Infrastructure Patterns
+
+Most bounded contexts follow one of these two patterns:
+
+### 1. Collection resource
+
+Use this when the API returns an array and supports standard CRUD routes such as `/support-tickets` or `/projects`.
+
+```js
+import { BaseEndpoint } from '../../shared/infrastructure/base-endpoint.js';
+import { SupportAssembler } from './support.assembler.js';
+
+class SupportApi extends BaseEndpoint {
+    constructor() {
+        super(import.meta.env.VITE_SUPPORT_ENDPOINT_PATH);
+    }
+
+    async getAllTickets() {
+        const data = await super.getAll();
+        return SupportAssembler.toEntities(data);
+    }
+}
+```
+
+### 2. Singleton resource
+
+Use this when the API returns a single object instead of a collection, like the `settings` context backed by `/user-settings` in `server/db.json`.
+
+```js
+import { BaseEndpoint } from '../../shared/infrastructure/base-endpoint.js';
+import { SettingsAssembler } from './settings.assembler.js';
+
+class SettingsApi extends BaseEndpoint {
+    constructor() {
+        super(import.meta.env.VITE_USER_SETTINGS_ENDPOINT_PATH || '/user-settings');
+    }
+
+    async getSettings() {
+        const response = await this.api.get(this.resourcePath);
+        return SettingsAssembler.toEntity(response.data);
+    }
+
+    async updateSettings(settings) {
+        const response = await this.api.put(this.resourcePath, settings);
+        return SettingsAssembler.toEntity(response.data);
+    }
+}
+```
+
+This keeps the API implementation consistent with the rest of the app: `BaseEndpoint` provides the shared foundation, while each bounded context exposes intent-revealing methods such as `getAllTickets()` or `getSettings()`.
 
 ---
 
@@ -87,22 +145,15 @@ src/
 │           └── page-not-found.vue
 │
 ├── iam/                          ← Identity & Access (pending)
-│   ├── application/
-│   ├── domain/model/
-│   └── infrastructure/
-│
-├── profile/                      ← User Profile
-│   ├── application/
-│   │   └── profile.store.js
-│   ├── domain/model/
-│   │   ├── profile.entity.js
-│   │   └── stats.entity.js
-│   └── infrastructure/
-│       ├── profile-api.js
-│       ├── profile.assembler.js
-│       └── stats.assembler.js
-│
-├── [future-context]/             ← Next bounded contexts
+├── profile/                      ← User profile & portfolio stats
+├── projects/                     ← Active projects tracking
+├── task-collaboration/           ← Team board (Kanban + Heatmap)
+├── schedule/                     ← Calendar & scheduling
+├── meetings/                     ← Meeting management & minutes
+├── reports/                      ← Executive reports & analytics
+├── support/                      ← Support tickets
+├── settings/                     ← User settings
+├── system-administration/        ← Platform admin (policies, branding)
 │
 ├── locales/
 │   ├── en.json
@@ -116,7 +167,7 @@ src/
 └── style.css
 
 server/
-├── db.json           ← Fake database
+├── db.json           ← Fake database (seed data for all contexts)
 ├── routes.json       ← Route mappings (/api/v1/* → /*)
 └── start.sh          ← Start JSON Server
 
@@ -128,19 +179,22 @@ server/
 
 ## Bounded Contexts
 
-| Context | Status | Description |
-|---|---|---|
-| `shared` | Active | Layout, base infrastructure, dashboard |
-| `profile` | Active | User profile and portfolio stats |
-| `iam` | Pending | Authentication & authorization |
-| `active-projects` | Pending | Project tracking and status |
-| `team` | Pending | Team members and roles |
-| `schedule` | Pending | Calendar and scheduling |
-| `meetings` | Pending | Meeting management |
-| `reports` | Pending | Analytics and reporting |
-| `chat-hub` | Pending | Internal messaging |
+| Context | Status | Route | Description |
+|---|---|---|---|
+| `shared` | Active | `/` | Layout, base infrastructure, home dashboard |
+| `profile` | Active | `/profile` | User profile and portfolio stats |
+| `projects` | Active | `/active-projects` | Active project tracking and milestones |
+| `task-collaboration` | Active | `/team` | Team board: Kanban (5 cols) + Activity Heatmap |
+| `schedule` | Active | `/schedule` | Calendar view and scheduling |
+| `meetings` | Active | `/meetings` | Meeting management, minutes export |
+| `reports` | Active | `/reports` | Executive quick reports with live preview |
+| `support` | Active | `/support` | Support tickets and bug reports |
+| `settings` | Active | `/settings` | User preferences and notifications |
+| `system-administration` | Active | `/system-administration` | Platform policies and branding |
+| `iam` | Pending | `/iam` | Authentication & authorization |
+| `chat-hub` | Pending | `/chat-hub` | Internal messaging |
 
-> New bounded contexts are added incrementally by the team. See [Adding a New Bounded Context](#adding-a-new-bounded-context).
+> New bounded contexts are added incrementally. See [Adding a New Bounded Context](#adding-a-new-bounded-context).
 
 ---
 
@@ -150,11 +204,19 @@ server/
 
 - Node.js >= 18
 - npm >= 9
-- JSON Server 0.17.x installed globally
+
+Optional for the fake API:
+
+- `json-server` 0.17.x installed globally, **or**
+- use the local dev dependency via `npx`
+
+```bash
+npm install -g json-server@0.17
+```
+
 ### Installation
 
 ```bash
-# Install dependencies
 npm install
 ```
 
@@ -166,6 +228,9 @@ You need **two terminals** — one for the fake API and one for the app:
 # Terminal 1 — Start the fake API server
 cd server
 sh start.sh
+
+# Alternative if json-server is not installed globally
+npx json-server --watch db.json --routes routes.json --port 3000
 ```
 
 ```bash
@@ -173,29 +238,38 @@ sh start.sh
 npm run dev
 ```
 
-App will be available at: `http://localhost:5173`  
-API will be available at: `http://localhost:3000/api/v1`
+App → `http://localhost:5173`  
+API → `http://localhost:3000/api/v1`
 
 ---
 
 ## Environment Variables
 
+Defined in `.env.development`:
+
 | Variable | Description | Example |
 |---|---|---|
 | `VITE_API_BASE_URL` | Base URL for the API | `http://localhost:3000/api/v1` |
-| `VITE_USERS_ENDPOINT_PATH` | Users resource path | `/users` |
-| `VITE_STATS_ENDPOINT_PATH` | Stats resource path | `/stats` |
-| `VITE_TASKS_ENDPOINT_PATH` | Tasks resource path | `/tasks` |
-| `VITE_SCHEDULE_ENDPOINT_PATH` | Schedule resource path | `/schedule` |
-| `VITE_DEPARTMENTS_ENDPOINT_PATH` | Departments resource path | `/departments` |
-
-> Add new endpoint variables here as new bounded contexts are integrated.
+| `VITE_USERS_ENDPOINT_PATH` | Users resource | `/users` |
+| `VITE_STATS_ENDPOINT_PATH` | Stats resource | `/stats` |
+| `VITE_TASKS_ENDPOINT_PATH` | Tasks resource | `/tasks` |
+| `VITE_BOARDS_ENDPOINT_PATH` | Team boards | `/boards` |
+| `VITE_BOARD_MEMBERS_ENDPOINT_PATH` | Board members | `/board-members` |
+| `VITE_TASK_COLLABORATION_ENDPOINT_PATH` | Task collaboration | `/tasks` |
+| `VITE_SCHEDULE_ENDPOINT_PATH` | Schedule resource | `/schedule` |
+| `VITE_MEETINGS_ENDPOINT_PATH` | Meetings resource | `/meetings` |
+| `VITE_REPORTS_ENDPOINT_PATH` | Reports resource | `/reports` |
+| `VITE_PROJECTS_ENDPOINT_PATH` | Projects resource | `/projects` |
+| `VITE_SUPPORT_ENDPOINT_PATH` | Support tickets | `/support-tickets` |
+| `VITE_USER_SETTINGS_ENDPOINT_PATH` | User settings | `/user-settings` |
+| `VITE_SYSTEM_ADMINISTRATION_ENDPOINT_PATH` | Admin resource | `/system-administration` |
+| `VITE_DEPARTMENTS_ENDPOINT_PATH` | Departments | `/departments` |
 
 ---
 
 ## Fake API Server
 
-The project uses [JSON Server](https://github.com/typicode/json-server) `v0.17.x` as a fake REST API during development.
+The project uses [JSON Server](https://github.com/typicode/json-server) `v0.17.x` as a fake REST API.
 
 ```bash
 cd server
@@ -203,16 +277,15 @@ sh start.sh
 # Runs: json-server --watch db.json --routes routes.json --port 3000
 ```
 
-The `routes.json` maps `/api/v1/*` → `/*` so the app can use versioned API paths:
+`routes.json` maps `/api/v1/*` → `/*`:
 
-```
-GET /api/v1/users       →   /users
-GET /api/v1/tasks       →   /tasks
-GET /api/v1/stats       →   /stats
-...
+```json
+{
+  "/api/v1/*": "/$1"
+}
 ```
 
-> When new bounded contexts are added, include their seed data in `server/db.json`.
+All seed data lives in `server/db.json`. When adding a new bounded context, add its collection there.
 
 ---
 
@@ -220,55 +293,55 @@ GET /api/v1/stats       →   /stats
 
 The app supports **English (en)** and **Spanish (es)** via Vue I18n.
 
-Translation files are located in `src/locales/`:
-
 ```
 src/locales/
 ├── en.json
 └── es.json
 ```
 
-Translations are organized by section:
+Translations are organized by bounded context:
 
 ```json
 {
-  "app": { ... },
-  "nav": { ... },
-  "topbar": { ... },
-  "home": { ... },
-  "profile": { ... }
+  "nav":                 { ... },
+  "home":                { ... },
+  "profile":             { ... },
+  "taskCollaboration":   { ... },
+  "meetings":            { ... },
+  "reports":             { ... },
+  "schedule":            { ... },
+  "support":             { ... },
+  "settings":            { ... },
+  "systemAdministration":{ ... }
 }
 ```
 
-> When adding a new bounded context, add its translation keys to **both** `en.json` and `es.json`.
-
-The language switcher is available in the top bar of the app.
+The **language switcher** is in the top bar. Always add keys to **both** locale files.
 
 ---
 
 ## Adding a New Bounded Context
 
-Follow these steps to add a new bounded context to the project:
-
 ### 1. Create the folder structure
 
-```bash
-src/
-└── my-context/
-    ├── application/
-    │   └── my-context.store.js
-    ├── domain/
-    │   └── model/
-    │       └── my-entity.entity.js
-    └── infrastructure/
-        ├── my-context-api.js
-        └── my-entity.assembler.js
+```
+src/my-context/
+├── application/
+│   └── my-context.store.js
+├── domain/model/
+│   └── my-entity.entity.js
+├── infrastructure/
+│   ├── my-context-api.js
+│   └── my-entity.assembler.js
+└── presentation/
+    ├── components/
+    └── views/
+        └── my-context.vue
 ```
 
-### 2. Define the Domain Entity
+### 2. Domain Entity
 
 ```js
-// domain/model/my-entity.entity.js
 export class MyEntity {
     constructor({ id, name }) {
         this.id   = id;
@@ -277,41 +350,39 @@ export class MyEntity {
 }
 ```
 
-### 3. Create the Assembler
+### 3. Assembler
 
 ```js
-// infrastructure/my-entity.assembler.js
 import { MyEntity } from '../domain/model/my-entity.entity.js';
-
 export class MyEntityAssembler {
     static toEntity(r)    { return new MyEntity(r); }
     static toEntities(rs) { return rs.map(MyEntityAssembler.toEntity); }
 }
 ```
 
-### 4. Create the API (extends BaseEndpoint)
+### 4. API (extends BaseEndpoint)
+
+For a standard collection resource:
 
 ```js
-// infrastructure/my-context-api.js
 import { BaseEndpoint } from '../../shared/infrastructure/base-endpoint.js';
 import { MyEntityAssembler } from './my-entity.assembler.js';
 
 class MyContextApi extends BaseEndpoint {
     constructor() { super(import.meta.env.VITE_MY_CONTEXT_ENDPOINT_PATH); }
-
     async getAll() {
         const data = await super.getAll();
         return MyEntityAssembler.toEntities(data);
     }
 }
-
 export const myContextApi = new MyContextApi();
 ```
 
-### 5. Create the Pinia Store
+For a singleton resource, keep the same inheritance but expose explicit methods (for example `getSettings()` / `updateSettings()`) and call `this.api` with `this.resourcePath`.
+
+### 5. Pinia Store
 
 ```js
-// application/my-context.store.js
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { myContextApi } from '../infrastructure/my-context-api.js';
@@ -319,43 +390,29 @@ import { myContextApi } from '../infrastructure/my-context-api.js';
 export const useMyContextStore = defineStore('my-context', () => {
     const items   = ref([]);
     const loading = ref(false);
-
     async function fetchAll() {
         loading.value = true;
         try { items.value = await myContextApi.getAll(); }
         finally { loading.value = false; }
     }
-
     return { items, loading, fetchAll };
 });
 ```
 
-### 6. Register the route
+### 6–9. Checklist
 
-Add the route in `src/router.js` under the layout children.
-
-### 7. Add seed data
-
-Add the resource collection to `server/db.json`.
-
-### 8. Add the env variable
-
-Add `VITE_MY_CONTEXT_ENDPOINT_PATH="/my-context"` to both `.env.development` and `.env.production`.
-
-### 9. Add translations
-
-Add the translation keys to `src/locales/en.json` and `src/locales/es.json`.
+- [ ] Register route in `src/router.js`
+- [ ] Add seed data to `server/db.json`
+- [ ] Add `VITE_MY_CONTEXT_ENDPOINT_PATH` to `.env.development` and `.env.production`
+- [ ] Add translation keys to `en.json` and `es.json`
 
 ---
 
 ## Team Conventions
 
-- **One bounded context per module** — never import across bounded contexts directly (use shared only).
-- **Always extend `BaseEndpoint`** — do not create standalone Axios calls.
+- **One bounded context per module** — never import across bounded contexts (use `shared/` only).
+- **Build API modules on top of `BaseEndpoint`** — for singleton resources, custom methods may use `this.api` while preserving the shared base pattern.
 - **Always use assemblers** — never bind raw API responses to the UI.
-- **Always translate** — add keys to both `en.json` and `es.json` when adding UI text.
-- **Seed data first** — add your resource to `server/db.json` before implementing the API call.
+- **Always translate** — add keys to both `en.json` and `es.json`.
+- **Seed data first** — add your resource to `server/db.json` before implementing the API.
 - **Commit structure**: `feat(context-name): description` / `fix(context-name): description`
-
----
-
