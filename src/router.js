@@ -12,6 +12,10 @@ const projects = () => import('./projects/presentation/views/project.vue');
 const taskCollaboration = () => import('./task-collaboration/presentation/views/task-collaboration.vue');
 const systemAdministration = () => import('./system-administration/presentation/pages/system-administration-page.vue');
 const signInForm = () => import('./iam/presentation/views/sign-in-form.vue');
+const schedule     = () => import('./schedule/presentation/views/schedule.vue');
+const meetings     = () => import('./meetings/presentation/views/meetings.vue');
+const support      = () => import('./support/presentation/views/support.vue');
+const settings     = () => import('./settings/presentation/views/settings.vue');
 
 
 // Routes version when IAM is not implemented
@@ -26,12 +30,12 @@ const routes = [
         { path: 'active-projects', name: 'active-projects', component: projects, meta: { title: 'Active Projects' } },
         { path: 'team',            name: 'team',            component: taskCollaboration, meta: { title: 'Team' } },
         { path: 'chat-hub',        name: 'chat-hub',        component: pageNotFound, meta: { title: 'Chat Hub' } },
-        { path: 'schedule',        name: 'schedule',        component: pageNotFound, meta: { title: 'Schedule' } },
-        { path: 'meetings',        name: 'meetings',        component: pageNotFound, meta: { title: 'Meetings' } },
+        { path: 'schedule',        name: 'schedule',        component: schedule,     meta: { title: 'Schedule' } },
+        { path: 'meetings',        name: 'meetings',        component: meetings,     meta: { title: 'Meetings' } },
         { path: 'reports',         name: 'reports',         component: reports, meta: { title: 'Reports' } },
         { path: 'profile',         name: 'profile',         component: profile,      meta: { title: 'Profile' } },
-        { path: 'support',         name: 'support',         component: pageNotFound, meta: { title: 'Support' } },
-        { path: 'settings',        name: 'settings',        component: pageNotFound, meta: { title: 'Settings' } },
+        { path: 'support',         name: 'support',         component: support,      meta: { title: 'Support' } },
+        { path: 'settings',        name: 'settings',        component: settings,     meta: { title: 'Settings' } },
         { path: 'system-administration/:section?', name: 'system-administration', component: systemAdministration, meta: { title: 'System Administration' } },
     ]},
 
