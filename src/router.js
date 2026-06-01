@@ -16,6 +16,7 @@ const schedule     = () => import('./schedule/presentation/views/schedule.vue');
 const meetings     = () => import('./meetings/presentation/views/meetings.vue');
 const support      = () => import('./support/presentation/views/support.vue');
 const settings     = () => import('./settings/presentation/views/settings.vue');
+const chatHub      = () => import('./chat-hub/presentation/ChatHub.vue'); // Updated path
 
 
 // Routes version when IAM is not implemented
@@ -29,7 +30,7 @@ const routes = [
         { path: '',                name: 'home',            component: Home,         meta: { title: 'Home' } },
         { path: 'active-projects', name: 'active-projects', component: projects, meta: { title: 'Active Projects' } },
         { path: 'team',            name: 'team',            component: taskCollaboration, meta: { title: 'Team' } },
-        { path: 'chat-hub',        name: 'chat-hub',        component: pageNotFound, meta: { title: 'Chat Hub' } },
+        { path: 'chat-hub',        name: 'chat-hub',        component: chatHub, meta: { title: 'Chat Hub' } }, // Updated: point to chatHub
         { path: 'schedule',        name: 'schedule',        component: schedule,     meta: { title: 'Schedule' } },
         { path: 'meetings',        name: 'meetings',        component: meetings,     meta: { title: 'Meetings' } },
         { path: 'reports',         name: 'reports',         component: reports, meta: { title: 'Reports' } },
