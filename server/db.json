@@ -594,35 +594,13 @@
       "progress": 64,
       "manager": "Sarah Johnson",
       "teamMembers": [
-        {
-          "id": 1,
-          "name": "Alexander",
-          "avatar": "A"
-        },
-        {
-          "id": 2,
-          "name": "Benjamin",
-          "avatar": "B"
-        },
-        {
-          "id": 3,
-          "name": "Catherine",
-          "avatar": "C"
-        }
+        {"id": 1, "name": "Alexander", "avatar": "A"},
+        {"id": 2, "name": "Benjamin", "avatar": "B"},
+        {"id": 3, "name": "Catherine", "avatar": "C"}
       ],
       "milestones": [
-        {
-          "id": 1,
-          "name": "Final Audit Submission",
-          "date": "Oct 14",
-          "type": "warning"
-        },
-        {
-          "id": 2,
-          "name": "Staging Deployment",
-          "date": "Oct 28",
-          "type": "pending"
-        }
+        {"id": 1, "name": "Final Audit Submission", "date": "Oct 14", "type": "warning"},
+        {"id": 2, "name": "Staging Deployment", "date": "Oct 28", "type": "pending"}
       ]
     },
     {
@@ -634,30 +612,12 @@
       "progress": 82,
       "manager": "Michael Chen",
       "teamMembers": [
-        {
-          "id": 1,
-          "name": "Diana",
-          "avatar": "D"
-        },
-        {
-          "id": 2,
-          "name": "Elena",
-          "avatar": "E"
-        }
+        {"id": 1, "name": "Diana", "avatar": "D"},
+        {"id": 2, "name": "Elena", "avatar": "E"}
       ],
       "milestones": [
-        {
-          "id": 1,
-          "name": "Interior Fit-out Done",
-          "date": "Today",
-          "type": "success"
-        },
-        {
-          "id": 2,
-          "name": "Grand Opening",
-          "date": "Nov 05",
-          "type": "pending"
-        }
+        {"id": 1, "name": "Interior Fit-out Done", "date": "Today", "type": "success"},
+        {"id": 2, "name": "Grand Opening", "date": "Nov 05", "type": "pending"}
       ]
     },
     {
@@ -669,35 +629,13 @@
       "progress": 31,
       "manager": "Patricia Lee",
       "teamMembers": [
-        {
-          "id": 1,
-          "name": "Frank",
-          "avatar": "F"
-        },
-        {
-          "id": 2,
-          "name": "Grace",
-          "avatar": "G"
-        },
-        {
-          "id": 3,
-          "name": "Henry",
-          "avatar": "H"
-        }
+        {"id": 1, "name": "Frank", "avatar": "F"},
+        {"id": 2, "name": "Grace", "avatar": "G"},
+        {"id": 3, "name": "Henry", "avatar": "H"}
       ],
       "milestones": [
-        {
-          "id": 1,
-          "name": "Data Integration Check",
-          "date": "Oct 19",
-          "type": "warning"
-        },
-        {
-          "id": 2,
-          "name": "Model Validation",
-          "date": "Nov 12",
-          "type": "pending"
-        }
+        {"id": 1, "name": "Data Integration Check", "date": "Oct 19", "type": "warning"},
+        {"id": 2, "name": "Model Validation", "date": "Nov 12", "type": "pending"}
       ]
     }
   ],
