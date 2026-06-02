@@ -60,7 +60,7 @@ function isActive(name)  { return route.name === name }
 
       <!-- Create Project Button -->
       <div class="sidebar-create">
-        <button class="create-btn" @click="navigate('home')">
+        <button class="create-btn" @click="navigate('active-projects')">
           <i class="pi pi-plus"></i>
           <span>{{ $t('nav.createProject') }}</span>
         </button>

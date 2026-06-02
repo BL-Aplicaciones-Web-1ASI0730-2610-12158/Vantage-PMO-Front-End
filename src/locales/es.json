@@ -147,10 +147,33 @@
     "upcomingMilestones": "PRÓXIMOS HITOS",
     "viewAll": "Ver Todos",
     "noProjects": "No hay proyectos activos para mostrar.",
+    "filter": "Busca proyectos por nombre, categoría o descripción...",
+    "projectsFound": "proyecto(s) encontrado(s)",
+    "noResults": "No hay proyectos que coincidan con tu búsqueda",
     "status": {
       "critical": "Crítico",
       "healthy": "Saludable",
       "at-risk": "En Riesgo"
+    },
+    "createProject": "Crear Proyecto",
+    "form": {
+      "title": "Crear Nuevo Proyecto",
+      "projectBasics": "Información Básica",
+      "projectDetails": "Detalles del Proyecto",
+      "timeline": "Cronograma",
+      "projectName": "Nombre del Proyecto",
+      "projectNamePlaceholder": "ej. Aurora Fase 3",
+      "category": "Categoría",
+      "categoryPlaceholder": "ej. Modernización de Infraestructura",
+      "description": "Descripción",
+      "descriptionPlaceholder": "Describe el proyecto...",
+      "startDate": "Fecha de Inicio",
+      "dueDate": "Fecha de Entrega",
+      "cancel": "Cancelar",
+      "create": "Crear Proyecto",
+      "requiredFields": "Por favor completa todos los campos requeridos",
+      "success": "¡Proyecto creado exitosamente!",
+      "error": "Error al crear el proyecto"
     }
   },
   "taskCollaboration": {

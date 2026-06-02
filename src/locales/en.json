@@ -147,10 +147,33 @@
     "upcomingMilestones": "UPCOMING MILESTONES",
     "viewAll": "View All",
     "noProjects": "No active projects to display.",
+    "filter": "Search projects by name, category or description...",
+    "projectsFound": "project(s) found",
+    "noResults": "No projects match your search",
     "status": {
       "critical": "Critical",
       "healthy": "Healthy",
       "at-risk": "At Risk"
+    },
+    "createProject": "Create Project",
+    "form": {
+      "title": "Create New Project",
+      "projectBasics": "Project Basics",
+      "projectDetails": "Project Details",
+      "timeline": "Timeline",
+      "projectName": "Project Name",
+      "projectNamePlaceholder": "e.g., Aurora Phase 3",
+      "category": "Category",
+      "categoryPlaceholder": "e.g., Infrastructure Modernization",
+      "description": "Description",
+      "descriptionPlaceholder": "Describe the project...",
+      "startDate": "Start Date",
+      "dueDate": "Due Date",
+      "cancel": "Cancel",
+      "create": "Create Project",
+      "requiredFields": "Please fill in all required fields",
+      "success": "Project created successfully!",
+      "error": "Error creating project"
     }
   },
   "taskCollaboration": {
