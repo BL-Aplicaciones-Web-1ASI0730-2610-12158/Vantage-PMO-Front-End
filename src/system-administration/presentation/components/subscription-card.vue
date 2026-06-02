@@ -72,8 +72,8 @@
             </div>
 
             <div class="subscription-actions">
-                <Button label="$t('systemAdministration.renewAction')" icon="pi pi-refresh" class="p-button-primary" @click="handleRenew" :loading="isRenewing" />
-                <Button label="$t('systemAdministration.manageBilling')" icon="pi pi-wallet" class="p-button-secondary" />
+                <Button :label="$t('systemAdministration.renewAction')" icon="pi pi-refresh" class="p-button-primary" @click="handleRenew" :loading="isRenewing" />
+                <Button :label="$t('systemAdministration.manageBilling')" icon="pi pi-wallet" class="p-button-secondary" />
             </div>
         </div>
         </template>

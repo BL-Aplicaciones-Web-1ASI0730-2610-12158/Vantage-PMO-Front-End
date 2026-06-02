@@ -117,7 +117,7 @@
             </div>
 
             <div class="notification-actions">
-                <Button label="$t('systemAdministration.save')" icon="pi pi-check" class="p-button-primary" @click="handleSave" :loading="isSaving" />
+                <Button :label="$t('systemAdministration.save')" icon="pi pi-check" class="p-button-primary" @click="handleSave" :loading="isSaving" />
             </div>
         </div>
         </template>

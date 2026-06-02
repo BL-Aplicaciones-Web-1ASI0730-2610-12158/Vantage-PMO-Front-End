@@ -40,12 +40,7 @@
                                     <span>{{ $t('systemAdministration.uploadLogo') }}</span>
                                 </div>
                             </div>
-                            <Button
-                                label="$t('systemAdministration.chooseFile')"
-                                icon="pi pi-upload"
-                                class="p-button-outlined"
-                                @click="triggerUpload"
-                            />
+                            <Button :label="$t('systemAdministration.chooseFile')" icon="pi pi-upload" class="p-button-outlined" @click="triggerUpload"/>
                             <input type="file" ref="fileInput" @change="handleFileUpload" accept="image/*" hidden />
                         </div>
                     </div>
@@ -93,8 +88,8 @@
             </div>
 
             <div class="branding-actions">
-                <Button label="$t('systemAdministration.save')" icon="pi pi-check" class="p-button-primary" @click="handleSave" />
-                <Button label="$t('systemAdministration.reset')" icon="pi pi-refresh" class="p-button-secondary" @click="handleReset" />
+                <Button :label="$t('systemAdministration.save')" icon="pi pi-check" class="p-button-primary" @click="handleSave" />
+                <Button :label="$t('systemAdministration.reset')" icon="pi pi-refresh" class="p-button-secondary" @click="handleReset" />
             </div>
         </div>
         </template>

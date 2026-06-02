@@ -84,7 +84,7 @@
                         </div>
                     </div>
 
-                    <Button label="$t('systemAdministration.forceLogout')" icon="pi pi-sign-out" class="p-button-danger" />
+                    <Button :label="$t('systemAdministration.forceLogout')" icon="pi pi-sign-out" class="p-button-danger" />
                 </div>
             </div>
         </div>
