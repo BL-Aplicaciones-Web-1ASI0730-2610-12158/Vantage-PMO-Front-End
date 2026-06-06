@@ -1,0 +1,17 @@
+<!-- src/chat-hub/components/message-item/message-item.html -->
+<div class="message-item"> <!-- Increased vertical spacing -->
+    <img class="message-avatar" src="" alt="User Avatar"> <!-- src attribute is set by JS -->
+    <div class="message-content">
+        <div class="message-header">
+            <span class="message-author"></span>
+            <span class="message-timestamp"></span> <!-- Lighter gray for timestamp -->
+        </div>
+        <p class="message-text" style="margin: 0.5rem 0 0.75rem 0;"></p>
+        <div class="message-attachments" style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.75rem;">
+            <!-- Attachment items will be rendered here dynamically by JS -->
+        </div>
+        <div class="message-reactions" style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+            <!-- Reaction pills will be rendered here dynamically by JS -->
+        </div>
+    </div>
+</div>
