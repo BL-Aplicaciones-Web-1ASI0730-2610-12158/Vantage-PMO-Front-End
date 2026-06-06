@@ -1,25 +1,36 @@
 <template>
   <div class="channel-sidebar">
     <section class="channels-section">
-      <h3 class="section-title">CHANNELS</h3>
+      <div class="section-header">
+        <h3 class="section-title">CHANNELS</h3>
+        <button class="add-chat-button" @click="openCreateChatDialog(true)"><i class="pi pi-plus"></i></button>
+      </div>
       <ul class="channel-list">
         <li
-          v-for="channel in channels"
-          :key="channel.id"
-          :class="['channel-item', { active: channel.id === activeChannelId }]"
-          @click="selectChannel(channel.id)"
+          v-for="chat in filteredChannels"
+          :key="chat.id"
+          :class="['channel-item', { active: chat.id === activeChatId }]"
+          @click="selectChat(chat.id)"
         >
-          # {{ channel.name }}
+          # {{ chat.name }}
         </li>
       </ul>
     </section>
 
     <section class="direct-messages-section">
-      <h3 class="section-title">DIRECT MESSAGES</h3>
+      <div class="section-header">
+        <h3 class="section-title">DIRECT MESSAGES</h3>
+        <button class="add-chat-button" @click="openCreateChatDialog(false)"><i class="pi pi-plus"></i></button>
+      </div>
       <ul class="dm-list">
-        <li v-for="dm in directMessages" :key="dm.id" class="dm-item">
-          <span :class="['status-indicator', dm.status]"></span>
-          {{ dm.name }}
+        <li
+          v-for="chat in filteredDMs"
+          :key="chat.id"
+          :class="['dm-item', { active: chat.id === activeChatId }]"
+          @click="selectChat(chat.id)"
+        >
+          <span :class="['status-indicator', getUserStatus(chat)]"></span>
+          {{ getDmName(chat) }}
         </li>
       </ul>
     </section>
@@ -27,26 +38,65 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
+import { useDialog } from 'primevue/usedialog';
+import CreateChatDialog from './CreateChatDialog.vue';
 
-const activeChannelId = ref('pmo-strategic-alignment'); // Canal activo por defecto
+const props = defineProps({
+  activeChatId: {
+    type: String,
+    required: true,
+  },
+  chats: { // Recibir todos los chats
+    type: Array,
+    required: true,
+  },
+  users: { // Recibir todos los usuarios
+    type: Array,
+    required: true,
+  },
+});
 
-const channels = ref([
-  { id: 'global-announcements', name: 'global-announcements' },
-  { id: 'pmo-strategic-alignment', name: 'pmo-strategic-alignment' },
-  { id: 'budget-steering-comm', name: 'budget-steering-comm' },
-  { id: 'risk-mitigation-log', name: 'risk-mitigation-log' },
-]);
+const emit = defineEmits(['update:activeChatId', 'add:chat']);
+const dialog = useDialog();
 
-const directMessages = ref([
-  { id: 'sarah-jenkins', name: 'Sarah Jenkins (CTO)', status: 'online' },
-  { id: 'david-chen', name: 'David Chen', status: 'offline' },
-]);
+const filteredChannels = computed(() => props.chats.filter(chat => chat.type === 'channel'));
+const filteredDMs = computed(() => props.chats.filter(chat => chat.type === 'dm'));
 
-const selectChannel = (channelId) => {
-  activeChannelId.value = channelId;
-  console.log(`Channel selected: ${channelId}`);
-  // Aquí podrías emitir un evento o llamar a una acción Vuex/Pinia
+const selectChat = (chatId) => {
+  emit('update:activeChatId', chatId);
+};
+
+const getDmName = (chat) => {
+  // Para DMs, el nombre es el del otro usuario en el chat
+  const otherMemberId = chat.members.find(memberId => memberId !== 'marcus'); // Asumiendo 'marcus' es el usuario actual
+  const otherUser = props.users.find(user => user.id === otherMemberId);
+  return otherUser ? otherUser.name : chat.name;
+};
+
+const getUserStatus = (chat) => {
+  const otherMemberId = chat.members.find(memberId => memberId !== 'marcus');
+  const otherUser = props.users.find(user => user.id === otherMemberId);
+  return otherUser ? otherUser.status : 'offline';
+};
+
+const openCreateChatDialog = (isChannel) => {
+  dialog.open(CreateChatDialog, {
+    props: {
+      header: isChannel ? 'Create New Channel' : 'Start New Conversation',
+      modal: true,
+      style: { width: '400px' },
+      isChannel: isChannel,
+      allUsers: props.users,
+      currentUserId: 'marcus', // Asumiendo 'marcus' es el usuario actual
+    },
+    onClose: (options) => {
+      const newChat = options.data;
+      if (newChat) {
+        emit('add:chat', newChat);
+      }
+    }
+  });
 };
 </script>
 
@@ -55,20 +105,40 @@ const selectChannel = (channelId) => {
 
 .channel-sidebar {
   padding: 1rem;
-  background-color: #f5f7fa; /* Fondo gris muy claro uniforme */
-  color: var(--color-gray-dark);
+  background-color: var(--color-gray-lightest); /* Fondo gris neutro claro y limpio */
   font-family: Arial, sans-serif;
   height: 100%; /* Asegura que ocupe todo el alto disponible */
   overflow-y: auto; /* Permite scroll si hay muchos elementos */
 }
 
-.section-title {
-  font-size: 0.75rem;
-  color: var(--color-gray-medium);
-  text-transform: uppercase;
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-top: 1.5rem;
   margin-bottom: 0.75rem;
+}
+
+.section-title {
+  font-size: 0.75rem;
+  color: var(--color-gray-dark); /* Gris corporativo apagado para títulos secundarios */
+  text-transform: uppercase;
   letter-spacing: 0.05em;
+  margin: 0; /* Eliminar margen por defecto */
+}
+
+.add-chat-button {
+  background: none;
+  border: none;
+  color: var(--color-gray-medium);
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 0.2rem;
+  border-radius: 4px;
+}
+
+.add-chat-button:hover {
+  background-color: var(--color-gray-light);
 }
 
 .channel-list, .dm-list {
@@ -77,40 +147,28 @@ const selectChannel = (channelId) => {
   margin: 0;
 }
 
-.channel-item {
+.channel-item, .dm-item {
   padding: 0.5rem 0.75rem;
   margin-bottom: 0.25rem;
   cursor: pointer;
   border-radius: 4px;
-  display: block; /* Asegura que ocupe todo el ancho */
+  display: flex; /* Usar flex para alinear contenido */
+  align-items: center; /* Alineación vertical */
+  gap: 8px; /* Espacio entre elementos */
   font-size: 0.9rem;
+  color: var(--color-gray-dark); /* Gris corporativo apagado para canales inactivos */
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-.channel-item:hover {
+.channel-item:hover, .dm-item:hover {
   background-color: var(--color-gray-light); /* Efecto hover sutil */
 }
 
-.channel-item.active {
-  background-color: rgba(0, 123, 255, 0.1); /* Fondo azul muy sutil */
-  color: #0056b3; /* Azul oscuro brillante */
-  font-weight: 700; /* Negrita */
-}
-
-.dm-item {
-  padding: 0.5rem 0.75rem;
-  margin-bottom: 0.25rem;
-  cursor: pointer;
-  border-radius: 4px;
-  display: flex; /* Para alinear el indicador de estado y el nombre */
-  align-items: center; /* Alineación vertical */
-  gap: 8px; /* Espacio entre el círculo y el nombre */
-  font-size: 0.9rem;
-  transition: background-color 0.2s ease;
-}
-
-.dm-item:hover {
-  background-color: var(--color-gray-light); /* Efecto hover sutil */
+.channel-item.active, .dm-item.active {
+  background-color: var(--color-active-channel-bg); /* Azul extremadamente suave con opacidad */
+  color: var(--color-active-channel-text); /* Azul Primario Vibrante */
+  font-weight: 600; /* Negrita */
+  border-radius: 6px; /* Bordes ligeramente redondeados */
 }
 
 .status-indicator {
@@ -122,7 +180,7 @@ const selectChannel = (channelId) => {
 }
 
 .status-indicator.online {
-  background-color: var(--color-status-online); /* Verde */
+  background-color: var(--color-status-online); /* Verde vibrante */
 }
 
 .status-indicator.offline {
