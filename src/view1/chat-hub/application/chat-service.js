@@ -1,4 +1,4 @@
-import { predefinedQuestions, chatCategories } from '../domain/chat-data';
+import { predefinedQuestions, chatCategories } from '../domain/chat-data.js';
 
 export function getBotResponse(userQuestion) {
   const lowerCaseQuestion = userQuestion.toLowerCase();

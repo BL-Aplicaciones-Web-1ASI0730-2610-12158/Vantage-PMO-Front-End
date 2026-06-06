@@ -48,8 +48,8 @@
 </template>
 
 <script>
-import { predefinedQuestions } from '../domain/chat-data'; // Still needed for initial data structure reference if not using service for all
-import { getBotResponse, getQuestionsByCategory, getAllCategories } from '../application/chat-service';
+import { predefinedQuestions } from '../domain/chat-data.js'; // Still needed for initial data structure reference if not using service for all
+import { getBotResponse, getQuestionsByCategory, getAllCategories } from '../application/chat-service.js';
 
 export default {
   name: 'ChatHub',
