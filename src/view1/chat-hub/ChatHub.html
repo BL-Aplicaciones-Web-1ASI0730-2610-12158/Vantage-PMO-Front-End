@@ -1,18 +1,18 @@
 <!-- src/chat-hub/ChatHub.html -->
-<link rel="stylesheet" href="./styles/chat-hub.css">
-<div class="chat-hub-container">
-    <aside class="chat-hub-sidebar">
-        <!-- ChannelSidebar Component will be rendered here -->
-        <div id="channel-sidebar-container"></div>
+<div class="chat-hub-container flex h-screen surface-ground">
+    <!-- Columna Izquierda (Sidebar de Canales) -->
+    <aside class="chat-hub-sidebar w-18rem flex-shrink-0 border-right-1 surface-border">
+        <div id="channel-sidebar-container" class="h-full"></div>
     </aside>
-    <main class="chat-hub-main-content">
-        <!-- ChatWindow Component will be rendered here -->
-        <div id="chat-window-container"></div>
+
+    <!-- Columna Central (Área de Chat Principal) -->
+    <main class="chat-hub-main-content flex-grow-1 flex flex-column">
+        <div id="chat-window-container" class="h-full"></div>
     </main>
-    <aside class="chat-hub-info-panel">
-        <!-- AiInsightsPanel Component will be rendered here -->
-        <div id="ai-insights-panel-container"></div>
-        <!-- PinnedAssetsPanel Component will be rendered here -->
-        <div id="pinned-assets-panel-container"></div>
+
+    <!-- Columna Derecha (AI Insights y Pinned Assets) -->
+    <aside class="chat-hub-info-panel w-25rem flex-shrink-0 border-left-1 surface-border flex flex-column">
+        <div id="ai-insights-panel-container" class="flex-grow-0"></div>
+        <div id="pinned-assets-panel-container" class="flex-grow-1"></div>
     </aside>
 </div>

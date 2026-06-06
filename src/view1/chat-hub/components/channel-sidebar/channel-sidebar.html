@@ -1,26 +1,41 @@
 <!-- src/chat-hub/components/channel-sidebar/channel-sidebar.html -->
-<link rel="stylesheet" href="./channel-sidebar.css">
-<div class="channel-sidebar">
-    <section class="channels-section">
-        <h3 class="section-title">CHANNELS</h3>
-        <ul class="channel-list">
-            <li class="channel-item"># global-announcements</li>
-            <li class="channel-item active"># pmo-strategic-alignment</li>
-            <li class="channel-item"># budget-steering-comm</li>
-            <li class="channel-item"># risk-mitigation-log</li>
+<div class="channel-sidebar h-full bg-bluegray-50 p-4 flex flex-column">
+    <section class="channels-section mb-4">
+        <h3 class="text-xs text-gray-500 font-semibold mt-6 mb-2 px-2 uppercase">CHANNELS</h3>
+        <ul class="channel-list list-none p-0 m-0">
+            <li class="channel-item flex align-items-center p-2 mb-1 cursor-pointer hover:bg-bluegray-100 border-round-md text-sm text-gray-700 hover:text-gray-900 transition-colors transition-duration-150">
+                <i class="pi pi-hashtag mr-2 text-gray-500"></i>
+                <span>global-announcements</span>
+            </li>
+            <li class="channel-item flex align-items-center p-2 mb-1 cursor-pointer bg-white border-round-md shadow-1 border-1 border-blue-200 text-sm text-blue-700 font-medium active transition-colors transition-duration-150">
+                <i class="pi pi-hashtag mr-2 text-blue-500"></i>
+                <span>pmo-strategic-alignment</span>
+            </li>
+            <li class="channel-item flex align-items-center p-2 mb-1 cursor-pointer hover:bg-bluegray-100 border-round-md text-sm text-gray-700 hover:text-gray-900 transition-colors transition-duration-150">
+                <i class="pi pi-hashtag mr-2 text-gray-500"></i>
+                <span>budget-steering-comm</span>
+            </li>
+            <li class="channel-item flex align-items-center p-2 mb-1 cursor-pointer hover:bg-bluegray-100 border-round-md text-sm text-gray-700 hover:text-gray-900 transition-colors transition-duration-150">
+                <i class="pi pi-hashtag mr-2 text-gray-500"></i>
+                <span>risk-mitigation-log</span>
+            </li>
         </ul>
     </section>
 
-    <section class="direct-messages-section">
-        <h3 class="section-title">DIRECT MESSAGES</h3>
-        <ul class="dm-list">
-            <li class="dm-item">
-                <span class="status-indicator online"></span>
-                Sarah Jenkins (CTO)
+    <section class="direct-messages-section flex-grow-1">
+        <h3 class="text-xs text-gray-500 font-semibold mt-6 mb-2 px-2 uppercase">DIRECT MESSAGES</h3>
+        <ul class="dm-list list-none p-0 m-0">
+            <li class="dm-item flex align-items-center p-2 mb-1 cursor-pointer hover:bg-bluegray-100 border-round-md text-sm text-gray-700 hover:text-gray-900 transition-colors transition-duration-150">
+                <span class="status-indicator w-2 h-2 border-circle bg-green-500 mr-2"></span>
+                <span>Sarah Jenkins (CTO)</span>
             </li>
-            <li class="dm-item">
-                <span class="status-indicator offline"></span>
-                David Chen
+            <li class="dm-item flex align-items-center p-2 mb-1 cursor-pointer hover:bg-bluegray-100 border-round-md text-sm text-gray-700 hover:text-gray-900 transition-colors transition-duration-150">
+                <span class="status-indicator w-2 h-2 border-circle bg-bluegray-300 mr-2"></span>
+                <span>David Chen</span>
+            </li>
+            <li class="dm-item flex align-items-center p-2 mb-1 cursor-pointer hover:bg-bluegray-100 border-round-md text-sm text-gray-700 hover:text-gray-900 transition-colors transition-duration-150">
+                <span class="status-indicator w-2 h-2 border-circle bg-green-500 mr-2"></span>
+                <span>Marcus Aurelius</span>
             </li>
         </ul>
     </section>

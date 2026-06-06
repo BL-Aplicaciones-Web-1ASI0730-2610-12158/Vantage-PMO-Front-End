@@ -1,27 +1,51 @@
 <!-- src/chat-hub/components/ai-insights-panel/ai-insights-panel.html -->
-<link rel="stylesheet" href="./ai-insights-panel.css">
-<div class="ai-insights-panel card">
-    <div class="card-header">
-        <span class="ai-icon">✨</span>
-        <h3 class="card-title">AI INSIGHTS</h3>
-    </div>
-    <div class="card-body">
-        <p class="insight-tag">RECENT MEETING <span class="time-ago">45m ago</span></p>
-        <h4 class="meeting-title">Q3 Planning Sync: Steering Committee</h4>
-        <ul class="insights-list">
-            <li><span class="insight-icon check">✅</span> Decision: Approved 12% budget shift to infrastructure phase.</li>
-            <li><span class="insight-icon action">🔵</span> Action: Elena to finalize Gantt by EOD Friday.</li>
-        </ul>
-        <div class="sentiment-section">
-            <span class="sentiment-label">Channel Sentiment:</span>
-            <div class="sentiment-bar-container">
-                <div class="sentiment-bar productive" style="width: 90%;"></div>
-                <div class="sentiment-bar unproductive" style="width: 10%;"></div>
-            </div>
-            <span class="sentiment-text">Productive</span>
+<div class="ai-insights-panel p-3 h-full flex flex-column">
+    <div class="card bg-bluegray-50 border-round-lg shadow-1 p-4 mb-4">
+        <div class="flex align-items-center mb-3">
+            <span class="inline-flex align-items-center px-2 py-1 text-xs font-bold bg-green-500 text-white border-round-xl mr-2">
+                <i class="pi pi-sparkles mr-1"></i> AI INSIGHTS
+            </span>
         </div>
-    </div>
-    <div class="card-footer">
-        <button class="full-transcript-button">VIEW FULL TRANSCRIPT</button>
+
+        <h4 class="text-lg font-bold text-900 mb-3">RECENT MEETING</h4>
+
+        <div class="mb-4">
+            <p class="text-sm text-600 mb-2">Decisions Taken:</p>
+            <ul class="list-none p-0 m-0 text-sm text-700">
+                <li class="flex align-items-center mb-2">
+                    <i class="pi pi-check-circle text-green-500 mr-2"></i>
+                    <span>Approved Q3 budget reallocation.</span>
+                </li>
+                <li class="flex align-items-center mb-2">
+                    <i class="pi pi-check-circle text-green-500 mr-2"></i>
+                    <span>Finalized strategic alignment document.</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="mb-4">
+            <p class="text-sm text-600 mb-2">Action Alerts:</p>
+            <ul class="list-none p-0 m-0 text-sm text-700">
+                <li class="flex align-items-center mb-2">
+                    <i class="pi pi-exclamation-triangle text-orange-500 mr-2"></i>
+                    <span>Elena to finalize Gantt chart by EOD.</span>
+                </li>
+                <li class="flex align-items-center mb-2">
+                    <i class="pi pi-exclamation-triangle text-orange-500 mr-2"></i>
+                    <span>Marcus to review vendor contracts.</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="mb-4">
+            <p class="text-sm text-600 mb-2">CHANNEL SENTIMENT: <span class="font-bold text-green-600">Productive</span></p>
+            <div class="surface-300 border-round-xl overflow-hidden" style="height: 8px;">
+                <div class="bg-green-500 h-full" style="width: 80%;"></div>
+            </div>
+        </div>
+
+        <button class="p-button p-component p-button-secondary p-button-sm w-full mt-3">
+            VIEW FULL TRANSCRIPT
+        </button>
     </div>
 </div>

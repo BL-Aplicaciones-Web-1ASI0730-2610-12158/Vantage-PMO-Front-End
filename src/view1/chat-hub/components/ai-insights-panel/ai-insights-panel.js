@@ -11,18 +11,7 @@ export class AiInsightsPanel {
             .then(response => response.text())
             .then(html => {
                 this.container.innerHTML = html;
-                this.addEventListeners();
             })
             .catch(error => console.error('Error loading AiInsightsPanel HTML:', error));
-    }
-
-    addEventListeners() {
-        const viewTranscriptButton = this.container.querySelector('.full-transcript-button');
-        if (viewTranscriptButton) {
-            viewTranscriptButton.addEventListener('click', () => {
-                console.log('View Full Transcript button clicked!');
-                // Implement logic to show full transcript
-            });
-        }
     }
 }
