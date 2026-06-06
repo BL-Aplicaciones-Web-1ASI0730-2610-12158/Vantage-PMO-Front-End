@@ -6,9 +6,12 @@ import ProjectsHeader from './ProjectsHeader.vue';
 import MilestoneTimeline from './MilestoneTimeline.vue';
 import TeamCapacity from './TeamCapacity.vue';
 import CreateProjectModal from './CreateProjectModal.vue';
+import EditProjectModal from './EditProjectModal.vue';
 
 const store = ProjectStore();
 const showCreateModal = ref(false);
+const showEditModal = ref(false);
+const selectedProject = ref(null);
 const searchQuery = ref('');
 
 onMounted(() => store.fetchProjects());
@@ -56,6 +59,16 @@ const handleProjectCreated = () => {
   store.fetchProjects();
   searchQuery.value = '';
 };
+
+const handleEditRequest = (project) => {
+  selectedProject.value = project;
+  showEditModal.value = true;
+};
+
+const handleProjectUpdated = () => {
+  store.fetchProjects();
+  showEditModal.value = false;
+};
 </script>
 
 <template>
@@ -102,6 +115,7 @@ const handleProjectCreated = () => {
         v-for="project in activeProjects"
         :key="project.id"
         :project="project"
+        @edit="handleEditRequest"
       />
     </div>
 
@@ -116,6 +130,13 @@ const handleProjectCreated = () => {
       :visible="showCreateModal"
       @update:visible="(val) => showCreateModal = val"
       @created="handleProjectCreated"
+    />
+    <EditProjectModal
+      v-if="selectedProject"
+      :visible="showEditModal"
+      :project="selectedProject"
+      @update:visible="(val) => showEditModal = val"
+      @updated="handleProjectUpdated"
     />
   </div>
 </template>

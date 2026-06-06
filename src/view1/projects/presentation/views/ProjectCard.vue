@@ -96,7 +96,7 @@ const getMilestoneIcon = (type) => {
       </div>
       <div class="action-buttons">
         <pv-button icon="pi pi-calendar" severity="secondary" text size="small" />
-        <pv-button icon="pi pi-pencil" severity="secondary" text size="small" />
+        <pv-button @click="$emit('edit', project)" icon="pi pi-pencil" severity="secondary" text size="small" />
       </div>
     </div>
   </div>

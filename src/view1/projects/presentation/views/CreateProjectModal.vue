@@ -20,6 +20,8 @@ const formData = ref({
   dueDate: ''
 });
 
+const teamMembers = ref([]);
+const newMemberName = ref('');
 const loading = ref(false);
 const error = ref(null);
 
@@ -60,7 +62,7 @@ const handleSubmit = async () => {
       status: 'healthy',
       progress: 0,
       manager: 'Current User',
-      teamMembers: [
+      teamMembers: teamMembers.value.length > 0 ? teamMembers.value : [
         { id: 1, name: 'Team Member 1', avatar: 'A' },
         { id: 2, name: 'Team Member 2', avatar: 'B' }
       ],
@@ -77,6 +79,8 @@ const handleSubmit = async () => {
       startDate: '',
       dueDate: ''
     };
+    teamMembers.value = [];
+    newMemberName.value = '';
 
     emit('update:visible', false);
     emit('created');
@@ -96,8 +100,34 @@ const handleCancel = () => {
     startDate: '',
     dueDate: ''
   };
+  teamMembers.value = [];
+  newMemberName.value = '';
   error.value = null;
   emit('update:visible', false);
+};
+
+const addTeamMember = () => {
+  if (!newMemberName.value.trim()) return;
+
+  const newMember = {
+    id: Date.now(),
+    name: newMemberName.value,
+    avatar: newMemberName.value.charAt(0).toUpperCase()
+  };
+
+  teamMembers.value.push(newMember);
+  newMemberName.value = '';
+};
+
+const removeTeamMember = (id) => {
+  teamMembers.value = teamMembers.value.filter(member => member.id !== id);
+};
+
+const handleKeyPressMember = (event) => {
+  if (event.key === 'Enter') {
+    event.preventDefault();
+    addTeamMember();
+  }
 };
 </script>
 
@@ -148,26 +178,63 @@ const handleCancel = () => {
         />
       </div>
 
-      <!-- Dates Row -->
-      <div class="form-row">
-        <div class="form-group">
-          <label>{{ t('projects.form.startDate') }}</label>
-          <input
-            v-model="formData.startDate"
-            type="date"
-            class="form-input"
-          />
-        </div>
+       <!-- Dates Row -->
+       <div class="form-row">
+         <div class="form-group">
+           <label>{{ t('projects.form.startDate') }}</label>
+           <input
+             v-model="formData.startDate"
+             type="date"
+             class="form-input"
+           />
+         </div>
 
-        <div class="form-group">
-          <label>{{ t('projects.form.dueDate') }}</label>
-          <input
-            v-model="formData.dueDate"
-            type="date"
-            class="form-input"
-          />
-        </div>
-      </div>
+         <div class="form-group">
+           <label>{{ t('projects.form.dueDate') }}</label>
+           <input
+             v-model="formData.dueDate"
+             type="date"
+             class="form-input"
+           />
+         </div>
+       </div>
+
+       <!-- Team Members Section -->
+       <div class="form-group">
+         <label>{{ t('projects.form.teamMembers') || 'Team Members' }}</label>
+         <div class="team-members-input">
+           <pv-input-text
+             v-model="newMemberName"
+             :placeholder="t('projects.form.addMemberPlaceholder') || 'Enter team member name...'"
+             class="w-full"
+             @keypress="handleKeyPressMember"
+           />
+           <pv-button
+             :label="t('projects.form.addMember') || 'Add'"
+             icon="pi pi-plus"
+             @click="addTeamMember"
+             class="add-member-btn"
+           />
+         </div>
+
+         <!-- Team Members List -->
+         <div v-if="teamMembers.length > 0" class="team-members-list">
+           <div v-for="member in teamMembers" :key="member.id" class="team-member-tag">
+             <span class="member-avatar">{{ member.avatar }}</span>
+             <span class="member-name">{{ member.name }}</span>
+             <button
+               @click="removeTeamMember(member.id)"
+               class="remove-member-btn"
+               :title="t('projects.form.removeMember') || 'Remove'"
+             >
+               <i class="pi pi-times"></i>
+             </button>
+           </div>
+         </div>
+         <div v-else class="no-members">
+           {{ t('projects.form.noMembers') || 'No team members added yet' }}
+         </div>
+       </div>
 
       <!-- Action Buttons -->
       <div class="form-actions">
@@ -358,5 +425,81 @@ const handleCancel = () => {
   .form-content {
     padding: 1.5rem;
   }
+}
+
+.team-members-input {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.add-member-btn {
+  flex-shrink: 0;
+  padding: 0.875rem 1rem;
+}
+
+.team-members-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  padding: 1rem;
+  background: #f9fafb;
+  border-radius: 0.5rem;
+  border: 1px solid #e5e7eb;
+}
+
+.team-member-tag {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.875rem;
+  background: white;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+}
+
+.member-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  color: white;
+  font-weight: 700;
+  font-size: 0.8rem;
+  flex-shrink: 0;
+}
+
+.member-name {
+  color: #374151;
+  font-weight: 500;
+}
+
+.remove-member-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #9ca3af;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+  flex-shrink: 0;
+}
+
+.remove-member-btn:hover {
+  color: #ef4444;
+}
+
+.no-members {
+  color: #9ca3af;
+  font-size: 0.875rem;
+  font-style: italic;
+  padding: 1rem;
+  text-align: center;
 }
 </style>

@@ -2,7 +2,6 @@
 import { useRouter, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { ref } from 'vue'
-import CreateProjectDialog from '../../../projects/presentation/components/create-project-dialog.vue'
 
 const router = useRouter()
 const route  = useRoute()
