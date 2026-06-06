@@ -1,50 +1,41 @@
 <!-- src/chat-hub/components/ai-insights-panel/ai-insights-panel.html -->
-<div class="ai-insights-panel p-3 h-full flex flex-column">
-    <div class="card bg-bluegray-50 border-round-lg shadow-1 p-4 mb-4">
-        <div class="flex align-items-center mb-3">
-            <span class="inline-flex align-items-center px-2 py-1 text-xs font-bold bg-green-500 text-white border-round-xl mr-2">
-                <i class="pi pi-sparkles mr-1"></i> AI INSIGHTS
+<div class="ai-insights-panel">
+    <div class="card" style="background: #f0f9ff; border: 1px solid #e0f2fe; border-radius: 8px; padding: 1.5rem; margin-bottom: 1.5rem;">
+        <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+            <span style="display: inline-flex; align-items: center; padding: 0.5rem 1rem; background: #10b981; color: white; border-radius: 999px; font-size: 0.75rem; font-weight: 700;">
+                <i class="pi pi-sparkles" style="margin-right: 0.5rem;"></i> AI INSIGHTS
             </span>
         </div>
 
-        <h4 class="text-lg font-bold text-900 mb-3">RECENT MEETING</h4>
+        <h4 style="font-size: 1rem; font-weight: 700; color: #111827; margin: 1rem 0;">RECENT MEETING</h4>
 
-        <div class="mb-4">
-            <p class="text-sm text-600 mb-2">Decisions Taken:</p>
-            <ul class="list-none p-0 m-0 text-sm text-700">
-                <li class="flex align-items-center mb-2">
-                    <i class="pi pi-check-circle text-green-500 mr-2"></i>
-                    <span>Approved Q3 budget reallocation.</span>
-                </li>
-                <li class="flex align-items-center mb-2">
-                    <i class="pi pi-check-circle text-green-500 mr-2"></i>
-                    <span>Finalized strategic alignment document.</span>
-                </li>
-            </ul>
-        </div>
-
-        <div class="mb-4">
-            <p class="text-sm text-600 mb-2">Action Alerts:</p>
-            <ul class="list-none p-0 m-0 text-sm text-700">
-                <li class="flex align-items-center mb-2">
-                    <i class="pi pi-exclamation-triangle text-orange-500 mr-2"></i>
-                    <span>Elena to finalize Gantt chart by EOD.</span>
-                </li>
-                <li class="flex align-items-center mb-2">
-                    <i class="pi pi-exclamation-triangle text-orange-500 mr-2"></i>
-                    <span>Marcus to review vendor contracts.</span>
-                </li>
-            </ul>
-        </div>
-
-        <div class="mb-4">
-            <p class="text-sm text-600 mb-2">CHANNEL SENTIMENT: <span class="font-bold text-green-600">Productive</span></p>
-            <div class="surface-300 border-round-xl overflow-hidden" style="height: 8px;">
-                <div class="bg-green-500 h-full" style="width: 80%;"></div>
+        <div style="margin-bottom: 1rem;">
+            <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 0.75rem; font-weight: 500;">Decision:</p>
+            <div style="display: flex; align-items: flex-start; gap: 0.75rem; margin-bottom: 0.75rem;">
+                <i class="pi pi-check-circle" style="color: #10b981; margin-top: 0.125rem; font-size: 1rem;"></i>
+                <span style="font-size: 0.875rem; color: #374151;">Approved 12% budget shift to infrastructure phase.</span>
             </div>
         </div>
 
-        <button class="p-button p-component p-button-secondary p-button-sm w-full mt-3">
+        <div style="margin-bottom: 1rem;">
+            <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 0.75rem; font-weight: 500;">Action:</p>
+            <div style="display: flex; align-items: flex-start; gap: 0.75rem;">
+                <i class="pi pi-exclamation-triangle" style="color: #f59e0b; margin-top: 0.125rem; font-size: 1rem;"></i>
+                <span style="font-size: 0.875rem; color: #374151;">Elena to finalize Gantt by EOD Friday.</span>
+            </div>
+        </div>
+
+        <div style="margin-bottom: 1rem;">
+            <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 0.5rem; font-weight: 500;">CHANNEL SENTIMENT</p>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <div style="height: 8px; background: #e5e7eb; border-radius: 999px; overflow: hidden; flex: 1;">
+                    <div style="height: 100%; background: linear-gradient(90deg, #10b981 0%, #f59e0b 100%); width: 75%;"></div>
+                </div>
+                <span style="font-size: 0.875rem; color: #10b981; font-weight: 500;">Productive</span>
+            </div>
+        </div>
+
+        <button class="view-transcript-btn" style="width: 100%; padding: 0.75rem; background: #111827; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; margin-top: 1rem; transition: background 0.2s;">
             VIEW FULL TRANSCRIPT
         </button>
     </div>

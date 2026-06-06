@@ -2,7 +2,7 @@
   <div class="message-row">
     <!-- Bloque de la Izquierda (.avatar-container) -->
     <div class="avatar-container">
-      <img :src="message.avatar" :alt="messageAuthorName + ' Avatar'" class="message-avatar" />
+      <img :src="messageAuthorAvatar" :alt="messageAuthorName + ' Avatar'" class="message-avatar" />
     </div>
 
     <!-- Bloque de la Derecha (.message-content-wrapper) -->
@@ -65,6 +65,12 @@ watch(() => props.message.reactions, (newReactions) => {
 const messageAuthorName = computed(() => {
   const author = props.users.find(user => user.id === props.message.authorId);
   return author ? author.name : 'Unknown User';
+});
+
+// Computed para obtener el avatar del autor del mensaje
+const messageAuthorAvatar = computed(() => {
+  const author = props.users.find(user => user.id === props.message.authorId);
+  return author?.avatar || 'https://via.placeholder.com/40?text=?';
 });
 
 const toggleReaction = (emoji) => {

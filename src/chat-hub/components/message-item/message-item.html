@@ -1,16 +1,16 @@
 <!-- src/chat-hub/components/message-item/message-item.html -->
-<div class="message-item flex mb-5"> <!-- Increased vertical spacing -->
-    <img class="message-avatar w-10 h-10 rounded-full object-cover mr-3 flex-shrink-0" src="" alt="User Avatar"> <!-- src attribute is now empty -->
-    <div class="message-content flex-grow-1">
-        <div class="message-header flex align-items-center mb-1">
-            <span class="message-author font-bold text-900 mr-2"></span>
-            <span class="message-timestamp text-xs text-400"></span> <!-- Lighter gray for timestamp -->
+<div class="message-item"> <!-- Increased vertical spacing -->
+    <img class="message-avatar" src="" alt="User Avatar"> <!-- src attribute is set by JS -->
+    <div class="message-content">
+        <div class="message-header">
+            <span class="message-author"></span>
+            <span class="message-timestamp"></span> <!-- Lighter gray for timestamp -->
         </div>
-        <p class="message-text text-700 line-height-3 m-0 leading-relaxed"></p> <!-- Added leading-relaxed -->
-        <div class="message-attachments mt-2 flex flex-column gap-2">
+        <p class="message-text" style="margin: 0.5rem 0 0.75rem 0;"></p>
+        <div class="message-attachments" style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.75rem;">
             <!-- Attachment items will be rendered here dynamically by JS -->
         </div>
-        <div class="message-reactions flex gap-2 mt-2">
+        <div class="message-reactions" style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
             <!-- Reaction pills will be rendered here dynamically by JS -->
         </div>
     </div>

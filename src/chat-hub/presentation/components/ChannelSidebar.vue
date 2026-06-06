@@ -3,7 +3,9 @@
     <section class="channels-section">
       <div class="section-header">
         <h3 class="section-title">CHANNELS</h3>
-        <button class="add-chat-button" @click="openCreateChatDialog(true)"><i class="pi pi-plus"></i></button>
+        <button class="add-chat-button" @click="openCreateChatDialog(true)" title="Create new channel">
+          <i class="pi pi-plus"></i>
+        </button>
       </div>
       <ul class="channel-list">
         <li
@@ -11,8 +13,10 @@
           :key="chat.id"
           :class="['channel-item', { active: chat.id === activeChatId }]"
           @click="selectChat(chat.id)"
+          @contextmenu.prevent="openChannelMenu(chat)"
         >
-          # {{ chat.name }}
+          <span class="channel-name"># {{ chat.name }}</span>
+          <span class="channel-members-count" v-if="chat.members">{{ chat.members.length }}</span>
         </li>
       </ul>
     </section>
@@ -20,7 +24,9 @@
     <section class="direct-messages-section">
       <div class="section-header">
         <h3 class="section-title">DIRECT MESSAGES</h3>
-        <button class="add-chat-button" @click="openCreateChatDialog(false)"><i class="pi pi-plus"></i></button>
+        <button class="add-chat-button" @click="openCreateChatDialog(false)" title="Start new conversation">
+          <i class="pi pi-plus"></i>
+        </button>
       </div>
       <ul class="dm-list">
         <li
@@ -41,6 +47,7 @@
 import { ref, computed } from 'vue';
 import { useDialog } from 'primevue/usedialog';
 import CreateChatDialog from './CreateChatDialog.vue';
+import MembersListDialog from './MembersListDialog.vue';
 
 const props = defineProps({
   activeChatId: {
@@ -57,7 +64,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(['update:activeChatId', 'add:chat']);
+const emit = defineEmits(['update:activeChatId', 'add:chat', 'add:member']);
 const dialog = useDialog();
 
 const filteredChannels = computed(() => props.chats.filter(chat => chat.type === 'channel'));
@@ -94,6 +101,25 @@ const openCreateChatDialog = (isChannel) => {
       const newChat = options.data;
       if (newChat) {
         emit('add:chat', newChat);
+      }
+    }
+  });
+};
+
+const openChannelMenu = (chat) => {
+  dialog.open(MembersListDialog, {
+    props: {
+      header: `Members of ${chat.name}`,
+      modal: true,
+      style: { width: '400px' },
+      breakpoints:{ '960px': '75vw', '641px': '100vw' },
+      chatMembers: chat.members.map(memberId => props.users.find(u => u.id === memberId)),
+      allUsers: props.users,
+      chatId: chat.id,
+    },
+    onClose: (options) => {
+      if (options.data && options.data.newMemberId) {
+        emit('add:member', { chatId: chat.id, userId: options.data.newMemberId });
       }
     }
   });
@@ -158,6 +184,24 @@ const openCreateChatDialog = (isChannel) => {
   font-size: 0.9rem;
   color: var(--color-gray-dark); /* Gris corporativo apagado para canales inactivos */
   transition: background-color 0.2s ease, color 0.2s ease;
+  justify-content: space-between;
+}
+
+.channel-name {
+  flex: 1;
+}
+
+.channel-members-count {
+  font-size: 0.75rem;
+  background: #e5e7eb;
+  color: #6b7280;
+  padding: 0.125rem 0.5rem;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+
+.channel-item:hover .channel-members-count {
+  background: #d1d5db;
 }
 
 .channel-item:hover, .dm-item:hover {
