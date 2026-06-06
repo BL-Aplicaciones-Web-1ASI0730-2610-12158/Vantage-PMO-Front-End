@@ -1,5 +1,5 @@
-import en from './view1/locales/en.json';
-import es from './view1/locales/es.json';
+import en from './locales/en.json';
+import es from './locales/es.json';
 
 import {createI18n} from 'vue-i18n';
 

@@ -1,6 +1,6 @@
 import { BaseEndpoint } from './base-endpoint.js';
 import { TaskAssembler, ScheduleAssembler, DepartmentAssembler } from './dashboard.assembler.js';
-import { StatsAssembler } from '../../view1/profile/infrastructure/stats.assembler.js';
+import { StatsAssembler } from '../../profile/infrastructure/stats.assembler.js';
 
 /**
  * Dashboard API

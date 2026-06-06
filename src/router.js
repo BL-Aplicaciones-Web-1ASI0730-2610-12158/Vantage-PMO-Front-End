@@ -1,22 +1,22 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Home from './shared/presentation/view1/views/home.vue';
-import iamRoutes from './view1/iam/presentation/iam-routes.js';
-import { authenticationGuard } from './view1/iam/infrastructure/authentication.guard.js';
+import iamRoutes from './iam/presentation/iam-routes.js';
+import { authenticationGuard } from './iam/infrastructure/authentication.guard.js';
 
 // Define lazy-loaded components for routes
 const pageNotFound = () => import('./shared/presentation/view1/views/page-not-found.vue');
 const layout      = () => import('./shared/presentation/view1/components/layout.vue');
-const profile     = () => import('./view1/profile/presentation/views/profile.vue');
-const reports = () => import('./view1/reports/presentation/views/reports.vue');
-const projects = () => import('./view1/projects/presentation/views/project.vue');
-const taskCollaboration = () => import('./view1/task-collaboration/presentation/views/task-collaboration.vue');
-const systemAdministration = () => import('./view1/system-administration/presentation/pages/system-administration-page.vue');
-const signInForm = () => import('./view1/iam/presentation/views/sign-in-form.vue');
-const schedule     = () => import('./view1/schedule/presentation/views/schedule.vue');
-const meetings     = () => import('./view1/meetings/presentation/views/meetings.vue');
-const support      = () => import('./view1/support/presentation/views/support.vue');
-const settings     = () => import('./view1/settings/presentation/views/settings.vue');
-const chatHub      = () => import('./view1/chat-hub/presentation/ChatHub.vue'); // Updated path
+const profile     = () => import('./profile/presentation/views/profile.vue');
+const reports = () => import('./reports/presentation/views/reports.vue');
+const projects = () => import('./projects/presentation/views/project.vue');
+const taskCollaboration = () => import('./task-collaboration/presentation/views/task-collaboration.vue');
+const systemAdministration = () => import('./system-administration/presentation/pages/system-administration-page.vue');
+const signInForm = () => import('./iam/presentation/views/sign-in-form.vue');
+const schedule     = () => import('./schedule/presentation/views/schedule.vue');
+const meetings     = () => import('./meetings/presentation/views/meetings.vue');
+const support      = () => import('./support/presentation/views/support.vue');
+const settings     = () => import('./settings/presentation/views/settings.vue');
+const chatHub      = () => import('./chat-hub/presentation/ChatHub.vue'); // Updated path
 
 
 // Routes version when IAM is not implemented
