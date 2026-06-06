@@ -1,18 +1,75 @@
 <!-- src/chat-hub/ChatHub.html -->
-<div class="chat-hub-container flex h-screen surface-ground">
-    <!-- Columna Izquierda (Sidebar de Canales) -->
-    <aside class="chat-hub-sidebar w-18rem flex-shrink-0 border-right-1 surface-border">
-        <div id="channel-sidebar-container" class="h-full"></div>
+<div class="chat-hub-container">
+    <!-- Left Sidebar - Navigation -->
+    <aside class="chat-hub-sidebar">
+        <div class="sidebar-header">
+            <div class="logo-icon">
+                <i class="pi pi-a"></i>
+            </div>
+            <div class="logo-text">
+                <h1>Project Atelier</h1>
+                <p>EXECUTIVE VIEW</p>
+            </div>
+        </div>
+
+        <div class="nav-section">
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <i class="pi pi-briefcase"></i>
+                    <span>MY PROJECTS</span>
+                </li>
+                <li class="nav-item">
+                    <i class="pi pi-layer-group"></i>
+                    <span>TEAM BOARD</span>
+                </li>
+                <li class="nav-item active">
+                    <i class="pi pi-comments"></i>
+                    <span>CHAT HUB</span>
+                </li>
+                <li class="nav-item">
+                    <i class="pi pi-bars"></i>
+                    <span>QUICK REPORTS</span>
+                </li>
+                <li class="nav-item">
+                    <i class="pi pi-calendar"></i>
+                    <span>MEETINGS</span>
+                </li>
+            </ul>
+        </div>
+
+        <button class="create-initiative-btn">
+            <i class="pi pi-plus" style="margin-right: 0.5rem;"></i>
+            CREATE INITIATIVE
+        </button>
+
+        <div style="border-top: 1px solid rgba(255,255,255,0.2); padding-top: 1rem;">
+            <div class="nav-item" style="margin-bottom: 0.5rem;">
+                <i class="pi pi-cog"></i>
+                <span>SETTINGS</span>
+            </div>
+            <div class="nav-item">
+                <i class="pi pi-inbox"></i>
+                <span>ARCHIVED</span>
+            </div>
+        </div>
     </aside>
 
-    <!-- Columna Central (Área de Chat Principal) -->
-    <main class="chat-hub-main-content flex-grow-1 flex flex-column">
-        <div id="chat-window-container" class="h-full"></div>
-    </main>
+    <!-- Center - Channels & Chat -->
+    <div style="display: flex; flex: 1; overflow: hidden;">
+        <!-- Columna Izquierda (Sidebar de Canales) -->
+        <aside class="chat-hub-sidebar" style="background: #f3f4f6; color: #333; width: 18rem; padding: 0;">
+            <div id="channel-sidebar-container" style="height: 100%; overflow-y: auto;"></div>
+        </aside>
+
+        <!-- Columna Central (Área de Chat Principal) -->
+        <main class="chat-hub-main-content" style="flex: 1;">
+            <div id="chat-window-container" style="height: 100%;"></div>
+        </main>
+    </div>
 
     <!-- Columna Derecha (AI Insights y Pinned Assets) -->
-    <aside class="chat-hub-info-panel w-25rem flex-shrink-0 border-left-1 surface-border flex flex-column">
-        <div id="ai-insights-panel-container" class="flex-grow-0"></div>
-        <div id="pinned-assets-panel-container" class="flex-grow-1"></div>
+    <aside class="chat-hub-info-panel">
+        <div id="ai-insights-panel-container"></div>
+        <div id="pinned-assets-panel-container" style="flex: 1; overflow-y: auto;"></div>
     </aside>
 </div>

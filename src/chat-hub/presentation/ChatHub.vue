@@ -1,5 +1,6 @@
 <template>
   <div class="chat-hub-wrapper">
+    <!-- Main Chat Container -->
     <div class="chat-hub-container">
       <aside class="chat-hub-sidebar">
         <ChannelSidebar
@@ -8,6 +9,7 @@
           :users="users"
           @update:activeChatId="handleChatSelection"
           @add:chat="addChat"
+          @add:member="addMemberToChat"
         />
       </aside>
       <main class="chat-hub-main-content">
@@ -151,56 +153,77 @@ const addMemberToChat = ({ chatId, userId }) => {
 <style scoped>
 @import url('../styles/_variables.css');
 
-/* 1. El Contenedor Padre Central (ChatHubContainer) */
+/* Main Wrapper - Flex Container */
 .chat-hub-wrapper {
-  height: calc(100vh - 70px); /* Altura calculada para ocupar el espacio de trabajo disponible */
-  overflow: hidden; /* Evita el scroll general del navegador */
+  height: calc(100vh - 70px);
+  overflow: hidden;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: var(--color-gray-lightest); /* Fondo general de la app */
+  background-color: var(--color-gray-lightest);
 }
 
+/* Main Chat Container */
 .chat-hub-container {
   display: flex;
-  width: 100%;
-  height: 100%; /* Ocupa el 100% del chat-hub-wrapper */
-  border-radius: 8px; /* Bordes redondeados para el contenedor general del chat */
-  overflow: hidden; /* Asegura que los bordes redondeados se apliquen correctamente a los hijos */
-  font-family: Arial, sans-serif; /* Fuente por defecto */
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Sombra sutil para el contenedor principal */
+  flex: 1;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
-/* 2. Columna Izquierda: Panel de Canales y DMs */
+/* Sidebar (Channels) */
 .chat-hub-sidebar {
-  flex: 0 0 260px; /* Ancho fijo y compacto */
-  background-color: var(--color-gray-lightest); /* Fondo gris neutro claro y limpio */
+  flex: 0 0 260px;
+  background-color: var(--color-gray-lightest);
   border-right: 1px solid var(--color-gray-light);
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
+  overflow-y: auto;
 }
 
-/* 3. Columna Central: Ventana del Chat */
+/* Main Content */
 .chat-hub-main-content {
-  flex: 1; /* Flexible y toma todo el espacio restante */
-  background-color: var(--color-white); /* Fondo blanco puro */
+  flex: 1;
+  background-color: var(--color-white);
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* Vital para fijar cabecera y input */
-  height: 100%; /* Asegura que ocupe toda la altura disponible */
+  justify-content: space-between;
+  height: 100%;
   box-sizing: border-box;
 }
 
-/* 4. Columna Derecha: Panel de AI Insights y Pinned Assets */
+/* Right Info Panel */
 .chat-hub-info-panel {
-  flex: 0 0 320px; /* Ancho fijo y compacto */
-  background-color: var(--color-gray-lightest); /* Fondo gris neutro claro y limpio */
+  flex: 0 0 320px;
+  background-color: var(--color-gray-lightest);
   border-left: 1px solid var(--color-gray-light);
   display: flex;
   flex-direction: column;
-  padding: 16px; /* Padding interno */
+  padding: 16px;
   box-sizing: border-box;
-  gap: 16px; /* Espaciado entre las tarjetas */
+  gap: 16px;
+  overflow-y: auto;
+}
+
+/* Scrollbar Styling */
+.chat-hub-sidebar::-webkit-scrollbar,
+.chat-hub-info-panel::-webkit-scrollbar {
+  width: 8px;
+}
+
+.chat-hub-sidebar::-webkit-scrollbar-track,
+.chat-hub-info-panel::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.chat-hub-sidebar::-webkit-scrollbar-thumb,
+.chat-hub-info-panel::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+.chat-hub-sidebar::-webkit-scrollbar-thumb:hover,
+.chat-hub-info-panel::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
 }
 </style>
