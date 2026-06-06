@@ -1,0 +1,197 @@
+/* src/chat-hub/components/chat-window/chat-window.css */
+@import url('../../styles/_variables.css');
+
+.chat-window {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: var(--color-white);
+    border-left: 1px solid var(--color-gray-light);
+    border-right: 1px solid var(--color-gray-light);
+}
+
+.chat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--color-gray-light);
+    background-color: var(--color-white);
+}
+
+.channel-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 0;
+    color: var(--color-gray-dark);
+}
+
+.channel-description {
+    font-size: 0.85rem;
+    color: var(--color-gray-medium);
+    margin: 0.2rem 0 0;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.members-badge {
+    background-color: var(--color-gray-light);
+    color: var(--color-gray-dark);
+    padding: 0.4rem 0.7rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.icon-group::before {
+    content: '👥'; /* Placeholder for group icon */
+}
+
+.icon-star::before {
+    content: '⭐'; /* Placeholder for star icon */
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: var(--color-gray-medium);
+}
+
+.message-list {
+    flex-grow: 1;
+    padding: 1rem 1.5rem;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.date-separator {
+    text-align: center;
+    margin: 1.5rem 0;
+    font-size: 0.8rem;
+    color: var(--color-gray-medium);
+    position: relative;
+}
+
+.date-separator::before,
+.date-separator::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 40%; /* Adjust as needed */
+    height: 1px;
+    background-color: var(--color-gray-light);
+}
+
+.date-separator::before {
+    left: 0;
+}
+
+.date-separator::after {
+    right: 0;
+}
+
+
+.message-input-area {
+    border-top: 1px solid var(--color-gray-light);
+    padding: 0.75rem 1.5rem;
+    background-color: var(--color-white);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    border-radius: 0 0 8px 8px; /* Rounded bottom corners if this is the bottom of the app */
+}
+
+.toolbar {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.toolbar-button {
+    background-color: transparent;
+    border: 1px solid var(--color-gray-light);
+    color: var(--color-gray-dark);
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.toolbar-button:hover {
+    background-color: var(--color-gray-lightest);
+}
+
+.message-input {
+    width: calc(100% - 2rem); /* Adjust for padding */
+    min-height: 60px;
+    border: 1px solid var(--color-gray-light);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    resize: vertical;
+    outline: none;
+    font-family: Arial, sans-serif;
+    color: var(--color-gray-dark);
+}
+
+.message-input::placeholder {
+    color: var(--color-gray-medium);
+}
+
+.input-controls {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.control-button {
+    background-color: transparent;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: var(--color-gray-medium);
+    padding: 0.5rem;
+}
+
+.control-button:hover {
+    color: var(--color-primary-blue);
+}
+
+.icon-plus::before {
+    content: '➕'; /* Placeholder for plus icon */
+}
+
+.icon-emoji::before {
+    content: '😊'; /* Placeholder for emoji icon */
+}
+
+.send-button {
+    background-color: var(--color-send-button-blue);
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.send-button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+.icon-send::before {
+    content: '🚀'; /* Placeholder for send icon (paper plane) */
+    color: var(--color-white);
+    font-size: 1rem;
+    transform: rotate(45deg); /* To make it look like a paper plane */
+}

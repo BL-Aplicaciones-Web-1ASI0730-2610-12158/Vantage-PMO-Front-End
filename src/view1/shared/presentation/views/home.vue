@@ -2,9 +2,12 @@
 import { onMounted, computed } from 'vue';
 import { useDashboardStore } from '../../application/dashboard.store.js';
 import useIamStore from '../../../iam/application/iam.store.js';
+import { useDialog } from 'primevue/usedialog'; // Importar useDialog
+import AiInsightsPanel from '../../../chat-hub/presentation/components/AiInsightsPanel.vue'; // Importar AiInsightsPanel
 
 const store = useDashboardStore();
 const iamStore = useIamStore();
+const dialog = useDialog(); // Inicializar useDialog
 
 onMounted(() => store.fetchAll());
 
@@ -13,6 +16,22 @@ const scheduleItems = computed(() => store.schedule);
 const departments   = computed(() => store.departments);
 const stats         = computed(() => store.stats);
 const currentUsername = computed(() => iamStore.currentUsername || 'User');
+
+// Función para abrir el diálogo con AiInsightsPanel
+const openAiInsightsDialog = () => {
+  dialog.open(AiInsightsPanel, {
+    props: {
+      header: 'AI Insights Overview',
+      modal: true,
+      style: { width: '50vw' }, // Ancho del diálogo, ajusta según necesidad
+      breakpoints:{ '960px': '75vw', '641px': '100vw' }
+    },
+    // Puedes pasar props al AiInsightsPanel si fuera necesario
+    // data: {
+    //   someProp: 'someValue'
+    // }
+  });
+};
 </script>
 
 <template>
@@ -66,7 +85,8 @@ const currentUsername = computed(() => iamStore.currentUsername || 'User');
           <span class="ai-title">{{ $t('home.aiInsights') }}</span>
         </div>
         <p class="ai-text">{{ $t('home.aiText') }}</p>
-        <button class="apply-btn">{{ $t('home.applyOptimization') }}</button>
+        <!-- Botón para abrir el diálogo con AiInsightsPanel -->
+        <button class="apply-btn" @click="openAiInsightsDialog">View AI Insights</button>
       </div>
     </div>
 
