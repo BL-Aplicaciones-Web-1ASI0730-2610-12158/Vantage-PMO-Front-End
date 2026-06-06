@@ -66,6 +66,33 @@ const removeMilestone = (id) => {
   milestones.value = milestones.value.filter(m => m.id !== id);
 };
 
+const toggleMilestoneType = (id) => {
+  const idx = milestones.value.findIndex(m => m.id === id);
+  if (idx === -1) return;
+  const current = milestones.value[idx].type || 'pending';
+  const order = ['pending', 'warning', 'success'];
+  const next = order[(order.indexOf(current) + 1) % order.length];
+  milestones.value[idx].type = next;
+};
+
+const calculateProgress = () => {
+  if (!milestones.value || milestones.value.length === 0) return props.project.progress || 0;
+  const total = milestones.value.length;
+  const done = milestones.value.filter(m => (m.type || 'pending') === 'success').length;
+  return Math.round((done / total) * 100);
+};
+
+const calculateStatus = () => {
+  if (!milestones.value || milestones.value.length === 0) return props.project.status || 'healthy';
+  const types = milestones.value.map(m => (m.type || 'pending'));
+  const allSuccess = types.every(t => t === 'success');
+  const allWarning = types.every(t => t === 'warning');
+  if (allSuccess) return 'healthy';
+  if (allWarning) return 'critical';
+  if (types.includes('warning')) return 'at-risk';
+  return 'healthy';
+};
+
 const addTeamMember = () => {
   if (!newMemberName.value.trim()) return;
 
@@ -92,7 +119,7 @@ const handleKeyPressMember = (event) => {
 
 const handleSubmit = async () => {
   if (!formData.value.name || !formData.value.category) {
-    error.value = t('projects.form.requiredFields') || 'Please fill in required fields';
+    error.value = t('projects.form.requiredFields');
     return;
   }
 
@@ -108,8 +135,8 @@ const handleSubmit = async () => {
       dueDate: formData.value.dueDate || null,
       teamMembers: teamMembers.value,
       milestones: milestones.value,
-      status: props.project.status || 'healthy',
-      progress: props.project.progress || 0,
+      status: calculateStatus(),
+      progress: calculateProgress(),
       manager: props.project.manager || 'Current User'
     };
 
@@ -117,7 +144,7 @@ const handleSubmit = async () => {
     emit('updated');
   } catch (err) {
     console.error('Error updating project:', err);
-    error.value = t('projects.form.error') || 'Error updating project';
+    error.value = t('projects.form.error');
   } finally {
     loading.value = false;
   }
@@ -140,6 +167,15 @@ const handleCancel = () => {
       <div v-if="error" class="error-message">
         <i class="pi pi-exclamation-circle"></i>
         <span>{{ error }}</span>
+      </div>
+
+      <!-- Progress preview (based on milestones) -->
+      <div class="progress-preview">
+        <div class="progress-header">
+          <span class="label">{{ t('projects.form.progressPreview')}}</span>
+          <span class="percentage">{{ calculateProgress() }}%</span>
+        </div>
+        <pv-progressbar :value="calculateProgress()" :showValue="false" class="preview-bar" />
       </div>
 
       <div class="form-group">
@@ -234,11 +270,13 @@ const handleCancel = () => {
         <div v-if="milestones.length > 0" class="milestones-list">
           <div v-for="m in milestones" :key="m.id" class="milestone-row">
             <div class="milestone-left">
+              <button class="milestone-type-btn" @click="toggleMilestoneType(m.id)" :title="m.type">
+                <i :class="m.type === 'success' ? 'pi pi-check' : m.type === 'warning' ? 'pi pi-exclamation-triangle' : 'pi pi-calendar'" />
+              </button>
               <span class="milestone-name">{{ m.name }}</span>
               <span class="milestone-date">{{ m.date }}</span>
             </div>
             <div class="milestone-actions">
-              <pv-button icon="pi pi-pencil" text size="small" @click.stop="() => { /* TODO: inline edit later */ }" />
               <pv-button icon="pi pi-times" text severity="danger" size="small" @click="removeMilestone(m.id)" />
             </div>
           </div>
@@ -446,12 +484,48 @@ const handleCancel = () => {
   gap: 0.5rem;
 }
 
+.milestone-type-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 6px;
+  color: #2563eb;
+  margin-right: 0.5rem;
+}
+.milestone-type-btn .pi {
+  font-size: 1rem;
+}
+.milestone-type-btn:hover {
+  background: #eef2ff;
+}
+
 .form-actions {
   display: flex;
   justify-content: flex-end;
   gap: 1rem;
   margin-top: 1rem;
 }
+
+.progress-preview {
+  margin-bottom: 0.75rem;
+}
+.preview-bar {
+  height: 0.5rem;
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+.progress-header .label { font-size: 0.8rem; color: #6b7280; font-weight: 600; text-transform: uppercase; }
+.progress-header .percentage { font-weight: 700; color: #111827; }
 
 @media (max-width: 1024px) {
   .edit-project-dialog { min-width: 95vw !important; max-width: 95vw !important; }

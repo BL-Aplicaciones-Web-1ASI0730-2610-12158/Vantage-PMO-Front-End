@@ -180,10 +180,10 @@
        "success": "¡Proyecto creado exitosamente!",
        "error": "Error al crear el proyecto",
        "updateProject": "Actualizar Proyecto",
-       "projectMilestoneNamePlaceHolder": "ej. Validación de modelo"
-
-    }
-  },
+       "projectMilestoneNamePlaceHolder": "ej. Validación de modelo",
+       "progressPreview": "Previsualización de Progreso"
+      }
+    },
   "taskCollaboration": {
     "title": "Colaboración de Tareas",
     "subtitle": "Gestiona el flujo de trabajo del equipo y colabora visualmente con tableros Kanban.",

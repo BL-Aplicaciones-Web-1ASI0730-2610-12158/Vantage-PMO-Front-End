@@ -44,8 +44,8 @@ const categoriesES = [
 ];
 
 const handleSubmit = async () => {
-  if (!formData.value.name || !formData.value.category || !formData.value.description) {
-    error.value = t('projects.form.requiredFields') || 'Please fill in all required fields';
+  if (!formData.value.name || !formData.value.category) {
+    error.value = t('projects.form.requiredFields');
     return;
   }
 
@@ -201,11 +201,11 @@ const handleKeyPressMember = (event) => {
 
        <!-- Team Members Section -->
        <div class="form-group">
-         <label>{{ t('projects.form.teamMembers') || 'Team Members' }}</label>
+         <label>{{ t('projects.form.teamMembers')}}</label>
          <div class="team-members-input">
            <pv-input-text
              v-model="newMemberName"
-             :placeholder="t('projects.form.addMemberPlaceholder') || 'Enter team member name...'"
+             :placeholder="t('projects.form.addMemberPlaceholder')"
              class="w-full"
              @keypress="handleKeyPressMember"
            />
@@ -232,7 +232,7 @@ const handleKeyPressMember = (event) => {
            </div>
          </div>
          <div v-else class="no-members">
-           {{ t('projects.form.noMembers') || 'No team members added yet' }}
+           {{ t('projects.form.noMembers')}}
          </div>
        </div>
 

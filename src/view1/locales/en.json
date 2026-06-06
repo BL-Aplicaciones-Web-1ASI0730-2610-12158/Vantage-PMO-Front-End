@@ -180,9 +180,10 @@
        "success": "Project created successfully!",
        "error": "Error creating project",
        "updateProject": "Update Project",
-       "projectMilestoneNamePlaceHolder": "ej. Model Validation"
-    }
-  },
+       "projectMilestoneNamePlaceHolder": "ej. Model Validation",
+       "progressPreview": "Progress Preview"
+      }
+    },
   "taskCollaboration": {
     "title": "Task Collaboration",
     "subtitle": "Manage team workflow and collaborate visually with Kanban boards.",
