@@ -1,4 +1,4 @@
-import {BaseEndpoint} from "../../shared/infrastructure/base-endpoint.js";
+import {BaseEndpoint} from "../../../shared/infrastructure/base-endpoint.js";
 const signInEndpointPath = import.meta.env.VITE_SIGNIN_ENDPOINT_PATH;
 const signUpEndpointPath = import.meta.env.VITE_SIGNUP_ENDPOINT_PATH;
 const usersEndpointPath   = import.meta.env.VITE_USERS_ENDPOINT_PATH;

@@ -1,4 +1,4 @@
-import { BaseEndpoint } from '../../shared/infrastructure/base-endpoint.js';
+import { BaseEndpoint } from '../../../shared/infrastructure/base-endpoint.js';
 import { ProfileAssembler } from './profile.assembler.js';
 import { StatsAssembler } from './stats.assembler.js';
 

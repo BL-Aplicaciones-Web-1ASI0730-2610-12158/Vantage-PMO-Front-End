@@ -1,9 +1,9 @@
 <script setup>
 import { onMounted, computed } from 'vue';
 import { useDashboardStore } from '../../application/dashboard.store.js';
-import useIamStore from '../../../iam/application/iam.store.js';
+import useIamStore from '../../../view1/iam/application/iam.store.js';
 import { useDialog } from 'primevue/usedialog'; // Importar useDialog
-import AiInsightsPanel from '../../../chat-hub/presentation/components/AiInsightsPanel.vue'; // Importar AiInsightsPanel
+import AiInsightsPanel from '../../../view1/chat-hub/presentation/components/AiInsightsPanel.vue'; // Importar AiInsightsPanel
 
 const store = useDashboardStore();
 const iamStore = useIamStore();

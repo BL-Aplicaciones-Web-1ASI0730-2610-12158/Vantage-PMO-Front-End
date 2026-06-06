@@ -1,4 +1,4 @@
-import { BaseEndpoint } from '../../shared/infrastructure/base-endpoint.js';
+import { BaseEndpoint } from '../../../shared/infrastructure/base-endpoint.js';
 import { SupportAssembler } from './support.assembler.js';
 
 class SupportApi extends BaseEndpoint {

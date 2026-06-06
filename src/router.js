@@ -1,11 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import Home from './view1/shared/presentation/views/home.vue';
+import Home from './shared/presentation/views/home.vue';
 import iamRoutes from './view1/iam/presentation/iam-routes.js';
 import { authenticationGuard } from './view1/iam/infrastructure/authentication.guard.js';
 
 // Define lazy-loaded components for routes
-const pageNotFound = () => import('./view1/shared/presentation/views/page-not-found.vue');
-const layout      = () => import('./view1/shared/presentation/components/layout.vue');
+const pageNotFound = () => import('./shared/presentation/views/page-not-found.vue');
+const layout      = () => import('./shared/presentation/components/layout.vue');
 const profile     = () => import('./view1/profile/presentation/views/profile.vue');
 const reports = () => import('./view1/reports/presentation/views/reports.vue');
 const projects = () => import('./view1/projects/presentation/views/project.vue');

@@ -1,4 +1,4 @@
-import { BaseEndpoint } from '../../shared/infrastructure/base-endpoint.js';
+import { BaseEndpoint } from '../../../shared/infrastructure/base-endpoint.js';
 import { BrandingAssembler } from './branding.assembler.js';
 import { SubscriptionAssembler } from './subscription.assembler.js';
 import { AdminPolicyAssembler } from './admin-policy.assembler.js';

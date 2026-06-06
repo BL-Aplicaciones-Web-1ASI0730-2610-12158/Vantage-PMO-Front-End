@@ -1,4 +1,4 @@
-import {BaseEndpoint} from "../../shared/infrastructure/base-endpoint.js";
+import {BaseEndpoint} from "../../../shared/infrastructure/base-endpoint.js";
 import {ProjectAssembler} from "./project.assembler.js";
 
 class ProjectsApi extends BaseEndpoint{

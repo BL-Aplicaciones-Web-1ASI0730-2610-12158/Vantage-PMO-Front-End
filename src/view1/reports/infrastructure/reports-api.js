@@ -1,4 +1,4 @@
-import { BaseEndpoint } from '../../shared/infrastructure/base-endpoint.js';
+import { BaseEndpoint } from '../../../shared/infrastructure/base-endpoint.js';
 import { ReportAssembler } from './report.assembler.js';
 
 class ReportsApi extends BaseEndpoint {

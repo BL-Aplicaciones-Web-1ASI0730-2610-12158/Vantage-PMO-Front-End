@@ -1,4 +1,4 @@
-import { BaseEndpoint } from '../../shared/infrastructure/base-endpoint.js';
+import { BaseEndpoint } from '../../../shared/infrastructure/base-endpoint.js';
 import { MeetingAssembler } from './meeting.assembler.js';
 
 class MeetingsApi extends BaseEndpoint {
