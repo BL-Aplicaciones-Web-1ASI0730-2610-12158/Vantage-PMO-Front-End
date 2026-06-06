@@ -1,0 +1,100 @@
+/* src/chat-hub/components/message-item/message-item.css */
+@import url('../../styles/_variables.css');
+
+.message-item {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+}
+
+.message-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.message-content {
+    flex-grow: 1;
+}
+
+.message-header {
+    display: flex;
+    align-items: baseline;
+    margin-bottom: 0.2rem;
+}
+
+.message-author {
+    font-weight: bold;
+    color: var(--color-gray-dark);
+    margin-right: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.message-timestamp {
+    font-size: 0.8rem;
+    color: var(--color-gray-medium);
+}
+
+.message-text {
+    margin: 0;
+    line-height: 1.4;
+    color: var(--color-gray-dark);
+    font-size: 0.95rem;
+}
+
+.message-attachments {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.attachment-item {
+    display: flex;
+    align-items: center;
+    background-color: var(--color-gray-light);
+    padding: 0.4rem 0.7rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    color: var(--color-gray-dark);
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+}
+
+.attachment-item:hover {
+    background-color: var(--color-gray-medium);
+}
+
+.attachment-icon {
+    margin-right: 0.5rem;
+    color: var(--color-primary-blue); /* Example color for file icon */
+}
+
+.message-reactions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.reaction-pill {
+    display: inline-flex;
+    align-items: center;
+    background-color: var(--color-gray-light);
+    border-radius: 15px;
+    padding: 0.2rem 0.6rem;
+    font-size: 0.8rem;
+    color: var(--color-gray-dark);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.reaction-pill:hover {
+    background-color: var(--color-gray-medium);
+}
+
+.reaction-pill .emoji {
+    margin-right: 0.3rem;
+}

@@ -1,0 +1,24 @@
+/* src/chat-hub/styles/_variables.css */
+
+:root {
+    /* Brand Colors */
+    --color-primary-blue: #007bff; /* Example blue for active states, buttons */
+    --color-send-button-blue: #007bff; /* Specific blue for send button */
+    --color-ai-insights-green: #28a745; /* Green for AI insights elements */
+
+    /* Grayscale Palette */
+    --color-gray-lightest: #f8f9fa; /* Very light gray for left panel background */
+    --color-gray-light: #e9ecef; /* Light gray for message attachments, separators */
+    --color-gray-medium: #6c757d; /* Medium gray for secondary text, icons */
+    --color-gray-dark: #343a40; /* Dark gray for titles, main text */
+    --color-white: #ffffff; /* Pure white for chat window background */
+    --color-black: #000000; /* Black for specific buttons */
+
+    /* Status Indicators */
+    --color-status-online: #28a745; /* Green for online status */
+    --color-status-offline: #6c757d; /* Gray for offline status */
+
+    /* Other */
+    --color-productive-green: #28a745; /* Green for productive sentiment */
+    --color-unproductive-red: #dc3545; /* Red for unproductive sentiment */
+}
