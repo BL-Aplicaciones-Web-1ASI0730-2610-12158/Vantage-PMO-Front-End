@@ -263,7 +263,7 @@ const openQuickOptionsDialog = () => {
 </script>
 
 <style scoped>
-@import url('../../styles/_variables.css');
+@import url('../../../styles/_variables.css');
 
 .chat-window {
   display: flex;

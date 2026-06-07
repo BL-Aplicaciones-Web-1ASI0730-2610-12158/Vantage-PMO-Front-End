@@ -6,7 +6,7 @@ import { authenticationGuard } from './iam/infrastructure/authentication.guard.j
 // Define lazy-loaded components for routes
 const pageNotFound = () => import('./shared/presentation/view1/views/page-not-found.vue');
 const layout      = () => import('./shared/presentation/view1/components/layout.vue');
-const profile     = () => import('./profile/presentation/views/profile.vue');
+const profile     = () => import('./profile/presentation/views/view1/profile.vue');
 const reports = () => import('./reports/presentation/views/reports.vue');
 const projects = () => import('./projects/presentation/views/project.vue');
 const taskCollaboration = () => import('./task-collaboration/presentation/views/task-collaboration.vue');
@@ -14,9 +14,9 @@ const systemAdministration = () => import('./system-administration/presentation/
 const signInForm = () => import('./iam/presentation/views/sign-in-form.vue');
 const schedule     = () => import('./schedule/presentation/views/schedule.vue');
 const meetings     = () => import('./meetings/presentation/views/meetings.vue');
-const support      = () => import('./support/presentation/views/support.vue');
+const support      = () => import('./support/presentation/views/view1/support.vue');
 const settings     = () => import('./settings/presentation/views/settings.vue');
-const chatHub      = () => import('./chat-hub/presentation/ChatHub.vue'); // Updated path
+const chatHub      = () => import('./chat-hub/views/views1/ChatHub.vue'); // Updated path
 
 
 // Routes version when IAM is not implemented

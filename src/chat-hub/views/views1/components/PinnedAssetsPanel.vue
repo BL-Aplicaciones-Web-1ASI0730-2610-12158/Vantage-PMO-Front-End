@@ -30,7 +30,7 @@
 </script>
 
 <style scoped>
-@import url('../../styles/_variables.css');
+@import url('../../../styles/_variables.css');
 
 .pinned-assets-panel {
   background-color: var(--color-white);

@@ -151,7 +151,7 @@ const addMemberToChat = ({ chatId, userId }) => {
 </script>
 
 <style scoped>
-@import url('../styles/_variables.css');
+@import url('../../styles/_variables.css');
 
 /* Main Wrapper - Flex Container */
 .chat-hub-wrapper {

@@ -94,7 +94,7 @@ onMounted(() => {
 </script>
 
 <style scoped>
-@import url('../../styles/_variables.css');
+@import url('../../../styles/_variables.css');
 
 .ai-insights-panel {
   background-color: var(--color-white); /* Fondo blanco puro */

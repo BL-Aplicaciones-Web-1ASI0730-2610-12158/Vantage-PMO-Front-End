@@ -127,7 +127,7 @@ const openChannelMenu = (chat) => {
 </script>
 
 <style scoped>
-@import url('../../styles/_variables.css');
+@import url('../../../styles/_variables.css');
 
 .channel-sidebar {
   padding: 1rem;

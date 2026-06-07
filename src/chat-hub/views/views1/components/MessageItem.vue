@@ -89,7 +89,7 @@ const toggleReaction = (emoji) => {
 </script>
 
 <style scoped>
-@import url('../../styles/_variables.css');
+@import url('../../../styles/_variables.css');
 
 /* Contenedor Padre General (.message-row) */
 .message-row {

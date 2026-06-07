@@ -2,7 +2,7 @@
 import { onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
-import { useProfileStore } from '../../application/profile.store.js';
+import { useProfileStore } from '../../../application/profile.store.js';
 
 const router = useRouter();
 const store  = useProfileStore();

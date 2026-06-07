@@ -1,7 +1,7 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useSupportStore } from '../../application/support.store.js';
+import { useSupportStore } from '../../../application/support.store.js';
 
 const { t } = useI18n();
 const store = useSupportStore();
