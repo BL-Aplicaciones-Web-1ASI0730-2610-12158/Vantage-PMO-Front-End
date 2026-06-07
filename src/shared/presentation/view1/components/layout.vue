@@ -7,7 +7,6 @@ const router = useRouter()
 const route  = useRoute()
 const { t }  = useI18n()
 const sidebarOpen = ref(false)
-const createDialogOpen = ref(false)
 
 const navItems = [
   { labelKey: 'nav.home',           icon: 'pi pi-home',        name: 'home' },

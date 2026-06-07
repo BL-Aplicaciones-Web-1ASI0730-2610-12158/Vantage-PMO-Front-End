@@ -6,6 +6,7 @@ import {UserAssembler} from "../infrastructure/user.assembler.js";
 import {SignUpAssembler} from "../infrastructure/sign-up.assembler.js";
 import {SignInCommand} from "../domain/sign-in.command.js";
 import {SignUpCommand} from "../domain/sign-up.command.js";
+import { useWorkspaceStore } from "../../workspace/application/workspace.store.js"
 
 const iamApi = new IamApi();
 /**
@@ -49,7 +50,13 @@ const useIamStore = defineStore('iam', () => {
                     isSignedIn.value = true;
                     console.log(`User signed in: ${currentUsername.value}`);
                     errors.value = [];
-                    router.push({name: 'home'});
+                    const workspaceStore = useWorkspaceStore();
+                    workspaceStore.loadUserWorkspace();
+                    if (workspaceStore.hasWorkspaceSelected()) {
+                        router.push({name: 'home'});
+                    } else {
+                        router.push({name: 'workspace-selection'});
+                    }
                     return true;
                 } else {
                     isSignedIn.value = false;
@@ -79,7 +86,9 @@ const useIamStore = defineStore('iam', () => {
                 if (signUpResource) {
                     console.log(`User registered: ${signUpResource.username}`);
                     errors.value = [];
-                    router.push({name: 'iam-sign-in'});
+                    // First sign-in the user automatically or redirect to workspace selection
+                    // For now, redirect to workspace selection as a new user hasn't selected workspace yet
+                    router.push({name: 'workspace-selection'});
                 } else {
                     console.log('Sign-up failed');
                     errors.value.push(new Error('Sign-up failed'));

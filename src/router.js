@@ -7,6 +7,7 @@ import { authenticationGuard } from './iam/infrastructure/authentication.guard.j
 const pageNotFound = () => import('./shared/presentation/view1/views/page-not-found.vue');
 const layout      = () => import('./shared/presentation/view1/components/layout.vue');
 const profile     = () => import('./profile/presentation/views/profile.vue');
+const workspaceSelection = () => import('./workspace/presentation/views/workspace-selection.vue');
 const reports = () => import('./reports/presentation/views/reports.vue');
 const projects = () => import('./projects/presentation/views/project.vue');
 const taskCollaboration = () => import('./task-collaboration/presentation/views/task-collaboration.vue');
@@ -24,6 +25,7 @@ const routes = [
     // Public route: Sign-in (root)
     { path: '/', name: 'sign-in', component: signInForm, meta: { title: 'Sign-In' } },
     { path: '/iam', name: 'iam', children: iamRoutes },
+    { path: '/workspace-selection', name: 'workspace-selection', component: workspaceSelection, meta: { title: 'Select Workspace' } },
 
     // Protected routes: Main dashboard with layout
     { path: '/dashboard', component: layout, children: [
