@@ -1,704 +1,571 @@
 <script setup>
-import { computed } from 'vue';
+import { onMounted, computed } from 'vue';
+import { useDashboardStore } from '../../../application/dashboard.store.js';
+import useIamStore from '../../../../iam/application/iam.store.js';
+import { useDialog } from 'primevue/usedialog';
+import AiInsightsPanel from '../../../../chat-hub/presentation/components/AiInsightsPanel.vue';
 
-const priorityTasks = computed(() => []);
-const scheduleItems = computed(() => []);
-const departments = computed(() => []);
+const store = useDashboardStore();
+const iamStore = useIamStore();
+const dialog = useDialog();
 
-const stats = computed(() => ({
-  totalProjects: 0,
-  trend: 0,
-  onTrack: 0,
-  atRisk: 0,
-  portfolioHealth: 'Healthy',
-  attentionItems: 0
-}));
+// Global portfolio context loading
+onMounted(() => store.fetchAll('portfolio'));
 
-//HOME: falta adaptar a la view2 ya que de momento usa la misma informacion de la view1....
+// Reactive selectors from Pinia
+const priorityTasks   = computed(() => store.tasks);
+const scheduleItems   = computed(() => store.schedule);
+const stats           = computed(() => store.stats);
+const currentUsername = computed(() => iamStore.currentUsername || 'User');
 
-const currentUsername = computed(() => 'User');
-
-// Función para abrir el diálogo con AiInsightsPanel
+// Opening the AI panel via PrimeVue
 const openAiInsightsDialog = () => {
   dialog.open(AiInsightsPanel, {
     props: {
-      header: 'AI Insights Overview',
+      header: 'AI Portfolio Insights',
       modal: true,
-      style: { width: '50vw' }, // Ancho del diálogo, ajusta según necesidad
-      breakpoints:{ '960px': '75vw', '641px': '100vw' }
-    },
-    // Puedes pasar props al AiInsightsPanel si fuera necesario
-    // data: {
-    //   someProp: 'someValue'
-    // }
+      style: { width: '50vw' },
+      breakpoints: { '960px': '75vw', '641px': '100vw' }
+    }
   });
 };
 </script>
 
-
 <template>
-  <div class="home">
-    <!-- Welcome Header -->
+  <div class="dashboard-container">
+    <!-- Welcome Row -->
     <div class="welcome-row">
-      <div>
-        <h1 class="welcome-title">{{ $t('home.welcomeBack', { name: currentUsername }) }}</h1>
+      <div class="welcome-text">
+        <h1 class="welcome-title">{{ $t('portfolio.welcomeTitle') }}, {{ currentUsername }}</h1>
         <p class="welcome-sub" v-if="stats">
-          {{ $t('home.portfolioHealth') }}
-          <span class="healthy">{{ stats.portfolioHealth }}</span>.
-          {{ $t('home.attentionItems', { n: stats.attentionItems }) }}
+          {{ $t('portfolio.performanceMatrix') }} —
+          <span class="status-healthy">{{ stats.portfolioHealth || '90.4%' }} {{ $t('portfolio.healthyStatus') }}</span>
         </p>
       </div>
-      <div class="live-sync">
-        <span class="live-dot"></span>
+      <div class="live-sync-badge">
+        <span class="pulse-dot"></span>
         {{ $t('topbar.liveSync') }}
       </div>
     </div>
 
-    <!-- Stats + AI Insights -->
-    <div class="stats-row">
-      <div class="stats-cards" v-if="stats">
-        <div class="stat-card">
-          <span class="stat-label">{{ $t('home.totalProjects') }}</span>
-          <div class="stat-value-row">
+    <!-- Top Section: Status Cards and AI Card -->
+    <div class="metrics-grid">
+      <div class="stats-cards-wrapper" v-if="stats">
+        <!-- Total Projects -->
+        <div class="dashboard-card stat-card">
+          <span class="stat-label">{{ $t('portfolio.totalProjects') }}</span>
+          <div class="stat-value-group">
             <span class="stat-value">{{ stats.totalProjects }}</span>
-            <span class="stat-trend up"><i class="pi pi-arrow-up"></i> {{ stats.trend }}%</span>
+            <span class="stat-trend trend-up">
+              <i class="pi pi-arrow-up"></i> {{ stats.trend }}%
+            </span>
+          </div>
+          <div class="card-progress-bar">
+            <div class="progress-fill fill-success" :style="{ width: '80%' }"></div>
           </div>
         </div>
-        <div class="stat-card">
-          <span class="stat-label">{{ $t('home.onTrack') }}</span>
-          <div class="stat-value-row">
-            <span class="stat-value green">{{ stats.onTrack }}</span>
+
+        <!-- On Track -->
+        <div class="dashboard-card stat-card">
+          <span class="stat-label">{{ $t('portfolio.onTrack') }}</span>
+          <div class="stat-value-group">
+            <span class="stat-value text-success">{{ stats.onTrack }}</span>
           </div>
-          <div class="progress-bar"><div class="progress-fill green-fill" :style="{ width: (stats.onTrack / stats.totalProjects * 100) + '%' }"></div></div>
+          <div class="card-progress-bar">
+            <div class="progress-fill fill-success" :style="{ width: (stats.onTrack / stats.totalProjects * 100) + '%' }"></div>
+          </div>
         </div>
-        <div class="stat-card at-risk">
-          <span class="stat-label">{{ $t('home.atRisk') }}</span>
-          <div class="stat-value-row">
-            <span class="stat-value red">{{ String(stats.atRisk).padStart(2, '0') }}</span>
-            <span class="risk-icon"><i class="pi pi-exclamation-circle"></i></span>
+
+        <!-- At Risk -->
+        <div class="dashboard-card stat-card risk-variant">
+          <span class="stat-label">{{ $t('portfolio.atRisk') }}</span>
+          <div class="stat-value-group">
+            <span class="stat-value text-danger">{{ String(stats.atRisk).padStart(2, '0') }}</span>
+            <span class="risk-indicator-icon"><i class="pi pi-exclamation-circle"></i></span>
           </div>
         </div>
       </div>
 
-      <!-- AI Insights -->
-      <div class="ai-card">
-        <div class="ai-header">
-          <span class="ai-icon"><i class="pi pi-sparkles"></i></span>
-          <span class="ai-title">{{ $t('home.aiInsights') }}</span>
+      <!-- Integrated AI Insights Card -->
+      <div class="dashboard-card ai-insight-card">
+        <div class="ai-card-header">
+          <i class="pi pi-sparkles ai-spark-icon"></i>
+          <span class="ai-card-title">{{ $t('portfolio.aiInsights') }}</span>
         </div>
-        <p class="ai-text">{{ $t('home.aiText') }}</p>
-        <!-- Botón para abrir el diálogo con AiInsightsPanel -->
-        <button class="apply-btn" @click="openAiInsightsDialog">View AI Insights</button>
+        <p class="ai-card-description">{{ $t('portfolio.aiTextDesc') }}</p>
+        <button class="ai-action-btn" @click="openAiInsightsDialog">Run Analysis</button>
       </div>
     </div>
 
-    <!-- Priority Tasks + Schedule -->
-    <div class="mid-row">
-      <!-- Priority Tasks -->
-      <div class="tasks-section">
-        <div class="section-header">
-          <h2 class="section-title">{{ $t('home.priorityTasks') }}</h2>
-          <a href="#" class="view-all">{{ $t('home.viewAll') }}</a>
+    <!-- Bottom Section: Tasks and Schedule -->
+    <div class="content-split-grid">
+      <!-- Team Critical Tasks Panel -->
+      <div class="dashboard-card data-section">
+        <div class="section-top-bar">
+          <h2 class="section-main-title">{{ $t('portfolio.teamPriorityTasks') }}</h2>
+          <a href="#" class="section-action-link">{{ $t('home.viewAll') }}</a>
         </div>
-        <div class="task-list">
-          <div v-for="task in priorityTasks" :key="task.id" class="task-card">
-            <div class="task-icon" :style="{ background: task.iconBg }">
-              <i :class="task.icon"></i>
+
+        <div class="scrollable-task-list">
+          <div v-for="task in priorityTasks" :key="task.id" class="custom-task-row">
+            <div class="task-status-icon" :style="{ background: task.iconBg || '#e0e7ff' }">
+              <i :class="task.icon || 'pi pi-tag'"></i>
             </div>
-            <div class="task-info">
-              <span class="task-title">{{ task.title }}</span>
-              <span class="task-meta">{{ $t('home.assignedTo') }} {{ task.assignee }} • {{ task.department }}</span>
+            <div class="task-core-details">
+              <span class="task-main-text">{{ task.title }}</span>
+              <span class="task-sub-text">{{ task.due }} • {{ task.team || task.department }}</span>
             </div>
-            <div class="task-right">
+            <div class="task-right-controls">
               <span
-                  class="priority-badge"
-                  :class="task.priority === 'CRITICAL' ? 'critical' : 'medium'"
-              >{{ task.priority }}</span>
-              <div class="avatars">
-                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=A" class="mini-avatar" />
-                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=B" class="mini-avatar" v-if="task.priority === 'CRITICAL'" />
+                  class="custom-priority-tag"
+                  :class="task.priority === 'URGENT' || task.priority === 'CRITICAL' ? 'tag-critical' : 'tag-medium'"
+              >
+                {{ task.priority }}
+              </span>
+              <div class="avatar-stack">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Alex" class="stacked-avatar" alt="Team member" />
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Schedule -->
-      <div class="schedule-section">
-        <div class="section-header">
-          <h2 class="section-title">Schedule</h2>
-          <span class="schedule-date">Oct 24, 2023</span>
+      <!-- Corporate Schedule Panel -->
+      <div class="dashboard-card side-schedule-section">
+        <div class="section-top-bar">
+          <h2 class="section-main-title">{{ $t('portfolio.calendar') }}</h2>
+          <span class="current-schedule-date">Oct 24, 2023</span>
         </div>
-        <div class="schedule-list">
-          <div v-for="item in scheduleItems" :key="item.time" class="schedule-item" :class="{ inactive: !item.active }">
-            <span class="schedule-time">{{ item.time }}</span>
-            <div class="schedule-block" :class="{ 'schedule-block-active': item.active }">
-              <span class="schedule-event">{{ item.title }}</span>
-              <span class="schedule-detail">{{ item.detail }}</span>
-            </div>
-          </div>
-        </div>
-        <button class="manage-cal-btn">{{ $t('home.manageCalendar') }}</button>
-      </div>
-    </div>
 
-    <!-- Portfolio Velocity -->
-    <div class="velocity-section">
-      <h2 class="section-title">{{ $t('home.portfolioVelocity') }}</h2>
-      <p class="velocity-sub">{{ $t('home.velocitySub') }}</p>
-      <div class="velocity-content">
-        <div class="velocity-chart">
-          <div
-              v-for="(h, i) in [30, 40, 50, 65, 80, 100, 90, 60, 45]"
-              :key="i"
-              class="bar"
-              :class="{ 'bar-active': i === 6 }"
-              :style="{ height: h + 'px' }"
-          ></div>
-        </div>
-        <div class="velocity-stats">
-          <div v-for="dept in departments" :key="dept.name" class="dept-row">
-            <div class="dept-header">
-              <span class="dept-name">{{ dept.name }}</span>
-              <span class="dept-percent">{{ dept.percent }}%</span>
-            </div>
-            <div class="dept-bar">
-              <div class="dept-fill" :style="{ width: dept.percent + '%' }"></div>
+        <div class="timeline-wrapper">
+          <div v-for="item in scheduleItems" :key="item.time" class="timeline-row" :class="{ 'row-muted': !item.active }">
+            <span class="timeline-time-label">{{ item.time }}</span>
+            <div class="timeline-card-block" :class="{ 'block-highlighted': item.active }">
+              <span class="block-event-title">{{ item.title }}</span>
+              <span class="block-event-sub">{{ item.detail || item.location }}</span>
             </div>
           </div>
         </div>
+        <button class="action-outline-btn">{{ $t('home.manageCalendar') }}</button>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-.home {
+/*
+   Vantage PMO - Global Styles
+*/
+
+.dashboard-container {
   display: flex;
   flex-direction: column;
   gap: 24px;
   font-family: 'Inter', sans-serif;
+  background-color: #f8fafc;
+  padding: 4px;
 }
 
-/* Welcome */
 .welcome-row {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
+  gap: 16px;
 }
-
 .welcome-title {
-  font-size: 24px;
+  font-size: 26px;
   font-weight: 700;
-  color: #1e293b;
-  margin: 0 0 6px;
+  color: #0f172a;
+  margin: 0 0 4px 0;
+  letter-spacing: -0.5px;
 }
-
 .welcome-sub {
   font-size: 14px;
   color: #64748b;
   margin: 0;
 }
-
-.healthy {
+.status-healthy {
   color: #16a34a;
   font-weight: 600;
 }
 
-.live-sync {
+.live-sync-badge {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
-  color: #374151;
-  background: white;
+  color: #334155;
+  background: #ffffff;
   border: 1px solid #e2e8f0;
-  border-radius: 20px;
+  border-radius: 9999px;
   padding: 6px 14px;
-  white-space: nowrap;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
-
-.live-dot {
+.pulse-dot {
   width: 8px;
   height: 8px;
   background: #22c55e;
   border-radius: 50%;
-  display: inline-block;
+  position: relative;
 }
 
-/* Stats */
-.stats-row {
-  display: flex;
-  gap: 20px;
-  align-items: stretch;
-}
-
-.stats-cards {
-  display: flex;
-  gap: 16px;
-  flex: 1;
-}
-
-.stat-card {
-  background: white;
+.dashboard-card {
+  background: #ffffff;
   border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02), 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 20px;
+}
+.stats-cards-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+.stat-card {
   padding: 20px;
-  flex: 1;
-  border: 1px solid #e9ecef;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  justify-content: space-between;
+  gap: 12px;
+}
+.risk-variant {
+  border-left: 4px solid #ef4444;
 }
 
 .stat-label {
-  font-size: 11px;
-  color: #94a3b8;
+  font-size: 12px;
+  color: #64748b;
   font-weight: 600;
-  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
-
-.stat-value-row {
+.stat-value-group {
   display: flex;
-  align-items: center;
-  gap: 10px;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
 }
-
 .stat-value {
   font-size: 32px;
-  font-weight: 800;
-  color: #1e293b;
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1;
 }
+.text-success { color: #16a34a; }
+.text-danger { color: #ef4444; }
 
-.stat-value.green { color: #16a34a; }
-.stat-value.red { color: #dc2626; }
-
-.stat-trend.up {
+.trend-up {
   font-size: 12px;
   color: #16a34a;
   font-weight: 600;
+  background: #f0fdf4;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+.risk-indicator-icon {
+  color: #ef4444;
+  font-size: 20px;
 }
 
-.progress-bar {
-  height: 4px;
-  background: #e2e8f0;
-  border-radius: 4px;
+.card-progress-bar {
+  height: 6px;
+  background: #f1f5f9;
+  border-radius: 9999px;
   overflow: hidden;
 }
-
-.progress-fill.green-fill {
+.progress-fill {
   height: 100%;
-  background: #16a34a;
-  border-radius: 4px;
+  border-radius: 9999px;
+  transition: width 0.4s ease;
 }
+.fill-success { background: #16a34a; }
 
-.risk-icon { color: #dc2626; font-size: 18px; }
-
-/* AI Card */
-.ai-card {
-  background: #2563eb;
-  border-radius: 12px;
+.ai-insight-card {
+  background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
   padding: 20px;
-  width: 240px;
-  min-width: 240px;
-  color: white;
+  color: #ffffff;
+  border: none;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  justify-content: space-between;
+  gap: 14px;
 }
-
-.ai-header {
+.ai-card-header {
   display: flex;
   align-items: center;
   gap: 8px;
 }
-
-.ai-icon {
+.ai-spark-icon {
   font-size: 18px;
+  color: #93c5fd;
 }
-
-.ai-title {
+.ai-card-title {
   font-weight: 700;
-  font-size: 14px;
+  font-size: 15px;
+  letter-spacing: -0.2px;
 }
-
-.ai-text {
+.ai-card-description {
   font-size: 13px;
-  line-height: 1.6;
+  line-height: 1.5;
   margin: 0;
-  color: #dbeafe;
+  color: #bfdbfe;
 }
-
-.ai-link {
-  color: white;
-  text-decoration: underline;
-}
-
-.apply-btn {
-  background: white;
+.ai-action-btn {
+  background: #ffffff;
   color: #2563eb;
   border: none;
   border-radius: 8px;
-  padding: 9px 16px;
+  padding: 10px 16px;
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  transition: opacity 0.2s;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+.ai-action-btn:hover {
+  background-color: #f8fafc;
+}
+.ai-action-btn:active {
+  transform: scale(0.98);
 }
 
-.apply-btn:hover { opacity: 0.9; }
-
-/* Mid Row */
-.mid-row {
-  display: flex;
+.content-split-grid {
+  display: grid;
+  grid-template-columns: 1fr 320px;
   gap: 20px;
-  align-items: flex-start;
+}
+.data-section {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+}
+.side-schedule-section {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 20px;
 }
 
-.tasks-section {
-  flex: 1;
-  background: white;
-  border-radius: 12px;
-  padding: 20px;
-  border: 1px solid #e9ecef;
-}
-
-.section-header {
+.section-top-bar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
-
-.section-title {
+.section-main-title {
   font-size: 16px;
   font-weight: 700;
-  color: #1e293b;
+  color: #0f172a;
   margin: 0;
 }
-
-.view-all {
-  font-size: 12px;
+.section-action-link {
+  font-size: 13px;
   font-weight: 600;
   color: #2563eb;
   text-decoration: none;
 }
+.section-action-link:hover {
+  text-decoration: underline;
+}
 
-.task-list {
+.scrollable-task-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
-
-.task-card {
+.custom-task-row {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px;
+  gap: 16px;
+  padding: 14px;
   background: #f8fafc;
+  border: 1px solid #f1f5f9;
   border-radius: 10px;
-  border: 1px solid #e9ecef;
+  transition: background-color 0.15s ease;
 }
-
-.task-icon {
-  width: 36px;
-  height: 36px;
+.custom-task-row:hover {
+  background: #f1f5f9;
+}
+.task-status-icon {
+  width: 40px;
+  height: 40px;
   border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 15px;
+  font-size: 16px;
   color: #475569;
   flex-shrink: 0;
 }
-
-.task-info {
+.task-core-details {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 3px;
 }
-
-.task-title {
-  font-size: 13px;
+.task-main-text {
+  font-size: 14px;
   font-weight: 600;
   color: #1e293b;
 }
-
-.task-meta {
-  font-size: 11px;
-  color: #94a3b8;
+.task-sub-text {
+  font-size: 12px;
+  color: #64748b;
 }
 
-.task-right {
+.task-right-controls {
   display: flex;
   align-items: center;
-  gap: 10px;
-}
-
-.priority-badge {
-  font-size: 10px;
-  font-weight: 700;
-  padding: 3px 8px;
-  border-radius: 6px;
-  letter-spacing: 0.5px;
-}
-
-.priority-badge.critical {
-  background: #fee2e2;
-  color: #dc2626;
-}
-
-.priority-badge.medium {
-  background: #e0e7ff;
-  color: #4338ca;
-}
-
-.avatars {
-  display: flex;
-}
-
-.mini-avatar {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  border: 2px solid white;
-  margin-left: -6px;
-  background: #dbeafe;
-}
-
-.mini-avatar:first-child { margin-left: 0; }
-
-/* Schedule */
-.schedule-section {
-  width: 240px;
-  background: white;
-  border-radius: 12px;
-  padding: 20px;
-  border: 1px solid #e9ecef;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.schedule-date {
-  font-size: 12px;
-  color: #94a3b8;
-}
-
-.schedule-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.schedule-item {
-  display: flex;
-  gap: 12px;
-  align-items: flex-start;
-}
-
-.schedule-item.inactive .schedule-event,
-.schedule-item.inactive .schedule-detail {
-  color: #94a3b8;
-}
-
-.schedule-time {
-  font-size: 12px;
-  color: #64748b;
-  width: 38px;
-  flex-shrink: 0;
-  padding-top: 2px;
-}
-
-.schedule-block {
-  flex: 1;
-  padding: 8px 10px;
-  border-radius: 8px;
-  background: #f8fafc;
-}
-
-.schedule-block-active {
-  background: #dbeafe;
-}
-
-.schedule-event {
-  font-size: 13px;
-  font-weight: 600;
-  color: #1e293b;
-  display: block;
-}
-
-.schedule-detail {
-  font-size: 11px;
-  color: #64748b;
-  display: block;
-}
-
-.manage-cal-btn {
-  background: none;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  padding: 8px;
-  font-size: 11px;
-  font-weight: 600;
-  color: #64748b;
-  cursor: pointer;
-  letter-spacing: 0.5px;
-  width: 100%;
-}
-
-.manage-cal-btn:hover { background: #f1f5f9; }
-
-/* Velocity */
-.velocity-section {
-  background: white;
-  border-radius: 12px;
-  padding: 24px;
-  border: 1px solid #e9ecef;
-}
-
-.velocity-sub {
-  font-size: 13px;
-  color: #64748b;
-  margin: 4px 0 20px;
-}
-
-.velocity-content {
-  display: flex;
-  gap: 40px;
-  align-items: flex-end;
-}
-
-.velocity-chart {
-  display: flex;
-  align-items: flex-end;
-  gap: 6px;
-  height: 100px;
-}
-
-.bar {
-  width: 28px;
-  background: #dbeafe;
-  border-radius: 4px 4px 0 0;
-  transition: background 0.2s;
-}
-
-.bar-active {
-  background: #2563eb;
-}
-
-.velocity-stats {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
   gap: 14px;
 }
-
-.dept-row {
+.custom-priority-tag {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 6px;
+  letter-spacing: 0.03em;
+}
+.tag-critical {
+  background: #fee2e2;
+  color: #ef4444;
+}
+.tag-medium {
+  background: #e0e7ff;
+  color: #4f46e5;
+}
+.avatar-stack {
   display: flex;
-  flex-direction: column;
-  gap: 5px;
+  align-items: center;
+}
+.stacked-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid #ffffff;
+  background: #dbeafe;
 }
 
-.dept-header {
-  display: flex;
-  justify-content: space-between;
-}
-
-.dept-name {
+.current-schedule-date {
   font-size: 13px;
-  color: #374151;
+  color: #64748b;
   font-weight: 500;
 }
-
-.dept-percent {
+.timeline-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.timeline-row {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+.timeline-time-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748b;
+  width: 45px;
+  flex-shrink: 0;
+  padding-top: 4px;
+  text-align: right;
+}
+.timeline-card-block {
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: #f8fafc;
+  border-left: 3px solid #cbd5e1;
+}
+.block-highlighted {
+  background: #eff6ff;
+  border-left-color: #2563eb;
+}
+.block-event-title {
   font-size: 13px;
-  font-weight: 700;
-  color: #1e293b;
+  font-weight: 600;
+  color: #0f172a;
+  display: block;
+  margin-bottom: 2px;
+}
+.block-event-sub {
+  font-size: 12px;
+  color: #64748b;
+  display: block;
+}
+.row-muted {
+  opacity: 0.6;
 }
 
-.dept-bar {
-  height: 5px;
-  background: #e2e8f0;
-  border-radius: 4px;
-  overflow: hidden;
+.action-outline-btn {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #475569;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+.action-outline-btn:hover {
+  background: #f8fafc;
+  color: #0f172a;
 }
 
-.dept-fill {
-  height: 100%;
-  background: #2563eb;
-  border-radius: 4px;
-}
+/*
+   Media Queries
+*/
 
-/* ── RESPONSIVE ── */
-@media (max-width: 1024px) {
-  .stats-row {
-    flex-direction: column;
+@media (max-width: 1200px) {
+  .metrics-grid {
+    grid-template-columns: 1fr;
   }
-  .ai-card {
-    width: 100%;
-    min-width: unset;
-  }
-  .velocity-content {
-    flex-direction: column;
+  .ai-insight-card {
+    flex-direction: row;
+    align-items: center;
     gap: 20px;
   }
-  .velocity-chart {
-    width: 100%;
-    justify-content: space-around;
+  .ai-action-btn {
+    white-space: nowrap;
   }
 }
 
-@media (max-width: 768px) {
-  .home {
-    gap: 16px;
+@media (max-width: 992px) {
+  .content-split-grid {
+    grid-template-columns: 1fr;
   }
-  .welcome-title {
-    font-size: 20px;
-  }
+}
+
+@media (max-width: 576px) {
   .welcome-row {
     flex-direction: column;
-    gap: 10px;
+    align-items: flex-start;
   }
-  .live-sync {
-    font-size: 11px;
+  .stats-cards-wrapper {
+    grid-template-columns: 1fr;
   }
-  .stats-cards {
+  .ai-insight-card {
     flex-direction: column;
-    gap: 10px;
+    align-items: flex-start;
   }
-  .stat-card {
-    padding: 14px;
-  }
-  .stat-value {
-    font-size: 26px;
-  }
-  .mid-row {
-    flex-direction: column;
-  }
-  .schedule-section {
+  .ai-action-btn {
     width: 100%;
   }
-  .task-card {
-    flex-wrap: wrap;
-    gap: 8px;
+  .custom-task-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
   }
-  .task-right {
+  .task-right-controls {
     width: 100%;
-    justify-content: flex-end;
-  }
-}
-
-@media (max-width: 480px) {
-  .section-title {
-    font-size: 14px;
-  }
-  .velocity-chart {
-    height: 70px;
-  }
-  .bar {
-    width: 20px;
+    justify-content: space-between;
   }
 }
 </style>
