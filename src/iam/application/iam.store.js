@@ -4,8 +4,8 @@ import {computed, ref} from "vue";
 import {SignInAssembler} from "../infrastructure/sign-in.assembler.js";
 import {UserAssembler} from "../infrastructure/user.assembler.js";
 import {SignUpAssembler} from "../infrastructure/sign-up.assembler.js";
-import {SignInCommand} from "../domain/sign-in.command.js";
-import {SignUpCommand} from "../domain/sign-up.command.js";
+import {RegisterAccountCommand} from "../domain/register-account.command.js";
+import { useWorkspaceStore } from "../../workspace/application/workspace.store.js"
 
 const iamApi = new IamApi();
 /**
@@ -64,6 +64,8 @@ const useIamStore = defineStore('iam', () => {
                     isSignedIn.value = true;
                     console.log(`User signed in: ${currentUsername.value}`);
                     errors.value = [];
+                    const workspaceStore = useWorkspaceStore();
+                    workspaceStore.loadUserWorkspace();
                     router.push({name: 'home'});
                     return true;
                 } else {
@@ -81,31 +83,44 @@ const useIamStore = defineStore('iam', () => {
     }
 
     /**
-     * Executes the sign-up use case and routes the user to the next screen.
-     * @param {SignUpCommand} signUpCommand - Sign-up command.
+     * Registers a new account, signs the user in, and persists workspace selection.
+     * @param {RegisterAccountCommand} registerCommand - Registration command with workspace.
      * @param {import('vue-router').Router} router - Router used to redirect on result.
-     * @returns {void}
+     * @returns {Promise<boolean>} True when registration completes successfully.
      */
-    function signUp(signUpCommand, router) {
-        // Implementation for sign-up action
-        iamApi.signUp(signUpCommand)
-            .then(response => {
-                let signUpResource = SignUpAssembler.toResourceFromResponse(response);
-                if (signUpResource) {
-                    console.log(`User registered: ${signUpResource.username}`);
-                    errors.value = [];
-                    router.push({name: 'iam-sign-in'});
-                } else {
-                    console.log('Sign-up failed');
-                    errors.value.push(new Error('Sign-up failed'));
-                    router.push({name: 'iam-sign-up'});
-                }
-            })
-            .catch(error => {
-                console.log(error);
-                errors.value.push(error);
-                router.push({name: 'iam-sign-up'});
-            });
+    async function registerAccount(registerCommand, router) {
+        try {
+            const response = await iamApi.signUp(registerCommand.signUp);
+            const signUpResource = SignUpAssembler.toResourceFromResponse(response);
+
+            if (!signUpResource) {
+                errors.value.push(new Error('Registration failed'));
+                return false;
+            }
+
+            const token = btoa(`${signUpResource.username}:${signUpResource.id}:${Date.now()}`);
+            currentUsername.value = signUpResource.username;
+            currentUserId.value = signUpResource.id;
+            localStorage.setItem('token', token);
+            isSignedIn.value = true;
+            errors.value = [];
+
+            const workspaceStore = useWorkspaceStore();
+            const workspaceSaved = await workspaceStore.setUserWorkspace(registerCommand.workspaceType);
+
+            if (!workspaceSaved) {
+                errors.value.push(new Error('Account created but workspace selection could not be saved.'));
+                return false;
+            }
+
+            console.log(`User registered: ${signUpResource.username}`);
+            router.push({ name: 'home' });
+            return true;
+        } catch (error) {
+            console.log(error);
+            errors.value.push(error);
+            return false;
+        }
     }
 
     /** @type {import('vue').Ref<number|null>} ID of the user pending password reset. */
@@ -195,7 +210,7 @@ const useIamStore = defineStore('iam', () => {
         isSignedIn,
         recoveryUserId,
         signIn,
-        signUp,
+        registerAccount,
         signOut,
         fetchUsers,
         recoverAccount,
