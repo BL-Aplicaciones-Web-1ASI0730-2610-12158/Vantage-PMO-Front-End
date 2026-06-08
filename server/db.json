@@ -17,6 +17,18 @@
       "email": "alex.sterling@vantagepmo.io",
       "role": "Project Manager",
       "department": "Executive"
+    },
+
+    {
+      "id": 3,
+      "username": "director",
+      "password": "password123",
+      "name": "Director Ejecutivo",
+      "email": "director@vantagepmo.io",
+      "role": "PORTFOLIO_DIRECTOR",
+      "department": "Executive",
+      "joined": "January 2022",
+      "avatarSeed": "Director"
     }
   ],
   "stats": [
