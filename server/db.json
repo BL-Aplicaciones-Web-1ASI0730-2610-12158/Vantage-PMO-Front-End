@@ -2,12 +2,29 @@
   "users": [
     {
       "id": 1,
-      "name": "Alex Sterling",
-      "role": "Precision Lead",
-      "email": "alex.sterling@vantagepmo.io",
+      "name": "Julian Thorne",
+      "role": "Principal Project Architect",
+      "email": "julian.thorne@vantagepmo.io",
       "department": "Executive",
-      "joined": "January 2022",
-      "avatarSeed": "Alex"
+      "joined": "January 2020",
+      "avatarSeed": "Julian",
+      "location": "London, UK",
+      "yearsActive": "8 Years at Vantage PMO",
+      "availabilityLabel": "Accepting New Leads",
+      "availability": "AVAILABLE FOR CONSULT",
+      "experience": "12+ Years",
+      "deliveryRate": "98%",
+      "activeBudget": "$4.2M",
+      "bio": [
+        "Julian Thorne is a seasoned Principal Project Architect with over a decade of experience leading high-stakes infrastructure and commercial development initiatives across North America and the Middle East.",
+        "Known for his precision-driven approach to capital planning and risk mitigation, Julian has successfully delivered over $120M in portfolio value while maintaining a 98% on-time delivery rate."
+      ],
+      "certifications": [
+        "PMP Certified",
+        "LEED AP",
+        "Prince2 Professional"
+      ],
+      "skillsDescription": "Julian specializes in transforming complex architectural requirements into actionable project roadmaps, bridging the gap between executive vision and field execution."
     },
     {
       "id": 2,
@@ -47,6 +64,16 @@
       "trend": 12,
       "portfolioHealth": "Healthy",
       "attentionItems": 2
+    },
+    {
+      "id": 2,
+      "userId": 2,
+      "totalProjects": 18,
+      "onTrack": 14,
+      "atRisk": 2,
+      "trend": 8,
+      "portfolioHealth": "Healthy",
+      "attentionItems": 1
     }
   ],
   "boards": [
@@ -605,12 +632,14 @@
   "projects": [
     {
       "id": 1,
-      "name": "Project Aurora Phase 2",
-      "category": "Infrastructure Modernization",
-      "description": "Phase 2 of Aurora infrastructure modernization initiative.",
-      "status": "Critical",
+      "name": "Aura Mixed-Use",
+      "category": "Commercial Real Estate",
+      "description": "Mixed-use development with retail, residential, and office components.",
+      "status": "At Risk",
       "progress": 64,
-      "manager": "Sarah Johnson",
+      "userId": 1,
+      "dueDate": "Delayed: Supply",
+      "manager": "Julian Thorne",
       "teamMembers": [
         {
           "id": 1,
@@ -645,12 +674,14 @@
     },
     {
       "id": 2,
-      "name": "Neo-Workspace Launch",
-      "category": "Commercial Real Estate",
-      "description": "Commercial real estate fit-out and workspace launch platform.",
+      "name": "Nexus Data Hub",
+      "category": "Infrastructure Modernization",
+      "description": "Centralized data infrastructure hub for enterprise analytics.",
       "status": "Healthy",
       "progress": 82,
-      "manager": "Michael Chen",
+      "userId": 1,
+      "dueDate": "Due Oct 12",
+      "manager": "Julian Thorne",
       "teamMembers": [
         {
           "id": 1,
@@ -685,7 +716,9 @@
       "description": "AI-powered global logistics optimization and supply chain management.",
       "status": "Critical",
       "progress": 31,
-      "manager": "Patricia Lee",
+      "userId": 2,
+      "dueDate": "Due Nov 12",
+      "manager": "Alex Sterling",
       "teamMembers": [
         {
           "id": 1,
@@ -1212,7 +1245,7 @@
   "user-settings": {
     "id": 1,
     "theme": "light",
-    "language": "en",
+    "language": "es",
     "timezone": "America/New_York",
     "dateFormat": "MM/DD/YYYY",
     "timeFormat": "12h",
@@ -1280,6 +1313,247 @@
       "user": "daniel.brooks@vantagepmo.io",
       "timestamp": "2026-05-13T14:05:00Z",
       "status": "success"
+    }
+  ],
+  "chat-users": [
+    {
+      "id": "alex",
+      "name": "Alex Sterling",
+      "avatarSeed": "Alex",
+      "status": "online",
+      "role": "Precision Lead"
+    },
+    {
+      "id": "elena",
+      "name": "Elena L.",
+      "avatarSeed": "Elena",
+      "status": "online",
+      "role": "Senior Analyst"
+    },
+    {
+      "id": "sarah",
+      "name": "Sarah Jenkins",
+      "avatarSeed": "Sarah",
+      "status": "online",
+      "role": "CTO"
+    },
+    {
+      "id": "david",
+      "name": "David Chen",
+      "avatarSeed": "David",
+      "status": "offline",
+      "role": "Risk Manager"
+    },
+    {
+      "id": "anna",
+      "name": "Anna K.",
+      "avatarSeed": "Anna",
+      "status": "online",
+      "role": "Budget Analyst"
+    },
+    {
+      "id": "marcus",
+      "name": "Marcus Vane",
+      "avatarSeed": "Marcus",
+      "status": "online",
+      "role": "Senior Director"
+    }
+  ],
+  "chats": [
+    {
+      "id": "pmo-strategic-alignment",
+      "name": "pmo-strategic-alignment",
+      "type": "channel",
+      "description": "Strategic discussions for Q3 planning and executive alignment.",
+      "members": [
+        "alex",
+        "elena",
+        "sarah",
+        "david",
+        "marcus"
+      ],
+      "isFavorited": false
+    },
+    {
+      "id": "budget-steering-comm",
+      "name": "budget-steering-comm",
+      "type": "channel",
+      "description": "Discussions for budget steering committee.",
+      "members": [
+        "alex",
+        "anna",
+        "marcus"
+      ],
+      "isFavorited": false
+    },
+    {
+      "id": "risk-mitigation-log",
+      "name": "risk-mitigation-log",
+      "type": "channel",
+      "description": "Logging and mitigation strategies for project risks.",
+      "members": [
+        "alex",
+        "david"
+      ],
+      "isFavorited": false
+    },
+    {
+      "id": "sarah-dm",
+      "name": "Sarah Jenkins",
+      "type": "dm",
+      "members": [
+        "alex",
+        "sarah"
+      ],
+      "isFavorited": false
+    },
+    {
+      "id": "david-dm",
+      "name": "David Chen",
+      "type": "dm",
+      "members": [
+        "alex",
+        "david"
+      ],
+      "isFavorited": false
+    }
+  ],
+  "chat-messages": [
+    {
+      "id": "msg1",
+      "chatId": "pmo-strategic-alignment",
+      "authorId": "alex",
+      "timestamp": "10:30 AM",
+      "text": "Team, great progress on the Q3 planning. Let's ensure all strategic alignment documents are finalized by end of day.",
+      "attachments": [],
+      "reactions": [
+        {
+          "emoji": "👍",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "id": "msg2",
+      "chatId": "pmo-strategic-alignment",
+      "authorId": "elena",
+      "timestamp": "10:35 AM",
+      "text": "Agreed, Alex. I'm currently reviewing the resource_reallocation_impact.pdf. It looks solid.",
+      "attachments": [
+        {
+          "name": "resource_reallocation_impact.pdf",
+          "icon": "pdf",
+          "type": "pdf"
+        }
+      ],
+      "reactions": [
+        {
+          "emoji": "🚀",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "msg3",
+      "chatId": "pmo-strategic-alignment",
+      "authorId": "alex",
+      "timestamp": "10:40 AM",
+      "text": "Excellent, Elena. Once you're done, please upload the final version to the shared drive.",
+      "attachments": [],
+      "reactions": []
+    },
+    {
+      "id": "msg4",
+      "chatId": "sarah-dm",
+      "authorId": "sarah",
+      "timestamp": "11:00 AM",
+      "text": "Hi Alex, can we discuss the Q3 budget adjustments later today?",
+      "attachments": [],
+      "reactions": []
+    },
+    {
+      "id": "msg5",
+      "chatId": "sarah-dm",
+      "authorId": "alex",
+      "timestamp": "11:05 AM",
+      "text": "Sure, Sarah. I'm free after 2 PM. Let me know what time works best for you.",
+      "attachments": [],
+      "reactions": []
+    },
+    {
+      "id": "msg-1780955344927",
+      "chatId": "budget-steering-comm",
+      "authorId": "alex",
+      "timestamp": "4:49 PM",
+      "text": "hola",
+      "attachments": [],
+      "reactions": []
+    },
+    {
+      "id": "msg-1780955357523",
+      "chatId": "budget-steering-comm",
+      "authorId": "alex",
+      "timestamp": "4:49 PM",
+      "text": "✅",
+      "attachments": [],
+      "reactions": []
+    },
+    {
+      "id": "msg-1780955468160",
+      "chatId": "risk-mitigation-log",
+      "authorId": "alex",
+      "timestamp": "4:51 PM",
+      "text": "ola",
+      "attachments": [],
+      "reactions": []
+    },
+    {
+      "id": "msg-1780955503526",
+      "chatId": "sarah-dm",
+      "authorId": "alex",
+      "timestamp": "4:51 PM",
+      "text": "👀}",
+      "attachments": [],
+      "reactions": []
+    }
+  ],
+  "chat-pinned-assets": [
+    {
+      "id": 1,
+      "chatId": "pmo-strategic-alignment",
+      "name": "master_pmo_roadmap_v2.xls",
+      "type": "excel",
+      "meta": "Modified 2h ago"
+    },
+    {
+      "id": 2,
+      "chatId": "pmo-strategic-alignment",
+      "name": "strategic_alignment_brief.pdf",
+      "type": "pdf",
+      "meta": "Pinned by Alex"
+    }
+  ],
+  "chat-insights": [
+    {
+      "id": 1,
+      "chatId": "pmo-strategic-alignment",
+      "meetingTag": "RECENT MEETING",
+      "timeAgo": "45m ago",
+      "meetingTitle": "Q3 Planning Sync: Steering Committee",
+      "insights": [
+        {
+          "id": 1,
+          "type": "Decision",
+          "text": "Approved 12% budget shift to infrastructure phase."
+        },
+        {
+          "id": 2,
+          "type": "Action",
+          "text": "Elena to finalize Gantt by EOD Friday."
+        }
+      ],
+      "sentimentProductive": 90,
+      "sentimentText": "Productive"
     }
   ]
 }

@@ -10,9 +10,10 @@ export class SignInResource {
      * @param {string} params.username - Authenticated username.
      * @param {string} params.token - Bearer token.
      */
-    constructor({id, username, token}) {
+    constructor({id, username, email, token}) {
         this.id = id;
         this.username = username;
+        this.email = email;
         this.token = token;
     }
 }
