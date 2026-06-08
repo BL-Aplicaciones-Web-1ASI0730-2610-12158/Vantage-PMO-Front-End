@@ -21,8 +21,9 @@ const navItems = [
 ]
 
 const bottomItems = [
-  { labelKey: 'nav.support',  icon: 'pi pi-question-circle', name: 'support' },
+  { labelKey: 'nav.profile',  icon: 'pi pi-user',            name: 'profile' },
   { labelKey: 'nav.settings', icon: 'pi pi-cog',             name: 'settings' },
+  { labelKey: 'nav.support',  icon: 'pi pi-question-circle', name: 'support' },
 ]
 
 function navigate(name) {
@@ -33,7 +34,10 @@ function navigate(name) {
   }
   sidebarOpen.value = false;
 }
-function isActive(name)  { return route.name === name }
+function isActive(name) {
+  if (name === 'profile') return route.path.startsWith('/dashboard/profile');
+  return route.name === name;
+}
 </script>
 
 <template>

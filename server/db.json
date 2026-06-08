@@ -2,12 +2,29 @@
   "users": [
     {
       "id": 1,
-      "name": "Alex Sterling",
-      "role": "Precision Lead",
-      "email": "alex.sterling@vantagepmo.io",
+      "name": "Julian Thorne",
+      "role": "Principal Project Architect",
+      "email": "julian.thorne@vantagepmo.io",
       "department": "Executive",
-      "joined": "January 2022",
-      "avatarSeed": "Alex"
+      "joined": "January 2020",
+      "avatarSeed": "Julian",
+      "location": "London, UK",
+      "yearsActive": "8 Years at Vantage PMO",
+      "availabilityLabel": "Accepting New Leads",
+      "availability": "AVAILABLE FOR CONSULT",
+      "experience": "12+ Years",
+      "deliveryRate": "98%",
+      "activeBudget": "$4.2M",
+      "bio": [
+        "Julian Thorne is a seasoned Principal Project Architect with over a decade of experience leading high-stakes infrastructure and commercial development initiatives across North America and the Middle East.",
+        "Known for his precision-driven approach to capital planning and risk mitigation, Julian has successfully delivered over $120M in portfolio value while maintaining a 98% on-time delivery rate."
+      ],
+      "certifications": [
+        "PMP Certified",
+        "LEED AP",
+        "Prince2 Professional"
+      ],
+      "skillsDescription": "Julian specializes in transforming complex architectural requirements into actionable project roadmaps, bridging the gap between executive vision and field execution."
     },
     {
       "id": 2,
@@ -15,8 +32,127 @@
       "password": "password123",
       "name": "Alex Sterling",
       "email": "alex.sterling@vantagepmo.io",
-      "role": "Project Manager",
-      "department": "Executive"
+      "role": "Precision Lead",
+      "department": "Executive",
+      "joined": "January 2022",
+      "avatarSeed": "Alex",
+      "location": "New York, US",
+      "yearsActive": "4 Years at Vantage PMO",
+      "availabilityLabel": "Accepting New Leads",
+      "availability": "AVAILABLE FOR CONSULT",
+      "experience": "8+ Years",
+      "deliveryRate": "95%",
+      "activeBudget": "$2.8M",
+      "bio": [
+        "Alex Sterling is a Precision Lead specializing in portfolio management and cross-functional team coordination across enterprise PMO initiatives.",
+        "With a track record of delivering complex projects on schedule, Alex brings strategic oversight and operational excellence to every engagement."
+      ],
+      "certifications": [
+        "PMP Certified",
+        "SAFe Agilist",
+        "CSM"
+      ],
+      "skillsDescription": "Alex excels at aligning stakeholder expectations with delivery timelines, ensuring portfolio health across multiple concurrent initiatives."
+    }
+  ],
+  "profile-skills": [
+    {
+      "id": 1,
+      "userId": 1,
+      "name": "Resource Optimization",
+      "percentage": 92
+    },
+    {
+      "id": 2,
+      "userId": 1,
+      "name": "Agile Scaling (SAFe)",
+      "percentage": 88
+    },
+    {
+      "id": 3,
+      "userId": 1,
+      "name": "Risk Mitigation Strategy",
+      "percentage": 95
+    },
+    {
+      "id": 4,
+      "userId": 1,
+      "name": "Capital Planning",
+      "percentage": 82
+    },
+    {
+      "id": 5,
+      "userId": 2,
+      "name": "Resource Optimization",
+      "percentage": 85
+    },
+    {
+      "id": 6,
+      "userId": 2,
+      "name": "Agile Scaling (SAFe)",
+      "percentage": 90
+    },
+    {
+      "id": 7,
+      "userId": 2,
+      "name": "Risk Mitigation Strategy",
+      "percentage": 88
+    },
+    {
+      "id": 8,
+      "userId": 2,
+      "name": "Capital Planning",
+      "percentage": 78
+    }
+  ],
+  "endorsements": [
+    {
+      "id": 1,
+      "userId": 1,
+      "quote": "Julian's ability to navigate complex stakeholder landscapes while maintaining architectural integrity is unmatched in our organization.",
+      "authorName": "Elena Rodriguez",
+      "authorRole": "Director of Operations",
+      "authorAvatarSeed": "Elena"
+    },
+    {
+      "id": 2,
+      "userId": 1,
+      "quote": "Working with Julian on the Nexus Data Hub was transformative. His risk mitigation frameworks saved us weeks of rework.",
+      "authorName": "Marcus Chen",
+      "authorRole": "Senior Engineering Lead",
+      "authorAvatarSeed": "Marcus"
+    },
+    {
+      "id": 3,
+      "userId": 1,
+      "quote": "A true precision architect. Julian delivers clarity where others deliver complexity.",
+      "authorName": "Sarah Jenkins",
+      "authorRole": "VP of Portfolio Strategy",
+      "authorAvatarSeed": "Sarah"
+    },
+    {
+      "id": 4,
+      "userId": 2,
+      "quote": "Alex brings exceptional clarity to every project review. His portfolio oversight is a key asset to our team.",
+      "authorName": "Michael Chen",
+      "authorRole": "Program Director",
+      "authorAvatarSeed": "Michael"
+    },
+    {
+      "id": 5,
+      "userId": 2,
+      "quote": "Reliable, strategic, and always ahead of schedule. Alex is the PMO leader you want on critical initiatives.",
+      "authorName": "Patricia Lee",
+      "authorRole": "Chief Operating Officer",
+      "authorAvatarSeed": "Patricia"
+    },
+    {
+      "id": 6,
+      "userId": 2,
+      "quote": "Alex transformed our delivery process with precision and consistency that elevated the entire portfolio.",
+      "authorName": "David L.",
+      "authorRole": "Frontend Lead",
+      "authorAvatarSeed": "David"
     }
   ],
   "stats": [
@@ -29,6 +165,16 @@
       "trend": 12,
       "portfolioHealth": "Healthy",
       "attentionItems": 2
+    },
+    {
+      "id": 2,
+      "userId": 2,
+      "totalProjects": 18,
+      "onTrack": 14,
+      "atRisk": 2,
+      "trend": 8,
+      "portfolioHealth": "Healthy",
+      "attentionItems": 1
     }
   ],
   "boards": [
@@ -587,37 +733,81 @@
   "projects": [
     {
       "id": 1,
-      "name": "Project Aurora Phase 2",
-      "category": "Infrastructure Modernization",
-      "description": "Phase 2 of Aurora infrastructure modernization initiative.",
-      "status": "Critical",
+      "name": "Aura Mixed-Use",
+      "category": "Commercial Real Estate",
+      "description": "Mixed-use development with retail, residential, and office components.",
+      "status": "At Risk",
       "progress": 64,
-      "manager": "Sarah Johnson",
+      "userId": 1,
+      "dueDate": "Delayed: Supply",
+      "manager": "Julian Thorne",
       "teamMembers": [
-        {"id": 1, "name": "Alexander", "avatar": "A"},
-        {"id": 2, "name": "Benjamin", "avatar": "B"},
-        {"id": 3, "name": "Catherine", "avatar": "C"}
+        {
+          "id": 1,
+          "name": "Alexander",
+          "avatar": "A"
+        },
+        {
+          "id": 2,
+          "name": "Benjamin",
+          "avatar": "B"
+        },
+        {
+          "id": 3,
+          "name": "Catherine",
+          "avatar": "C"
+        }
       ],
       "milestones": [
-        {"id": 1, "name": "Final Audit Submission", "date": "Oct 14", "type": "warning"},
-        {"id": 2, "name": "Staging Deployment", "date": "Oct 28", "type": "pending"}
+        {
+          "id": 1,
+          "name": "Final Audit Submission",
+          "date": "Oct 14",
+          "type": "warning"
+        },
+        {
+          "id": 2,
+          "name": "Staging Deployment",
+          "date": "Oct 28",
+          "type": "pending"
+        }
       ]
     },
     {
       "id": 2,
-      "name": "Neo-Workspace Launch",
-      "category": "Commercial Real Estate",
-      "description": "Commercial real estate fit-out and workspace launch platform.",
+      "name": "Nexus Data Hub",
+      "category": "Infrastructure Modernization",
+      "description": "Centralized data infrastructure hub for enterprise analytics.",
       "status": "Healthy",
       "progress": 82,
-      "manager": "Michael Chen",
+      "userId": 1,
+      "dueDate": "Due Oct 12",
+      "manager": "Julian Thorne",
       "teamMembers": [
-        {"id": 1, "name": "Diana", "avatar": "D"},
-        {"id": 2, "name": "Elena", "avatar": "E"}
+        {
+          "id": 1,
+          "name": "Diana",
+          "avatar": "D"
+        },
+        {
+          "id": 2,
+          "name": "Elena",
+          "avatar": "E"
+        }
       ],
       "milestones": [
-        {"id": 1, "name": "Interior Fit-out Done", "date": "Today", "type": "success"},
-        {"id": 2, "name": "Grand Opening", "date": "Nov 05", "type": "pending"}
+        {
+          "id": 1,
+          "name": "Interior Fit-out Done",
+          "date": "Today",
+          "type": "success"
+        },
+        {
+          "id": 2,
+          "name": "Grand Opening",
+          "date": "Nov 05",
+          "type": "pending"
+        }
       ]
     },
     {
@@ -627,15 +817,76 @@
       "description": "AI-powered global logistics optimization and supply chain management.",
       "status": "Critical",
       "progress": 31,
-      "manager": "Patricia Lee",
+      "userId": 2,
+      "dueDate": "Due Nov 12",
+      "manager": "Alex Sterling",
       "teamMembers": [
-        {"id": 1, "name": "Frank", "avatar": "F"},
-        {"id": 2, "name": "Grace", "avatar": "G"},
-        {"id": 3, "name": "Henry", "avatar": "H"}
+        {
+          "id": 1,
+          "name": "Frank",
+          "avatar": "F"
+        },
+        {
+          "id": 2,
+          "name": "Grace",
+          "avatar": "G"
+        },
+        {
+          "id": 3,
+          "name": "Henry",
+          "avatar": "H"
+        }
       ],
       "milestones": [
-        {"id": 1, "name": "Data Integration Check", "date": "Oct 19", "type": "warning"},
-        {"id": 2, "name": "Model Validation", "date": "Nov 12", "type": "pending"}
+        {
+          "id": 1,
+          "name": "Data Integration Check",
+          "date": "Oct 19",
+          "type": "warning"
+        },
+        {
+          "id": 2,
+          "name": "Model Validation",
+          "date": "Nov 12",
+          "type": "pending"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Neo-Workspace Launch",
+      "category": "Commercial Real Estate",
+      "description": "Commercial real estate fit-out and workspace launch platform.",
+      "status": "Healthy",
+      "progress": 82,
+      "userId": 2,
+      "dueDate": "Due Nov 05",
+      "manager": "Alex Sterling",
+      "teamMembers": [
+        {
+          "id": 1,
+          "name": "Diana",
+          "avatar": "D"
+        },
+        {
+          "id": 2,
+          "name": "Elena",
+          "avatar": "E"
+        }
+      ],
+      "milestones": [
+        {
+          "id": 1,
+          "name": "Interior Fit-out Done",
+          "date": "Today",
+          "type": "success"
+        },
+        {
+          "id": 2,
+          "name": "Grand Opening",
+          "date": "Nov 05",
+          "type": "pending"
+        }
       ]
     }
   ],

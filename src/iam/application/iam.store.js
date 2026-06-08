@@ -24,11 +24,20 @@ const useIamStore = defineStore('iam', () => {
     /** @type {import('vue').Ref<boolean>} Flag indicating if a user is signed in. */
     const isSignedIn = ref(false);
     /** @type {import('vue').Ref<string|null>} Username of the currently authenticated user, or null when signed out. */
-    const currentUsername = ref(null);
+    const currentUsername = ref(localStorage.getItem('username') || null);
     /** @type {import('vue').Ref<number>} Identifier of the currently authenticated user, or 0 when signed out. */
-    const currentUserId = ref(0);
+    const currentUserId = ref(Number(localStorage.getItem('userId')) || 0);
+    /** @type {import('vue').Ref<string|null>} Email of the currently authenticated user. */
+    const currentUserEmail = ref(localStorage.getItem('userEmail') || null);
     /** @type {import('vue').ComputedRef<string|null>} Bearer token for the active session, or null when signed out. */
     const currentToken = computed(() => isSignedIn.value ? localStorage.getItem('token') : null);
+
+    if (localStorage.getItem('token') && currentUserId.value) {
+        isSignedIn.value = true;
+        if (!currentUsername.value && localStorage.getItem('username')) {
+            currentUsername.value = localStorage.getItem('username');
+        }
+    }
 
     /**
      * Executes the sign-in use case and updates authentication state.
@@ -45,7 +54,13 @@ const useIamStore = defineStore('iam', () => {
                     let currentUser = UserAssembler.toEntityFromResource(signInResource);
                     currentUsername.value = currentUser.username;
                     currentUserId.value = currentUser.id;
+                    currentUserEmail.value = signInResource.email ?? null;
                     localStorage.setItem('token', signInResource.token);
+                    localStorage.setItem('userId', String(currentUser.id));
+                    localStorage.setItem('username', currentUser.username ?? '');
+                    if (signInResource.email) {
+                        localStorage.setItem('userEmail', signInResource.email);
+                    }
                     isSignedIn.value = true;
                     console.log(`User signed in: ${currentUsername.value}`);
                     errors.value = [];
@@ -143,7 +158,11 @@ const useIamStore = defineStore('iam', () => {
     function signOut() {
         currentUsername.value = null;
         currentUserId.value = 0;
+        currentUserEmail.value = null;
         localStorage.removeItem('token');
+        localStorage.removeItem('userId');
+        localStorage.removeItem('username');
+        localStorage.removeItem('userEmail');
         isSignedIn.value = false;
         console.log('User signed out');
         errors.value = [];
@@ -171,6 +190,7 @@ const useIamStore = defineStore('iam', () => {
         usersLoaded,
         currentUsername,
         currentUserId,
+        currentUserEmail,
         currentToken,
         isSignedIn,
         recoveryUserId,

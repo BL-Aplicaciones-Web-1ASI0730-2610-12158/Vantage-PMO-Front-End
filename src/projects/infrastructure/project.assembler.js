@@ -13,7 +13,9 @@ export class ProjectAssembler {
             endDate: resource.endDate,
             milestones: resource.milestones || [],
             teamMembers: resource.teamMembers || [],
-            manager: resource.manager
+            manager: resource.manager,
+            userId: resource.userId,
+            dueDate: resource.dueDate,
         });
     }
 

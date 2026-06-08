@@ -6,7 +6,10 @@ import { authenticationGuard } from './iam/infrastructure/authentication.guard.j
 // Define lazy-loaded components for routes
 const pageNotFound = () => import('./shared/presentation/view1/views/page-not-found.vue');
 const layout      = () => import('./shared/presentation/view1/components/layout.vue');
-const profile     = () => import('./profile/presentation/views/view1/profile.vue');
+const profilePage        = () => import('./profile/presentation/views/view1/profile-page.vue');
+const profileOverview    = () => import('./profile/presentation/views/view1/profile-overview.vue');
+const profilePreferences = () => import('./profile/presentation/views/view1/profile-preferences.vue');
+const profileSecurity    = () => import('./profile/presentation/views/view1/profile-security.vue');
 const reports = () => import('./reports/presentation/views/reports.vue');
 const projects = () => import('./projects/presentation/views/project.vue');
 const taskCollaboration = () => import('./task-collaboration/presentation/views/task-collaboration.vue');
@@ -34,7 +37,11 @@ const routes = [
         { path: 'schedule',        name: 'schedule',        component: schedule,     meta: { title: 'Schedule' } },
         { path: 'meetings',        name: 'meetings',        component: meetings,     meta: { title: 'Meetings' } },
         { path: 'reports',         name: 'reports',         component: reports, meta: { title: 'Reports' } },
-        { path: 'profile',         name: 'profile',         component: profile,      meta: { title: 'Profile' } },
+        { path: 'profile', component: profilePage, meta: { title: 'Profile' }, children: [
+            { path: '',              name: 'profile',             component: profileOverview    },
+            { path: 'preferences',   name: 'profile-preferences', component: profilePreferences },
+            { path: 'security',      name: 'profile-security',    component: profileSecurity    },
+        ]},
         { path: 'support',         name: 'support',         component: support,      meta: { title: 'Support' } },
         { path: 'settings',        name: 'settings',        component: settings,     meta: { title: 'Settings' } },
         { path: 'system-administration/:section?', name: 'system-administration', component: systemAdministration, meta: { title: 'System Administration' } },
