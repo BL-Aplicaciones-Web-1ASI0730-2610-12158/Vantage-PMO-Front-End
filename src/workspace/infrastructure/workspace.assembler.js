@@ -21,6 +21,10 @@ export class WorkspaceAssembler {
      */
     static toSelectedRoleFromResource(resource) {
         if (!resource) return null;
-        return resource.selectedRole || null;
+
+        const entry = Array.isArray(resource) ? resource[0] : resource;
+        if (!entry) return null;
+
+        return entry.selectedRole || null;
     }
 }

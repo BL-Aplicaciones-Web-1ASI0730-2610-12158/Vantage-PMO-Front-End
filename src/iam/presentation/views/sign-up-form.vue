@@ -1,15 +1,20 @@
 <script setup>
 import useIamStore from "../../application/iam.store.js";
-import {reactive, ref} from "vue";
-import {SignUpCommand} from "../../domain/sign-up.command.js";
-import {useRouter} from "vue-router";
+import { reactive, ref } from "vue";
+import { RegisterAccountCommand } from "../../domain/register-account.command.js";
+import WorkspaceSelector from "../../../workspace/presentation/components/workspace-selector.vue";
+import { useRouter } from "vue-router";
 
 const router = useRouter();
 const store = useIamStore();
-const {signUp} = store;
+const { registerAccount } = store;
+
+const currentStep = ref(1);
 const showPassword = ref(false);
 const showConfirmPassword = ref(false);
 const errorMsg = ref('');
+const loading = ref(false);
+const selectedWorkspace = ref(null);
 
 const form = reactive({
   name: '',
@@ -18,29 +23,55 @@ const form = reactive({
   birthDate: '',
   email: '',
   password: '',
-  confirmPassword: ''
-})
+  confirmPassword: '',
+});
 
-function performSignUp() {
+function goToNextStep() {
   errorMsg.value = '';
   if (form.password !== form.confirmPassword) {
     errorMsg.value = 'Passwords do not match. Please check and try again.';
     return;
   }
-  let signUpCommand = new SignUpCommand({
+  currentStep.value = 2;
+}
+
+function goToPreviousStep() {
+  errorMsg.value = '';
+  currentStep.value = 1;
+}
+
+async function performRegisterAccount() {
+  errorMsg.value = '';
+
+  if (!selectedWorkspace.value) {
+    errorMsg.value = 'Please select a workspace to continue.';
+    return;
+  }
+
+  loading.value = true;
+
+  const registerCommand = new RegisterAccountCommand({
     name: form.name,
     email: form.email,
     password: form.password,
     username: form.username || form.email.split('@')[0],
     role: form.role,
-    birthDate: form.birthDate
+    birthDate: form.birthDate,
+    workspaceType: selectedWorkspace.value,
   });
-  console.log(signUpCommand);
-  signUp(signUpCommand, router);
+
+  const ok = await registerAccount(registerCommand, router);
+  loading.value = false;
+
+  if (!ok) {
+    const lastError = store.errors.at(-1);
+    errorMsg.value = lastError?.message
+      || 'Registration failed. Please check your details and try again.';
+  }
 }
 
 function goToSignIn() {
-  router.push({name: 'iam-sign-in'});
+  router.push({ name: 'iam-sign-in' });
 }
 
 function contactAdmin() {
@@ -70,13 +101,22 @@ function contactAdmin() {
     <!-- Main Content -->
     <div class="auth-main">
       <!-- Card Container -->
-      <div class="auth-card">
+      <div class="auth-card" :class="{ 'auth-card-wide': currentStep === 2 }">
         <div class="card-header">
-          <h1>Create Account</h1>
-          <p>Join Vantage PMO to manage your projects efficiently</p>
+          <div class="step-indicator">
+            <span class="step" :class="{ active: currentStep === 1, completed: currentStep > 1 }">1</span>
+            <span class="step-line" :class="{ completed: currentStep > 1 }"></span>
+            <span class="step" :class="{ active: currentStep === 2 }">2</span>
+          </div>
+          <h1>{{ currentStep === 1 ? 'Create Account' : 'Select Your Workspace' }}</h1>
+          <p>
+            {{ currentStep === 1
+              ? 'Join Vantage PMO to manage your projects efficiently'
+              : 'Choose how you\'d like to work with Vantage PMO' }}
+          </p>
         </div>
 
-        <form @submit.prevent="performSignUp" class="auth-form">
+        <form v-if="currentStep === 1" @submit.prevent="goToNextStep" class="auth-form">
 
           <!-- Two-column row: Name + Username -->
           <div class="form-row">
@@ -205,13 +245,41 @@ function contactAdmin() {
             </label>
           </div>
 
-          <!-- Sign Up Button -->
+          <!-- Continue Button -->
           <pv-button
             type="submit"
             class="signup-btn"
-            label="Create Account"
+            label="Continue"
+            icon="pi pi-arrow-right"
+            iconPos="right"
           />
         </form>
+
+        <div v-else class="workspace-step">
+          <workspace-selector v-model="selectedWorkspace" />
+
+          <div v-if="errorMsg" class="error-msg">
+            <i class="pi pi-exclamation-triangle"></i>
+            {{ errorMsg }}
+          </div>
+
+          <div class="workspace-actions">
+            <pv-button
+              label="Back"
+              class="back-btn"
+              icon="pi pi-arrow-left"
+              @click="goToPreviousStep"
+            />
+            <pv-button
+              label="Create Account"
+              class="signup-btn"
+              :loading="loading"
+              :disabled="!selectedWorkspace || loading"
+              icon="pi pi-check"
+              @click="performRegisterAccount"
+            />
+          </div>
+        </div>
 
         <!-- Divider -->
         <div class="divider">
@@ -340,6 +408,86 @@ function contactAdmin() {
   padding: 48px 40px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
   border: 1px solid rgba(255, 255, 255, 0.8);
+  transition: max-width 0.3s ease;
+}
+
+.auth-card-wide {
+  max-width: 800px;
+}
+
+.step-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin-bottom: 20px;
+}
+
+.step {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  background: #e2e8f0;
+  color: #94a3b8;
+  transition: all 0.2s;
+}
+
+.step.active {
+  background: #2563eb;
+  color: white;
+}
+
+.step.completed {
+  background: #22c55e;
+  color: white;
+}
+
+.step-line {
+  width: 48px;
+  height: 2px;
+  background: #e2e8f0;
+  transition: background 0.2s;
+}
+
+.step-line.completed {
+  background: #22c55e;
+}
+
+.workspace-step {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.workspace-actions {
+  display: flex;
+  gap: 12px;
+}
+
+:deep(.back-btn) {
+  flex: 0 0 auto !important;
+  padding: 12px 20px !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  border-radius: 8px !important;
+  background: #f3f4f6 !important;
+  border: 1px solid #e5e7eb !important;
+  color: #64748b !important;
+}
+
+:deep(.back-btn:hover) {
+  background: #e5e7eb !important;
+  color: #374151 !important;
+}
+
+.workspace-actions :deep(.signup-btn) {
+  flex: 1 !important;
+  margin-top: 0 !important;
 }
 
 .card-header {

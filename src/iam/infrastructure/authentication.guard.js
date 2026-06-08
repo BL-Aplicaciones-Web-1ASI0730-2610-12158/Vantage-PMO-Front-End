@@ -11,7 +11,7 @@ import useIamStore from "../application/iam.store.js";
 export const authenticationGuard = (to, from, next) => {
     const store = useIamStore();
     const isAnonymous = !store.isSignedIn;
-    const publicRoutes = ['/', '/iam/sign-in', '/iam/sign-up', '/workspace-selection', '/about', '/page-not-found'];
+    const publicRoutes = ['/', '/iam/sign-in', '/iam/sign-up', '/about', '/page-not-found'];
     const isPublicRoute = publicRoutes.includes(to.path) || to.path.startsWith('/iam');
 
     if (isAnonymous && !isPublicRoute) {
