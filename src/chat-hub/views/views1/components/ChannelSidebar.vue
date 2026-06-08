@@ -1,9 +1,18 @@
 <template>
   <div class="channel-sidebar">
+    <div class="search-box">
+      <i class="pi pi-search"></i>
+      <input
+        v-model="searchQuery"
+        type="text"
+        placeholder="Search discussions or files..."
+      />
+    </div>
+
     <section class="channels-section">
       <div class="section-header">
         <h3 class="section-title">CHANNELS</h3>
-        <button class="add-chat-button" @click="openCreateChatDialog(true)" title="Create new channel">
+        <button class="add-btn" title="Create new channel" @click="openCreateChatDialog(true)">
           <i class="pi pi-plus"></i>
         </button>
       </div>
@@ -11,20 +20,21 @@
         <li
           v-for="chat in filteredChannels"
           :key="chat.id"
-          :class="['channel-item', { active: chat.id === activeChatId }]"
-          @click="selectChat(chat.id)"
+          :class="['channel-item', { active: chat.id === store.activeChatId }]"
+          @click="store.setActiveChat(chat.id)"
           @contextmenu.prevent="openChannelMenu(chat)"
         >
-          <span class="channel-name"># {{ chat.name }}</span>
-          <span class="channel-members-count" v-if="chat.members">{{ chat.members.length }}</span>
+          <span class="channel-hash">#</span>
+          <span class="channel-name">{{ chat.name }}</span>
+          <span v-if="chat.members" class="member-count">{{ chat.members.length }}</span>
         </li>
       </ul>
     </section>
 
-    <section class="direct-messages-section">
+    <section class="dm-section">
       <div class="section-header">
         <h3 class="section-title">DIRECT MESSAGES</h3>
-        <button class="add-chat-button" @click="openCreateChatDialog(false)" title="Start new conversation">
+        <button class="add-btn" title="Start new conversation" @click="openCreateChatDialog(false)">
           <i class="pi pi-plus"></i>
         </button>
       </div>
@@ -32,11 +42,11 @@
         <li
           v-for="chat in filteredDMs"
           :key="chat.id"
-          :class="['dm-item', { active: chat.id === activeChatId }]"
-          @click="selectChat(chat.id)"
+          :class="['dm-item', { active: chat.id === store.activeChatId }]"
+          @click="store.setActiveChat(chat.id)"
         >
-          <span :class="['status-indicator', getUserStatus(chat)]"></span>
-          {{ getDmName(chat) }}
+          <span :class="['status-dot', getUserStatus(chat)]"></span>
+          <span class="dm-name">{{ getDmName(chat) }}</span>
         </li>
       </ul>
     </section>
@@ -46,126 +56,144 @@
 <script setup>
 import { ref, computed } from 'vue';
 import { useDialog } from 'primevue/usedialog';
+import { useChatHubStore } from '../../../application/chat-hub.store.js';
 import CreateChatDialog from './CreateChatDialog.vue';
 import MembersListDialog from './MembersListDialog.vue';
 
-const props = defineProps({
-  activeChatId: {
-    type: String,
-    required: true,
-  },
-  chats: { // Recibir todos los chats
-    type: Array,
-    required: true,
-  },
-  users: { // Recibir todos los usuarios
-    type: Array,
-    required: true,
-  },
+const store  = useChatHubStore();
+const dialog = useDialog();
+const searchQuery = ref('');
+
+const filteredChannels = computed(() => {
+  const q = searchQuery.value.toLowerCase();
+  return store.chats
+    .filter(c => c.type === 'channel')
+    .filter(c => !q || c.name.includes(q));
 });
 
-const emit = defineEmits(['update:activeChatId', 'add:chat', 'add:member']);
-const dialog = useDialog();
+const filteredDMs = computed(() => {
+  const q = searchQuery.value.toLowerCase();
+  return store.chats
+    .filter(c => c.type === 'dm')
+    .filter(c => !q || getDmName(c).toLowerCase().includes(q));
+});
 
-const filteredChannels = computed(() => props.chats.filter(chat => chat.type === 'channel'));
-const filteredDMs = computed(() => props.chats.filter(chat => chat.type === 'dm'));
+function getDmName(chat) {
+  const otherId = chat.members.find(id => id !== store.currentUserId);
+  const user = store.users.find(u => u.id === otherId);
+  return user?.name ?? chat.name;
+}
 
-const selectChat = (chatId) => {
-  emit('update:activeChatId', chatId);
-};
+function getUserStatus(chat) {
+  const otherId = chat.members.find(id => id !== store.currentUserId);
+  return store.users.find(u => u.id === otherId)?.status ?? 'offline';
+}
 
-const getDmName = (chat) => {
-  // Para DMs, el nombre es el del otro usuario en el chat
-  const otherMemberId = chat.members.find(memberId => memberId !== 'marcus'); // Asumiendo 'marcus' es el usuario actual
-  const otherUser = props.users.find(user => user.id === otherMemberId);
-  return otherUser ? otherUser.name : chat.name;
-};
-
-const getUserStatus = (chat) => {
-  const otherMemberId = chat.members.find(memberId => memberId !== 'marcus');
-  const otherUser = props.users.find(user => user.id === otherMemberId);
-  return otherUser ? otherUser.status : 'offline';
-};
-
-const openCreateChatDialog = (isChannel) => {
+function openCreateChatDialog(isChannel) {
   dialog.open(CreateChatDialog, {
     props: {
       header: isChannel ? 'Create New Channel' : 'Start New Conversation',
       modal: true,
-      style: { width: '400px' },
-      isChannel: isChannel,
-      allUsers: props.users,
-      currentUserId: 'marcus', // Asumiendo 'marcus' es el usuario actual
+      style: { width: '420px' },
+      isChannel,
+      allUsers: store.users,
+      currentUserId: store.currentUserId,
     },
     onClose: (options) => {
-      const newChat = options.data;
-      if (newChat) {
-        emit('add:chat', newChat);
-      }
-    }
+      if (options.data) store.addChat(options.data);
+    },
   });
-};
+}
 
-const openChannelMenu = (chat) => {
+function openChannelMenu(chat) {
   dialog.open(MembersListDialog, {
     props: {
-      header: `Members of ${chat.name}`,
+      header: `Members of #${chat.name}`,
       modal: true,
       style: { width: '400px' },
-      breakpoints:{ '960px': '75vw', '641px': '100vw' },
-      chatMembers: chat.members.map(memberId => props.users.find(u => u.id === memberId)),
-      allUsers: props.users,
+      chatMembers: chat.members.map(id => store.users.find(u => u.id === id)).filter(Boolean),
+      allUsers: store.users,
       chatId: chat.id,
     },
     onClose: (options) => {
-      if (options.data && options.data.newMemberId) {
-        emit('add:member', { chatId: chat.id, userId: options.data.newMemberId });
+      if (options.data?.newMemberId) {
+        store.addMember(chat.id, options.data.newMemberId);
       }
-    }
+    },
   });
-};
+}
 </script>
 
 <style scoped>
-@import url('../../../styles/_variables.css');
-
 .channel-sidebar {
-  padding: 1rem;
-  background-color: var(--color-gray-lightest); /* Fondo gris neutro claro y limpio */
-  font-family: Arial, sans-serif;
-  height: 100%; /* Asegura que ocupe todo el alto disponible */
-  overflow-y: auto; /* Permite scroll si hay muchos elementos */
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 16px;
+  overflow-y: auto;
+  gap: 8px;
 }
+
+.search-box {
+  position: relative;
+  margin-bottom: 8px;
+}
+
+.search-box i {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+  font-size: 13px;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 9px 12px 9px 36px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 13px;
+  background: white;
+  color: #334155;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.search-box input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.search-box input::placeholder { color: #94a3b8; }
 
 .section-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-top: 1.5rem;
-  margin-bottom: 0.75rem;
+  justify-content: space-between;
+  margin: 16px 0 8px;
 }
 
 .section-title {
-  font-size: 0.75rem;
-  color: var(--color-gray-dark); /* Gris corporativo apagado para títulos secundarios */
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin: 0; /* Eliminar margen por defecto */
+  font-size: 10px;
+  font-weight: 700;
+  color: #94a3b8;
+  letter-spacing: 0.8px;
+  margin: 0;
 }
 
-.add-chat-button {
+.add-btn {
   background: none;
   border: none;
-  color: var(--color-gray-medium);
+  color: #94a3b8;
   cursor: pointer;
-  font-size: 0.9rem;
-  padding: 0.2rem;
+  padding: 4px;
   border-radius: 4px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
 }
-
-.add-chat-button:hover {
-  background-color: var(--color-gray-light);
-}
+.add-btn:hover { background: #e2e8f0; color: #475569; }
 
 .channel-list, .dm-list {
   list-style: none;
@@ -174,60 +202,57 @@ const openChannelMenu = (chat) => {
 }
 
 .channel-item, .dm-item {
-  padding: 0.5rem 0.75rem;
-  margin-bottom: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px;
+  border-radius: 6px;
   cursor: pointer;
-  border-radius: 4px;
-  display: flex; /* Usar flex para alinear contenido */
-  align-items: center; /* Alineación vertical */
-  gap: 8px; /* Espacio entre elementos */
-  font-size: 0.9rem;
-  color: var(--color-gray-dark); /* Gris corporativo apagado para canales inactivos */
-  transition: background-color 0.2s ease, color 0.2s ease;
-  justify-content: space-between;
+  font-size: 13px;
+  color: #475569;
+  transition: background 0.15s, color 0.15s;
+  margin-bottom: 2px;
 }
 
-.channel-name {
+.channel-item:hover, .dm-item:hover { background: #f1f5f9; }
+
+.channel-item.active, .dm-item.active {
+  background: #eff6ff;
+  color: #2563eb;
+  font-weight: 600;
+  border-left: 3px solid #2563eb;
+  padding-left: 7px;
+}
+
+.channel-hash {
+  color: #94a3b8;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+.channel-item.active .channel-hash { color: #2563eb; }
+
+.channel-name, .dm-name {
   flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.channel-members-count {
-  font-size: 0.75rem;
-  background: #e5e7eb;
-  color: #6b7280;
-  padding: 0.125rem 0.5rem;
-  border-radius: 999px;
+.member-count {
+  font-size: 10px;
+  background: #e2e8f0;
+  color: #64748b;
+  padding: 2px 6px;
+  border-radius: 99px;
   flex-shrink: 0;
 }
 
-.channel-item:hover .channel-members-count {
-  background: #d1d5db;
-}
-
-.channel-item:hover, .dm-item:hover {
-  background-color: var(--color-gray-light); /* Efecto hover sutil */
-}
-
-.channel-item.active, .dm-item.active {
-  background-color: var(--color-active-channel-bg); /* Azul extremadamente suave con opacidad */
-  color: var(--color-active-channel-text); /* Azul Primario Vibrante */
-  font-weight: 600; /* Negrita */
-  border-radius: 6px; /* Bordes ligeramente redondeados */
-}
-
-.status-indicator {
-  display: inline-block;
+.status-dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  flex-shrink: 0; /* Evita que el indicador se comprima */
+  flex-shrink: 0;
+  background: #94a3b8;
 }
-
-.status-indicator.online {
-  background-color: var(--color-status-online); /* Verde vibrante */
-}
-
-.status-indicator.offline {
-  background-color: var(--color-status-offline); /* Gris */
-}
+.status-dot.online { background: #10b981; }
 </style>

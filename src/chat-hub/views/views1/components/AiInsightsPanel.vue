@@ -1,274 +1,186 @@
 <template>
-  <div class="ai-insights-panel">
-    <div class="card-content-wrapper">
-      <!-- Cabecera de la Tarjeta: Icono y Título -->
-      <div class="card-header-section">
-        <i class="pi pi-sparkles ai-icon"></i>
-        <h3 class="card-title">AI INSIGHTS</h3>
+  <div class="ai-panel">
+    <div class="panel-body">
+      <div class="panel-header">
+        <i class="pi pi-sparkles"></i>
+        <h3>AI INSIGHTS</h3>
       </div>
 
-      <!-- Subetiqueta de Reunión y Tiempo -->
       <div class="meeting-meta">
-        <span class="meeting-tag">{{ meetingTag }}</span>
-        <span class="time-ago">{{ timeAgo }}</span>
+        <span class="tag">{{ insight.meetingTag }}</span>
+        <span class="ago">{{ insight.timeAgo }}</span>
       </div>
-      <!-- Título del Meeting -->
-      <h4 class="meeting-title">{{ meetingTitle }}</h4>
+      <h4 class="meeting-title">{{ insight.meetingTitle }}</h4>
 
-      <!-- Lista de Insights (Decisiones y Acciones) -->
       <ul class="insights-list">
-        <li v-for="insight in insightsList" :key="insight.id" class="insight-item">
-          <i :class="['insight-icon', insight.iconClass]"></i>
-          <p><span class="insight-type">{{ insight.type }}:</span> {{ insight.text }}</p>
+        <li v-for="item in insight.insights" :key="item.id">
+          <i :class="['pi', item.type === 'Decision' ? 'pi-check-square decision' : 'pi-exclamation-circle action']"></i>
+          <p><strong>{{ item.type }}:</strong> {{ item.text }}</p>
         </li>
       </ul>
 
-      <!-- Barra de Sentimiento (Channel Sentiment) -->
-      <div class="sentiment-section">
-        <span class="sentiment-label-title">CHANNEL SENTIMENT</span>
-        <div class="sentiment-bar-row">
-          <div class="sentiment-bar-container">
-            <div class="sentiment-bar productive" :style="{ width: sentimentProductivePercentage + '%' }"></div>
-            <div class="sentiment-bar unproductive" :style="{ width: (100 - sentimentProductivePercentage) + '%' }"></div>
+      <div class="sentiment">
+        <span class="sentiment-label">CHANNEL SENTIMENT</span>
+        <div class="sentiment-row">
+          <div class="sentiment-bar">
+            <div class="productive" :style="{ width: insight.sentimentProductive + '%' }"></div>
+            <div class="negative" :style="{ width: (100 - insight.sentimentProductive) + '%' }"></div>
           </div>
-          <span class="sentiment-text">{{ sentimentText }}</span>
+          <span class="sentiment-text">{{ insight.sentimentText }}</span>
         </div>
       </div>
     </div>
 
-    <!-- Botón Inferior de Transcripción (CTA Button) -->
-    <div class="card-footer">
-      <button class="full-transcript-button" @click="viewFullTranscript">VIEW FULL TRANSCRIPT</button>
-    </div>
+    <button class="transcript-btn" @click="viewTranscript">
+      VIEW FULL TRANSCRIPT
+    </button>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import { useDialog } from 'primevue/usedialog'; // Importar useDialog
-import FullTranscriptDialog from './FullTranscriptDialog.vue'; // Importar el nuevo componente de diálogo
+import { computed } from 'vue';
+import { useDialog } from 'primevue/usedialog';
+import { useChatHubStore } from '../../../application/chat-hub.store.js';
+import FullTranscriptDialog from './FullTranscriptDialog.vue';
 
-const dialog = useDialog(); // Inicializar useDialog
+const store  = useChatHubStore();
+const dialog = useDialog();
 
-// Datos reactivos para el panel de insights
-const meetingTag = ref('');
-const timeAgo = ref('');
-const meetingTitle = ref('');
-const insightsList = ref([]);
-const sentimentProductivePercentage = ref(0);
-const sentimentText = ref('');
+const insight = computed(() => store.insights);
 
-// Función para cargar los datos (simulada)
-const loadInsights = () => {
-  meetingTag.value = 'RECENT MEETING';
-  timeAgo.value = '45m ago';
-  meetingTitle.value = 'Q3 Planning Sync: Steering Committee';
-  insightsList.value = [
-    { id: 1, type: 'Decision', iconClass: 'pi pi-check-square check', text: 'Approved 12% budget shift to infrastructure phase.' },
-    { id: 2, type: 'Action', iconClass: 'pi pi-exclamation-circle action', text: 'Elena to finalize Gantt by EOD Friday.' },
-  ];
-  sentimentProductivePercentage.value = 90; // 90% productivo
-  sentimentText.value = 'Productive';
-};
-
-// Función para el botón "VIEW FULL TRANSCRIPT"
-const viewFullTranscript = () => {
+function viewTranscript() {
   dialog.open(FullTranscriptDialog, {
     props: {
       header: 'Full Meeting Transcript',
       modal: true,
-      style: { width: '60vw' }, // Ancho del diálogo, ajusta según necesidad
-      breakpoints:{ '960px': '75vw', '641px': '100vw' }
+      style: { width: '60vw' },
+      breakpoints: { '960px': '90vw' },
     },
-    // Puedes pasar datos al FullTranscriptDialog si fuera necesario
-    // data: {
-    //   meetingId: 'Q3-Planning-Sync'
-    // }
   });
-};
-
-// Cargar los insights cuando el componente se monte
-onMounted(() => {
-  loadInsights();
-});
+}
 </script>
 
 <style scoped>
-@import url('../../../styles/_variables.css');
-
-.ai-insights-panel {
-  background-color: var(--color-white); /* Fondo blanco puro */
-  border-radius: 12px; /* Esquinas redondeadas */
-  padding: 0; /* El padding se manejará dentro de .card-content-wrapper */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* Sombra muy sutil */
-  overflow: hidden; /* Asegura que los bordes redondeados se apliquen a los hijos */
-  font-family: Arial, sans-serif;
-  display: flex; /* Para que el footer se pegue abajo */
+.ai-panel {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+  display: flex;
   flex-direction: column;
 }
 
-.card-content-wrapper {
-  padding: 20px; /* Padding interno generoso */
-  flex-grow: 1; /* Permite que el contenido crezca */
-}
+.panel-body { padding: 20px; flex: 1; }
 
-.card-header-section {
+.panel-header {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 1rem; /* Espacio debajo del título principal */
+  margin-bottom: 16px;
 }
-
-.ai-icon {
-  font-size: 1.2rem;
-  color: #00bcd4; /* Turquesa/verde brillante para el icono de IA */
-}
-
-.card-title {
-  font-size: 0.9rem;
-  font-weight: bold;
+.panel-header i { color: #06b6d4; font-size: 16px; }
+.panel-header h3 {
+  font-size: 11px;
+  font-weight: 700;
+  color: #64748b;
   margin: 0;
-  color: var(--color-gray-dark); /* Gris oscuro/negro */
-  text-transform: uppercase;
+  letter-spacing: 0.6px;
 }
 
 .meeting-meta {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.5rem;
+  margin-bottom: 6px;
 }
-
-.meeting-tag {
-  font-size: 0.75rem;
-  color: var(--color-ai-insights-green); /* Verde para "RECENT MEETING" */
-  font-weight: bold;
-  text-transform: uppercase;
+.tag {
+  font-size: 10px;
+  font-weight: 700;
+  color: #10b981;
+  letter-spacing: 0.4px;
 }
-
-.time-ago {
-  font-size: 0.75rem;
-  color: var(--color-gray-medium); /* Gris claro para el tiempo */
-}
+.ago { font-size: 11px; color: #94a3b8; }
 
 .meeting-title {
-  font-size: 1.1rem; /* Fuente más grande */
-  font-weight: 700; /* Negrita */
-  color: var(--color-gray-dark); /* Color oscuro destacado */
-  margin-top: 0;
-  margin-bottom: 1.5rem; /* Espacio debajo del título de la reunión */
+  font-size: 15px;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 16px;
+  line-height: 1.4;
 }
 
 .insights-list {
   list-style: none;
   padding: 0;
-  margin: 0 0 1.5rem 0; /* Espacio debajo de la lista de insights */
+  margin: 0 0 16px;
 }
-
-.insight-item {
+.insights-list li {
   display: flex;
   gap: 10px;
-  align-items: flex-start;
   margin-bottom: 12px;
-  font-size: 0.9rem;
-  color: var(--color-gray-dark);
+  font-size: 13px;
+  color: #475569;
+  line-height: 1.5;
 }
-
-.insight-item p {
-  margin: 0; /* Eliminar margen por defecto del párrafo */
-  line-height: 1.4;
-}
-
-.insight-item .insight-type {
-  font-weight: bold; /* "Decision:" y "Action:" en negrita */
-}
-
-.insight-icon {
-  font-size: 1rem;
-  flex-shrink: 0; /* Evita que el icono se comprima */
-  width: 20px; /* Ancho fijo para el icono */
-  height: 20px; /* Alto fijo para el icono */
+.insights-list p { margin: 0; }
+.insights-list i {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 4px; /* Bordes sutilmente redondeados para el icono */
+  border-radius: 4px;
+  font-size: 11px;
+  color: white;
+  margin-top: 2px;
 }
+.insights-list i.decision { background: #10b981; }
+.insights-list i.action { background: #2563eb; border-radius: 50%; }
 
-.insight-icon.check {
-  color: var(--color-white); /* Check blanco */
-  background-color: var(--color-ai-insights-green); /* Fondo verde */
-}
-
-.insight-icon.action {
-  color: var(--color-white); /* Exclamación blanca */
-  background-color: var(--color-primary-blue); /* Fondo azul */
-  border-radius: 50%; /* Circular para el icono de acción */
-}
-
-.sentiment-section {
-  margin-top: 1rem;
-}
-
-.sentiment-label-title {
-  font-size: 0.85rem;
-  color: var(--color-gray-medium); /* Gris medio */
-  text-transform: uppercase;
-  font-weight: bold;
-  margin-bottom: 0.5rem;
+.sentiment-label {
   display: block;
+  font-size: 10px;
+  font-weight: 700;
+  color: #94a3b8;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
 }
 
-.sentiment-bar-row {
+.sentiment-row {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
-.sentiment-bar-container {
-  flex-grow: 1;
+.sentiment-bar {
+  flex: 1;
   height: 6px;
-  border-radius: 9999px; /* Muy redondeado (píldora) */
-  background: #e5e7eb; /* Fondo gris claro de la barra */
-  position: relative;
+  border-radius: 99px;
   overflow: hidden;
-  display: flex; /* Para que las barras internas se alineen */
+  display: flex;
+  background: #e2e8f0;
 }
-
-.sentiment-bar.productive {
-  background-color: var(--color-productive-green); /* Verde */
-}
-
-.sentiment-bar.unproductive {
-  background-color: var(--color-unproductive-red); /* Rojo */
-}
+.productive { background: #10b981; height: 100%; }
+.negative   { background: #ef4444; height: 100%; }
 
 .sentiment-text {
-  font-size: 0.8rem;
-  color: var(--color-gray-medium); /* Gris o verde, según el diseño */
-  flex-shrink: 0; /* Evita que el texto se comprima */
+  font-size: 12px;
+  font-weight: 600;
+  color: #10b981;
+  flex-shrink: 0;
 }
 
-.card-footer {
-  padding: 1rem 20px; /* Padding para el footer, consistente con el wrapper */
-  border-top: 1px solid var(--color-gray-light); /* Separador */
-  background-color: var(--color-gray-lightest); /* Fondo del footer */
-}
-
-.full-transcript-button {
-  width: 100%; /* Ocupa todo el ancho */
-  background-color: #1e293b; /* Gris muy oscuro/negro */
-  color: var(--color-white); /* Texto blanco */
+.transcript-btn {
+  width: 100%;
+  padding: 12px;
+  background: #1e293b;
+  color: white;
   border: none;
-  padding: 0.75rem 1rem; /* Padding vertical cómodo */
-  border-radius: 6px; /* Esquinas sutilmente redondeadas */
-  font-size: 0.9rem;
-  font-weight: bold;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
   cursor: pointer;
-  text-transform: uppercase; /* Texto en mayúsculas */
-  transition: background-color 0.2s ease;
+  transition: background 0.15s;
 }
-
-.full-transcript-button:hover {
-  background-color: #334155; /* Un tono un poco más claro al pasar el ratón */
-}
+.transcript-btn:hover { background: #334155; }
 </style>
