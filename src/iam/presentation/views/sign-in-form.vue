@@ -15,9 +15,19 @@ const form = reactive({ username: '', password: '' });
 async function performSignIn() {
   errorMsg.value = '';
   loading.value = true;
+
+  // Ejecutamos el sign-in use case
   const ok = await store.signIn(new SignInCommand(form), router);
   loading.value = false;
-  if (!ok) {
+
+  if (ok) {
+    // Redirección inteligente basada en el rol de negocio del usuario
+    if (store.currentUserRole === 'PORTFOLIO_DIRECTOR') {
+      router.push({ name: 'portfolio-home' });
+    } else {
+      router.push({ name: 'home' });
+    }
+  } else {
     errorMsg.value = 'Incorrect username / email or password. Please try again.';
   }
 }
@@ -33,7 +43,6 @@ function goToForgotPassword() {
 
 <template>
   <div class="auth-page">
-    <!-- Navbar -->
     <nav class="navbar">
       <div class="navbar-container">
         <div class="navbar-brand">
@@ -50,9 +59,7 @@ function goToForgotPassword() {
       </div>
     </nav>
 
-    <!-- Main Content -->
     <div class="auth-main">
-      <!-- Card Container -->
       <div class="auth-card">
         <div class="card-header">
           <h1>Welcome Back</h1>
@@ -60,31 +67,29 @@ function goToForgotPassword() {
         </div>
 
         <form @submit.prevent="performSignIn" class="auth-form">
-          <!-- Username Field -->
           <div class="form-group">
             <label for="username">Username or Email</label>
             <div class="input-wrapper">
               <i class="pi pi-user input-icon"></i>
               <pv-input-text
-                id="username"
-                v-model="form.username"
-                placeholder="Enter your username"
-                class="form-input"
+                  id="username"
+                  v-model="form.username"
+                  placeholder="Enter your username"
+                  class="form-input"
               />
             </div>
           </div>
 
-          <!-- Password Field -->
           <div class="form-group">
             <label for="password">Password</label>
             <div class="input-wrapper">
               <i class="pi pi-lock input-icon"></i>
               <pv-input-text
-                id="password"
-                v-model="form.password"
-                placeholder="Enter your password"
-                :type="showPassword ? 'text' : 'password'"
-                class="form-input"
+                  id="password"
+                  v-model="form.password"
+                  placeholder="Enter your password"
+                  :type="showPassword ? 'text' : 'password'"
+                  class="form-input"
               />
               <button type="button" class="eye-btn" @click="showPassword = !showPassword" tabindex="-1">
                 <i :class="showPassword ? 'pi pi-eye-slash' : 'pi pi-eye'"></i>
@@ -92,7 +97,6 @@ function goToForgotPassword() {
             </div>
           </div>
 
-          <!-- Remember and Forgot -->
           <div class="form-options">
             <label class="checkbox-label">
               <input type="checkbox" />
@@ -101,27 +105,23 @@ function goToForgotPassword() {
             <a class="forgot-link" @click.prevent="goToForgotPassword" href="#">Forgot password?</a>
           </div>
 
-          <!-- Error message -->
           <div v-if="errorMsg" class="error-msg">
             <i class="pi pi-exclamation-triangle"></i>
             {{ errorMsg }}
           </div>
 
-          <!-- Sign In Button -->
           <pv-button
-            type="submit"
-            class="sign-in-btn"
-            :label="loading ? 'Signing in...' : 'Sign In'"
-            :disabled="loading"
+              type="submit"
+              class="sign-in-btn"
+              :label="loading ? 'Signing in...' : 'Sign In'"
+              :disabled="loading"
           />
         </form>
 
-        <!-- Divider -->
         <div class="divider">
           <span>or</span>
         </div>
 
-        <!-- Sign Up Link -->
         <div class="signup-prompt">
           <span>Don't have an account?</span>
           <button class="signup-link" @click="goToSignUp">Create one now</button>
@@ -129,7 +129,6 @@ function goToForgotPassword() {
       </div>
     </div>
 
-    <!-- Footer -->
     <footer class="footer">
       <div class="footer-container">
         <p>&copy; 2026 Vantage PMO. All rights reserved.</p>
@@ -155,7 +154,7 @@ function goToForgotPassword() {
   flex-direction: column;
   min-height: 100vh;
   background: linear-gradient(135deg, rgba(37, 99, 235, 0.05) 0%, rgba(255, 255, 255, 0.5) 100%),
-              linear-gradient(225deg, rgba(59, 130, 246, 0.03) 0%, rgba(147, 112, 219, 0.03) 100%);
+  linear-gradient(225deg, rgba(59, 130, 246, 0.03) 0%, rgba(147, 112, 219, 0.03) 100%);
   font-family: 'Inter', sans-serif;
 }
 
@@ -490,4 +489,3 @@ function goToForgotPassword() {
   }
 }
 </style>
-
