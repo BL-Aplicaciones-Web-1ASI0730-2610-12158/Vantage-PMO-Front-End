@@ -101,10 +101,10 @@
 import { ref, computed, watch, nextTick } from 'vue';
 import OverlayPanel from 'primevue/overlaypanel';
 import { useDialog } from 'primevue/usedialog';
-import { useChatHubStore } from '../../../application/chat-hub.store.js';
-import MessageItem from './MessageItem.vue';
-import MembersListDialog from './MembersListDialog.vue';
-import QuickOptionsDialog from './QuickOptionsDialog.vue';
+import { useChatHubStore } from '../../application/chat-hub.store.js';
+import MessageItem from './message-item.vue';
+import MembersListDialog from './members-list-dialog.vue';
+import QuickOptionsDialog from './quick-options-dialog.vue';
 
 const store  = useChatHubStore();
 const dialog = useDialog();

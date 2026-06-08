@@ -21,7 +21,7 @@
 
 <script setup>
 import { computed } from 'vue';
-import { useChatHubStore } from '../../../application/chat-hub.store.js';
+import { useChatHubStore } from '../../application/chat-hub.store.js';
 
 const store = useChatHubStore();
 

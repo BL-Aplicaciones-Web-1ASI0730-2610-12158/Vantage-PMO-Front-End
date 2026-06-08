@@ -40,8 +40,8 @@
 <script setup>
 import { computed } from 'vue';
 import { useDialog } from 'primevue/usedialog';
-import { useChatHubStore } from '../../../application/chat-hub.store.js';
-import FullTranscriptDialog from './FullTranscriptDialog.vue';
+import { useChatHubStore } from '../../application/chat-hub.store.js';
+import FullTranscriptDialog from './full-transcript-dialog.vue';
 
 const store  = useChatHubStore();
 const dialog = useDialog();

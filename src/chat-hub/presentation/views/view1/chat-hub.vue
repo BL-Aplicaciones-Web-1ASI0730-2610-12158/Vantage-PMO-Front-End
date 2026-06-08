@@ -17,11 +17,11 @@
 
 <script setup>
 import { onMounted } from 'vue';
-import { useChatHubStore } from '../../application/chat-hub.store.js';
-import ChannelSidebar from './components/ChannelSidebar.vue';
-import ChatWindow from './components/ChatWindow.vue';
-import AiInsightsPanel from './components/AiInsightsPanel.vue';
-import PinnedAssetsPanel from './components/PinnedAssetsPanel.vue';
+import { useChatHubStore } from '../../../application/chat-hub.store.js';
+import ChannelSidebar from '../../components/channel-sidebar.vue';
+import ChatWindow from '../../components/chat-window.vue';
+import AiInsightsPanel from '../../components/ai-insights-panel.vue';
+import PinnedAssetsPanel from '../../components/pinned-assets-panel.vue';
 
 const store = useChatHubStore();
 
@@ -29,8 +29,6 @@ onMounted(() => store.initialize());
 </script>
 
 <style scoped>
-@import url('../../styles/_variables.css');
-
 .chat-hub-wrapper {
   height: calc(100vh - 116px);
   min-height: 520px;

@@ -19,7 +19,7 @@ const schedule     = () => import('./schedule/presentation/views/schedule.vue');
 const meetings     = () => import('./meetings/presentation/views/meetings.vue');
 const support      = () => import('./support/presentation/views/view1/support.vue');
 const settings     = () => import('./settings/presentation/views/settings.vue');
-const chatHub      = () => import('./chat-hub/views/views1/ChatHub.vue'); // Updated path
+const chatHub      = () => import('./chat-hub/presentation/views/view1/chat-hub.vue');
 
 
 // Routes version when IAM is not implemented

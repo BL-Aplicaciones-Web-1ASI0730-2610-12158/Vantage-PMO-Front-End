@@ -56,9 +56,9 @@
 <script setup>
 import { ref, computed } from 'vue';
 import { useDialog } from 'primevue/usedialog';
-import { useChatHubStore } from '../../../application/chat-hub.store.js';
-import CreateChatDialog from './CreateChatDialog.vue';
-import MembersListDialog from './MembersListDialog.vue';
+import { useChatHubStore } from '../../application/chat-hub.store.js';
+import CreateChatDialog from './create-chat-dialog.vue';
+import MembersListDialog from './members-list-dialog.vue';
 
 const store  = useChatHubStore();
 const dialog = useDialog();
