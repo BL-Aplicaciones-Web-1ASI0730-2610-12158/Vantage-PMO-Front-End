@@ -11,6 +11,7 @@
     "schedule": "Schedule",
     "meetings": "Meetings",
     "reports": "Reports",
+    "analytics": "Analytics",
     "systemAdministration": "System Administration",
     "support": "Support",
     "settings": "Settings",
@@ -227,6 +228,27 @@
         "riskAssessment": "Open issues and mitigation logs",
         "companyLogo": "Adds brand identity to report header"
       }
+    }
+  },
+  "analytics": {
+    "title": "Analytics Dashboard",
+    "subtitle": "Real-time portfolio performance, resource allocation, and financial tracking.",
+    "burnRate": {
+      "title": "Financial Burn Rate vs Forecast",
+      "subtitle": "Real-time expenditure tracking against baseline budget."
+    },
+    "portfolioRoi": {
+      "title": "Portfolio ROI",
+      "subtitle": "AGGREGATE PERFORMANCE"
+    },
+    "resourceSaturation": {
+      "title": "Resource Saturation",
+      "subtitle": "Human capital allocation by department."
+    },
+    "topMovers": {
+      "title": "Top Movers",
+      "subtitle": "Biggest impact changes this cycle",
+      "liveUpdate": "LIVE UPDATE"
     }
   },
   "projects": {

@@ -52,6 +52,15 @@
       "role": "Project manager",
       "birthDate": "2005-08-15",
       "id": 4
+    },
+    {
+      "username": "mau-tz",
+      "email": "mteranzavala@gmail.com",
+      "password": "pasword12345",
+      "name": "Mauricio",
+      "role": "Project Manager",
+      "birthDate": "2026-06-25",
+      "id": 5
     }
   ],
   "stats": [
@@ -1281,6 +1290,11 @@
       "userId": 4,
       "selectedRole": "PROJECT_LEADER",
       "id": 3
+    },
+    {
+      "userId": 5,
+      "selectedRole": "PROJECT_LEADER",
+      "id": 4
     }
   ],
   "login-attempts": [
@@ -1515,6 +1529,15 @@
       "text": "👀}",
       "attachments": [],
       "reactions": []
+    },
+    {
+      "id": "msg-1780960877978",
+      "chatId": "pmo-strategic-alignment",
+      "authorId": "alex",
+      "timestamp": "6:21 PM",
+      "text": "hola",
+      "attachments": [],
+      "reactions": []
     }
   ],
   "chat-pinned-assets": [
@@ -1554,6 +1577,109 @@
       ],
       "sentimentProductive": 90,
       "sentimentText": "Productive"
+    }
+  ],
+  "analytics": [
+    {
+      "id": 1,
+      "monthlyExpenditures": [
+        {
+          "month": "JAN",
+          "forecast": 62,
+          "actual": 55
+        },
+        {
+          "month": "MAR",
+          "forecast": 72,
+          "actual": 65
+        },
+        {
+          "month": "MAY",
+          "forecast": 85,
+          "actual": 78
+        },
+        {
+          "month": "JUL",
+          "forecast": 92,
+          "actual": 85
+        },
+        {
+          "month": "SEP",
+          "forecast": 98,
+          "actual": 90
+        },
+        {
+          "month": "NOV",
+          "forecast": 100,
+          "actual": 93
+        }
+      ],
+      "portfolioRoi": {
+        "percentage": 72,
+        "efficiencyLabel": "HIGH EFFICIENCY",
+        "target": 12400000,
+        "projected": 14100000
+      },
+      "resourceSaturation": [
+        {
+          "department": "Engineering",
+          "capacity": 94,
+          "status": "warning"
+        },
+        {
+          "department": "Product Design",
+          "capacity": 78,
+          "status": "normal"
+        },
+        {
+          "department": "Data Science",
+          "capacity": 112,
+          "status": "over"
+        },
+        {
+          "department": "Strategy & Ops",
+          "capacity": 45,
+          "status": "normal"
+        }
+      ],
+      "topMovers": [
+        {
+          "projectId": "PX-882",
+          "name": "Cloud Migration",
+          "category": "Infrastructure",
+          "delta": 14.2,
+          "health": "Optimal"
+        },
+        {
+          "projectId": "PX-901",
+          "name": "Data Lake 2.0",
+          "category": "Storage",
+          "delta": -8.4,
+          "health": "AtRisk"
+        },
+        {
+          "projectId": "PX-711",
+          "name": "Mobile App V3",
+          "category": "Client Dev",
+          "delta": 2.1,
+          "health": "Stable"
+        },
+        {
+          "projectId": "PX-450",
+          "name": "B2B Integration",
+          "category": "Partnerships",
+          "delta": 19.8,
+          "health": "Optimal"
+        }
+      ],
+      "summaryKpis": {
+        "unallocatedFunds": 1450000,
+        "unallocatedSubtext": "Available for Q3 expansion",
+        "velocityIndex": 1.4,
+        "velocityChange": 12,
+        "riskExposure": "Low",
+        "mitigationPlans": 3
+      }
     }
   ]
 }

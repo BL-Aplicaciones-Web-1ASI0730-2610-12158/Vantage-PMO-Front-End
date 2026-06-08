@@ -11,6 +11,7 @@
     "schedule": "Cronograma",
     "meetings": "Reuniones",
     "reports": "Reportes",
+    "analytics": "Analítica",
     "systemAdministration": "Administración del Sistema",
     "support": "Soporte",
     "settings": "Configuración",
@@ -227,6 +228,27 @@
         "riskAssessment":   "Problemas abiertos y registros de mitigación",
         "companyLogo":      "Agrega identidad de marca al encabezado"
       }
+    }
+  },
+  "analytics": {
+    "title": "Panel de Analítica",
+    "subtitle": "Rendimiento del portafolio, asignación de recursos y seguimiento financiero en tiempo real.",
+    "burnRate": {
+      "title": "Tasa de Consumo vs Pronóstico",
+      "subtitle": "Seguimiento de gastos en tiempo real contra el presupuesto base."
+    },
+    "portfolioRoi": {
+      "title": "ROI del Portafolio",
+      "subtitle": "RENDIMIENTO AGREGADO"
+    },
+    "resourceSaturation": {
+      "title": "Saturación de Recursos",
+      "subtitle": "Asignación de capital humano por departamento."
+    },
+    "topMovers": {
+      "title": "Principales Cambios",
+      "subtitle": "Mayores impactos en este ciclo",
+      "liveUpdate": "ACTUALIZACIÓN EN VIVO"
     }
   },
   "projects": {
