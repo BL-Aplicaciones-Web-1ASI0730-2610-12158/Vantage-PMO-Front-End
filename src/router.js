@@ -11,6 +11,7 @@ const profileOverview    = () => import('./profile/presentation/views/view1/prof
 const profilePreferences = () => import('./profile/presentation/views/view1/profile-preferences.vue');
 const profileSecurity    = () => import('./profile/presentation/views/view1/profile-security.vue');
 const reports = () => import('./reports/presentation/views/reports.vue');
+const analytics = () => import('./analytics/presentation/views/analytics.vue');
 const projects = () => import('./projects/presentation/views/project.vue');
 const taskCollaboration = () => import('./task-collaboration/presentation/views/task-collaboration.vue');
 const systemAdministration = () => import('./system-administration/presentation/pages/system-administration-page.vue');
@@ -37,6 +38,7 @@ const routes = [
         { path: 'schedule',        name: 'schedule',        component: schedule,     meta: { title: 'Schedule' } },
         { path: 'meetings',        name: 'meetings',        component: meetings,     meta: { title: 'Meetings' } },
         { path: 'reports',         name: 'reports',         component: reports, meta: { title: 'Reports' } },
+        { path: 'analytics',       name: 'analytics',       component: analytics, meta: { title: 'Analytics' } },
         { path: 'profile', component: profilePage, meta: { title: 'Profile' }, children: [
             { path: '',              name: 'profile',             component: profileOverview    },
             { path: 'preferences',   name: 'profile-preferences', component: profilePreferences },
