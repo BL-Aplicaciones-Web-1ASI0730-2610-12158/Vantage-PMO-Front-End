@@ -9,29 +9,23 @@ import { StatsAssembler } from '../../profile/infrastructure/stats.assembler.js'
  */
 class TasksApi extends BaseEndpoint {
     constructor() { super(import.meta.env.VITE_TASKS_ENDPOINT_PATH); }
-    async getAll(context = 'user') {
+    async getAll() {
         const data = await super.getAll();
-        if (context === 'portfolio') {
-            return TaskAssembler.toEntities(data);
-        }
         return TaskAssembler.toEntities(data);
     }
 }
 
 class ScheduleApi extends BaseEndpoint {
     constructor() { super(import.meta.env.VITE_SCHEDULE_ENDPOINT_PATH); }
-    async getAll(context = 'user') {
+    async getAll() {
         const data = await super.getAll();
-        if (context === 'portfolio') {
-            return ScheduleAssembler.toEntities(data);
-        }
         return ScheduleAssembler.toEntities(data);
     }
 }
 
 class DepartmentsApi extends BaseEndpoint {
     constructor() { super(import.meta.env.VITE_DEPARTMENTS_ENDPOINT_PATH); }
-    async getAll(context = 'user') {
+    async getAll() {
         const data = await super.getAll();
         return DepartmentAssembler.toEntities(data);
     }
@@ -39,13 +33,8 @@ class DepartmentsApi extends BaseEndpoint {
 
 class StatsApi extends BaseEndpoint {
     constructor() { super(import.meta.env.VITE_STATS_ENDPOINT_PATH); }
-    async getFirst(context = 'user') {
+    async getFirst() {
         const data = await super.getAll();
-
-        if (context === 'portfolio' && data && data.length > 1) {
-            return StatsAssembler.toEntity(data[1]);
-        }
-
         return StatsAssembler.toEntity(data[0]);
     }
 }

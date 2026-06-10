@@ -26,9 +26,9 @@ const useIamStore = defineStore('iam', () => {
     /** @type {import('vue').Ref<string|null>} Username of the currently authenticated user, or null when signed out. */
     const currentUsername = ref(localStorage.getItem('username') || null);
     /** @type {import('vue').Ref<number>} Identifier of the currently authenticated user, or 0 when signed out. */
-    const currentUserId = ref(0);
-    /** @type {import('vue').Ref<string|null>} Role of the currently authenticated user, or null when signed out. */
-    const currentUserRole = ref(localStorage.getItem('userRole') || null);
+    const currentUserId = ref(Number(localStorage.getItem('userId')) || 0);
+    /** @type {import('vue').Ref<string|null>} Email of the currently authenticated user. */
+    const currentUserEmail = ref(localStorage.getItem('userEmail') || null);
     /** @type {import('vue').ComputedRef<string|null>} Bearer token for the active session, or null when signed out. */
     const currentToken = computed(() => isSignedIn.value ? localStorage.getItem('token') : null);
 
@@ -43,7 +43,7 @@ const useIamStore = defineStore('iam', () => {
      * Executes the sign-in use case and updates authentication state.
      * @param {SignInCommand} signInCommand - Sign-in command.
      * @param {import('vue-router').Router} router - Router used to redirect on result.
-     * @returns {Promise<boolean>} Resolves to true if sign-in succeeded.
+     * @returns {void}
      */
     function signIn(signInCommand, router) {
         console.log(signInCommand);
@@ -54,21 +54,19 @@ const useIamStore = defineStore('iam', () => {
                     let currentUser = UserAssembler.toEntityFromResource(signInResource);
                     currentUsername.value = currentUser.username;
                     currentUserId.value = currentUser.id;
-
-                    const rawRole = (Array.isArray(response) && response[0]?.role) ||
-                        (response?.data && Array.isArray(response.data) && response.data[0]?.role) ||
-                        (response?.data?.role) ||
-                        signInResource.role;
-
-                    currentUserRole.value = rawRole || 'MANAGER';
-                    localStorage.setItem('userRole', currentUserRole.value);
-
-                    localStorage.setItem('token', signInResource.token || 'fake-jwt-token-local');
-
+                    currentUserEmail.value = signInResource.email ?? null;
+                    localStorage.setItem('token', signInResource.token);
+                    localStorage.setItem('userId', String(currentUser.id));
+                    localStorage.setItem('username', currentUser.username ?? '');
+                    if (signInResource.email) {
+                        localStorage.setItem('userEmail', signInResource.email);
+                    }
                     isSignedIn.value = true;
-                    console.log(`User signed in: ${currentUsername.value} with role: ${currentUserRole.value}`);
+                    console.log(`User signed in: ${currentUsername.value}`);
                     errors.value = [];
-
+                    const workspaceStore = useWorkspaceStore();
+                    workspaceStore.loadUserWorkspace();
+                    router.push({name: 'home'});
                     return true;
                 } else {
                     isSignedIn.value = false;
@@ -90,29 +88,45 @@ const useIamStore = defineStore('iam', () => {
      * @param {import('vue-router').Router} router - Router used to redirect on result.
      * @returns {Promise<boolean>} True when registration completes successfully.
      */
-    function signUp(signUpCommand, router) {
-        iamApi.signUp(signUpCommand)
-            .then(response => {
-                let signUpResource = SignUpAssembler.toResourceFromResponse(response);
-                if (signUpResource) {
-                    console.log(`User registered: ${signUpResource.username}`);
-                    errors.value = [];
-                    router.push({name: 'iam-sign-in'});
-                } else {
-                    console.log('Sign-up failed');
-                    errors.value.push(new Error('Sign-up failed'));
-                    router.push({name: 'iam-sign-up'});
-                }
-            })
-            .catch(error => {
-                console.log(error);
-                errors.value.push(error);
-                router.push({name: 'iam-sign-up'});
-            });
+    async function registerAccount(registerCommand, router) {
+        try {
+            const response = await iamApi.signUp(registerCommand.signUp);
+            const signUpResource = SignUpAssembler.toResourceFromResponse(response);
+
+            if (!signUpResource) {
+                errors.value.push(new Error('Registration failed'));
+                return false;
+            }
+
+            const token = btoa(`${signUpResource.username}:${signUpResource.id}:${Date.now()}`);
+            currentUsername.value = signUpResource.username;
+            currentUserId.value = signUpResource.id;
+            localStorage.setItem('token', token);
+            isSignedIn.value = true;
+            errors.value = [];
+
+            const workspaceStore = useWorkspaceStore();
+            const workspaceSaved = await workspaceStore.setUserWorkspace(registerCommand.workspaceType);
+
+            if (!workspaceSaved) {
+                errors.value.push(new Error('Account created but workspace selection could not be saved.'));
+                return false;
+            }
+
+            console.log(`User registered: ${signUpResource.username}`);
+            router.push({ name: 'home' });
+            return true;
+        } catch (error) {
+            console.log(error);
+            errors.value.push(error);
+            return false;
+        }
     }
 
     /** @type {import('vue').Ref<number|null>} ID of the user pending password reset. */
     const recoveryUserId = ref(null);
+
+    // ...existing code...
 
     /**
      * Looks up an account by email to start the recovery flow.
@@ -159,9 +173,11 @@ const useIamStore = defineStore('iam', () => {
     function signOut() {
         currentUsername.value = null;
         currentUserId.value = 0;
-        currentUserRole.value = null;
+        currentUserEmail.value = null;
         localStorage.removeItem('token');
-        localStorage.removeItem('userRole');
+        localStorage.removeItem('userId');
+        localStorage.removeItem('username');
+        localStorage.removeItem('userEmail');
         isSignedIn.value = false;
         console.log('User signed out');
         errors.value = [];
@@ -189,7 +205,7 @@ const useIamStore = defineStore('iam', () => {
         usersLoaded,
         currentUsername,
         currentUserId,
-        currentUserRole,
+        currentUserEmail,
         currentToken,
         isSignedIn,
         recoveryUserId,
