@@ -14,18 +14,22 @@ export class Project{
         endDate,
         milestones,
         teamMembers,
-        manager
+        manager,
+        userId,
+        dueDate,
     }) {
-        this.id = id;
-        this.name = name;
-        this.category = category || 'General';
+        this.id          = id;
+        this.name        = name;
+        this.category    = category || 'General';
         this.description = description;
-        this.progress = progress;
-        this.status = status;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.milestones = milestones || [];
+        this.progress    = progress;
+        this.status      = status;
+        this.startDate   = startDate;
+        this.endDate     = endDate;
+        this.milestones  = milestones || [];
         this.teamMembers = teamMembers || [];
-        this.manager = manager;
+        this.manager     = manager;
+        this.userId      = userId;
+        this.dueDate     = dueDate;
     }
 }

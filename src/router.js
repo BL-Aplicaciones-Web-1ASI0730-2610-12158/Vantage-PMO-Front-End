@@ -9,16 +9,21 @@ const pageNotFound = () => import('./shared/presentation/view1/views/page-not-fo
 const layout      = () => import('./shared/presentation/view1/components/layout.vue');
 const layoutView2 = () => import('./shared/presentation/view2/components/layout.vue');
 const profile     = () => import('./profile/presentation/views/profile.vue');
+const profilePage        = () => import('./profile/presentation/views/view1/profile-page.vue');
+const profileOverview    = () => import('./profile/presentation/views/view1/profile-overview.vue');
+const profilePreferences = () => import('./profile/presentation/views/view1/profile-preferences.vue');
+const profileSecurity    = () => import('./profile/presentation/views/view1/profile-security.vue');
 const reports = () => import('./reports/presentation/views/reports.vue');
+const analytics = () => import('./analytics/presentation/views/analytics.vue');
 const projects = () => import('./projects/presentation/views/project.vue');
 const taskCollaboration = () => import('./task-collaboration/presentation/views/task-collaboration.vue');
 const systemAdministration = () => import('./system-administration/presentation/pages/system-administration-page.vue');
 const signInForm = () => import('./iam/presentation/views/sign-in-form.vue');
 const schedule     = () => import('./schedule/presentation/views/schedule.vue');
 const meetings     = () => import('./meetings/presentation/views/meetings.vue');
-const support      = () => import('./support/presentation/views/support.vue');
+const support      = () => import('./support/presentation/views/view1/support.vue');
 const settings     = () => import('./settings/presentation/views/settings.vue');
-const chatHub      = () => import('./chat-hub/presentation/ChatHub.vue');
+const chatHub      = () => import('./chat-hub/presentation/views/view1/chat-hub.vue');
 
 
 // Routes configuration

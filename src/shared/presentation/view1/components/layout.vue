@@ -7,7 +7,6 @@ const router = useRouter()
 const route  = useRoute()
 const { t }  = useI18n()
 const sidebarOpen = ref(false)
-const createDialogOpen = ref(false)
 
 const navItems = [
   { labelKey: 'nav.home',           icon: 'pi pi-home',        name: 'home' },
@@ -17,12 +16,14 @@ const navItems = [
   { labelKey: 'nav.schedule',       icon: 'pi pi-calendar',    name: 'schedule' },
   { labelKey: 'nav.meetings',       icon: 'pi pi-video',       name: 'meetings' },
   { labelKey: 'nav.reports',        icon: 'pi pi-chart-bar',   name: 'reports' },
+  { labelKey: 'nav.analytics',      icon: 'pi pi-chart-line',  name: 'analytics' },
   { labelKey: 'nav.systemAdministration', icon: 'pi pi-cog', name: 'system-administration' },
 ]
 
 const bottomItems = [
-  { labelKey: 'nav.support',  icon: 'pi pi-question-circle', name: 'support' },
+  { labelKey: 'nav.profile',  icon: 'pi pi-user',            name: 'profile' },
   { labelKey: 'nav.settings', icon: 'pi pi-cog',             name: 'settings' },
+  { labelKey: 'nav.support',  icon: 'pi pi-question-circle', name: 'support' },
 ]
 
 function navigate(name) {
@@ -33,7 +34,10 @@ function navigate(name) {
   }
   sidebarOpen.value = false;
 }
-function isActive(name)  { return route.name === name }
+function isActive(name) {
+  if (name === 'profile') return route.path.startsWith('/dashboard/profile');
+  return route.name === name;
+}
 </script>
 
 <template>

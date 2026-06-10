@@ -17,6 +17,6 @@ export class SignInAssembler {
         }
         const user = data[0];
         const token = btoa(`${user.username}:${user.id}:${Date.now()}`);
-        return new SignInResource({ id: user.id, username: user.username, token });
+        return new SignInResource({ id: user.id, username: user.username, email: user.email, token });
     }
 }

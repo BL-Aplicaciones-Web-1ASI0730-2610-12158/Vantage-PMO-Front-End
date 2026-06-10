@@ -4,8 +4,8 @@ import {computed, ref} from "vue";
 import {SignInAssembler} from "../infrastructure/sign-in.assembler.js";
 import {UserAssembler} from "../infrastructure/user.assembler.js";
 import {SignUpAssembler} from "../infrastructure/sign-up.assembler.js";
-import {SignInCommand} from "../domain/sign-in.command.js";
-import {SignUpCommand} from "../domain/sign-up.command.js";
+import {RegisterAccountCommand} from "../domain/register-account.command.js";
+import { useWorkspaceStore } from "../../workspace/application/workspace.store.js"
 
 const iamApi = new IamApi();
 /**
@@ -24,13 +24,20 @@ const useIamStore = defineStore('iam', () => {
     /** @type {import('vue').Ref<boolean>} Flag indicating if a user is signed in. */
     const isSignedIn = ref(false);
     /** @type {import('vue').Ref<string|null>} Username of the currently authenticated user, or null when signed out. */
-    const currentUsername = ref(null);
+    const currentUsername = ref(localStorage.getItem('username') || null);
     /** @type {import('vue').Ref<number>} Identifier of the currently authenticated user, or 0 when signed out. */
     const currentUserId = ref(0);
     /** @type {import('vue').Ref<string|null>} Role of the currently authenticated user, or null when signed out. */
     const currentUserRole = ref(localStorage.getItem('userRole') || null);
     /** @type {import('vue').ComputedRef<string|null>} Bearer token for the active session, or null when signed out. */
     const currentToken = computed(() => isSignedIn.value ? localStorage.getItem('token') : null);
+
+    if (localStorage.getItem('token') && currentUserId.value) {
+        isSignedIn.value = true;
+        if (!currentUsername.value && localStorage.getItem('username')) {
+            currentUsername.value = localStorage.getItem('username');
+        }
+    }
 
     /**
      * Executes the sign-in use case and updates authentication state.
@@ -78,10 +85,10 @@ const useIamStore = defineStore('iam', () => {
     }
 
     /**
-     * Executes the sign-up use case and routes the user to the next screen.
-     * @param {SignUpCommand} signUpCommand - Sign-up command.
+     * Registers a new account, signs the user in, and persists workspace selection.
+     * @param {RegisterAccountCommand} registerCommand - Registration command with workspace.
      * @param {import('vue-router').Router} router - Router used to redirect on result.
-     * @returns {void}
+     * @returns {Promise<boolean>} True when registration completes successfully.
      */
     function signUp(signUpCommand, router) {
         iamApi.signUp(signUpCommand)
@@ -187,7 +194,7 @@ const useIamStore = defineStore('iam', () => {
         isSignedIn,
         recoveryUserId,
         signIn,
-        signUp,
+        registerAccount,
         signOut,
         fetchUsers,
         recoverAccount,

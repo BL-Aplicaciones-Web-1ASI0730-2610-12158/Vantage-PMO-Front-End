@@ -11,9 +11,11 @@
     "schedule": "Schedule",
     "meetings": "Meetings",
     "reports": "Reports",
+    "analytics": "Analytics",
     "systemAdministration": "System Administration",
     "support": "Support",
     "settings": "Settings",
+    "profile": "Profile",
     "createProject": "Create Project"
   },
   "topbar": {
@@ -41,11 +43,99 @@
   "profile": {
     "title": "Profile",
     "back": "Back",
+    "tabs": {
+      "profile": "Profile",
+      "preferences": "Preferences",
+      "security": "Security"
+    },
+    "editProfile": "Edit Profile",
+    "shareProfile": "Share Profile",
+    "shareCopied": "Profile link copied to clipboard!",
+    "shareFailed": "Could not copy link. Try again.",
+    "aboutSection": "About",
+    "yearsActive": "Years Active",
+    "availabilityLabel": "Availability",
+    "viewAll": "View All",
+    "complete": "Complete",
+    "technicalSkills": "Technical Skills",
+    "coreTags": "Core Tags",
+    "topEndorsements": "Top Endorsements",
+    "seeAllNetwork": "See all {n} network members",
+    "skillExpert": "Expert",
+    "skillAdvanced": "Advanced",
+    "skillIntermediate": "Intermediate",
+    "skillBeginner": "Beginner",
     "department": "Department",
     "memberSince": "Member since",
     "totalProjects": "Total Projects",
     "onTrack": "On Track",
-    "atRisk": "At Risk"
+    "atRisk": "At Risk",
+    "experience": "Experience",
+    "deliveryRate": "Delivery Rate",
+    "activeBudget": "Active Budget",
+    "technicalArchitecture": "Technical Architecture",
+    "about": "About {name}",
+    "activeProjects": "Active Projects",
+    "viewPortfolio": "View Portfolio",
+    "endorsements": "Colleague Endorsements",
+    "loading": "Loading profile...",
+    "error": "Unable to load profile. Please try again.",
+    "statusHealthy": "HEALTHY",
+    "statusAtRisk": "AT RISK",
+    "statusCritical": "CRITICAL",
+    "form": {
+      "name": "Full Name",
+      "role": "Job Title",
+      "location": "Location",
+      "department": "Department",
+      "availability": "Availability Status",
+      "bio": "Bio",
+      "cancel": "Cancel",
+      "save": "Save Changes"
+    },
+    "prefs": {
+      "title": "Preferences",
+      "subtitle": "Manage your notification and regional settings.",
+      "notifications": "Notifications",
+      "emailNotif": "Email Notifications",
+      "emailNotifDesc": "Receive updates about projects and tasks via email.",
+      "pushNotif": "Push Notifications",
+      "pushNotifDesc": "Get real-time alerts in your browser.",
+      "weeklyDigest": "Weekly Digest",
+      "weeklyDigestDesc": "Summary of portfolio activity every Monday.",
+      "projectUpdates": "Project Updates",
+      "projectUpdatesDesc": "Alerts when project status or milestones change.",
+      "regional": "Regional Settings",
+      "language": "Language",
+      "timezone": "Timezone",
+      "dateFormat": "Date Format",
+      "save": "Save Preferences",
+      "saved": "Preferences saved!"
+    },
+    "security": {
+      "title": "Security",
+      "subtitle": "Manage your password and authentication settings.",
+      "password": "Password",
+      "changePassword": "Change Password",
+      "changePasswordDesc": "Update your password regularly to keep your account secure.",
+      "update": "Update",
+      "passwordUpdated": "Password updated successfully!",
+      "authentication": "Authentication",
+      "twoFactor": "Two-Factor Authentication",
+      "twoFactorDesc": "Add an extra layer of security to your account.",
+      "sessionAlerts": "Session Alerts",
+      "sessionAlertsDesc": "Get notified when a new device signs in.",
+      "sessions": "Active Sessions",
+      "signOutAll": "Sign Out Everywhere",
+      "signOutAllDesc": "End all active sessions on all devices.",
+      "signOut": "Sign Out",
+      "currentPassword": "Current Password",
+      "newPassword": "New Password",
+      "confirmPassword": "Confirm Password",
+      "currentRequired": "Please enter your current password.",
+      "passwordMin": "Password must be at least 8 characters.",
+      "mismatch": "Passwords do not match."
+    }
   },
   "reports": {
     "title": "Architect PMO Quick Reports",
@@ -138,6 +228,27 @@
         "riskAssessment": "Open issues and mitigation logs",
         "companyLogo": "Adds brand identity to report header"
       }
+    }
+  },
+  "analytics": {
+    "title": "Analytics Dashboard",
+    "subtitle": "Real-time portfolio performance, resource allocation, and financial tracking.",
+    "burnRate": {
+      "title": "Financial Burn Rate vs Forecast",
+      "subtitle": "Real-time expenditure tracking against baseline budget."
+    },
+    "portfolioRoi": {
+      "title": "Portfolio ROI",
+      "subtitle": "AGGREGATE PERFORMANCE"
+    },
+    "resourceSaturation": {
+      "title": "Resource Saturation",
+      "subtitle": "Human capital allocation by department."
+    },
+    "topMovers": {
+      "title": "Top Movers",
+      "subtitle": "Biggest impact changes this cycle",
+      "liveUpdate": "LIVE UPDATE"
     }
   },
   "projects": {

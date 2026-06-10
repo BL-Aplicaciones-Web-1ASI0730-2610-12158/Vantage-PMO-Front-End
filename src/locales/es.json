@@ -11,9 +11,11 @@
     "schedule": "Cronograma",
     "meetings": "Reuniones",
     "reports": "Reportes",
+    "analytics": "Analítica",
     "systemAdministration": "Administración del Sistema",
     "support": "Soporte",
     "settings": "Configuración",
+    "profile": "Perfil",
     "createProject": "Crear Proyecto"
   },
   "topbar": {
@@ -41,11 +43,99 @@
   "profile": {
     "title": "Perfil",
     "back": "Volver",
+    "tabs": {
+      "profile": "Perfil",
+      "preferences": "Preferencias",
+      "security": "Seguridad"
+    },
+    "editProfile": "Editar Perfil",
+    "shareProfile": "Compartir Perfil",
+    "shareCopied": "¡Enlace del perfil copiado!",
+    "shareFailed": "No se pudo copiar el enlace.",
+    "aboutSection": "Acerca de",
+    "yearsActive": "Años Activo",
+    "availabilityLabel": "Disponibilidad",
+    "viewAll": "Ver Todo",
+    "complete": "Completado",
+    "technicalSkills": "Habilidades Técnicas",
+    "coreTags": "Etiquetas Principales",
+    "topEndorsements": "Mejores Recomendaciones",
+    "seeAllNetwork": "Ver los {n} miembros de la red",
+    "skillExpert": "Experto",
+    "skillAdvanced": "Avanzado",
+    "skillIntermediate": "Intermedio",
+    "skillBeginner": "Principiante",
     "department": "Departamento",
     "memberSince": "Miembro desde",
     "totalProjects": "Proyectos Totales",
     "onTrack": "En Curso",
-    "atRisk": "En Riesgo"
+    "atRisk": "En Riesgo",
+    "experience": "Experiencia",
+    "deliveryRate": "Tasa de Entrega",
+    "activeBudget": "Presupuesto Activo",
+    "technicalArchitecture": "Arquitectura Técnica",
+    "about": "Acerca de {name}",
+    "activeProjects": "Proyectos Activos",
+    "viewPortfolio": "Ver Portafolio",
+    "endorsements": "Recomendaciones de Colegas",
+    "loading": "Cargando perfil...",
+    "error": "No se pudo cargar el perfil. Inténtalo de nuevo.",
+    "statusHealthy": "SALUDABLE",
+    "statusAtRisk": "EN RIESGO",
+    "statusCritical": "CRÍTICO",
+    "form": {
+      "name": "Nombre Completo",
+      "role": "Cargo",
+      "location": "Ubicación",
+      "department": "Departamento",
+      "availability": "Estado de Disponibilidad",
+      "bio": "Biografía",
+      "cancel": "Cancelar",
+      "save": "Guardar Cambios"
+    },
+    "prefs": {
+      "title": "Preferencias",
+      "subtitle": "Administra tus notificaciones y configuración regional.",
+      "notifications": "Notificaciones",
+      "emailNotif": "Notificaciones por Email",
+      "emailNotifDesc": "Recibe actualizaciones de proyectos y tareas por email.",
+      "pushNotif": "Notificaciones Push",
+      "pushNotifDesc": "Alertas en tiempo real en tu navegador.",
+      "weeklyDigest": "Resumen Semanal",
+      "weeklyDigestDesc": "Resumen de actividad del portafolio cada lunes.",
+      "projectUpdates": "Actualizaciones de Proyectos",
+      "projectUpdatesDesc": "Alertas cuando cambia el estado o hitos de un proyecto.",
+      "regional": "Configuración Regional",
+      "language": "Idioma",
+      "timezone": "Zona Horaria",
+      "dateFormat": "Formato de Fecha",
+      "save": "Guardar Preferencias",
+      "saved": "¡Preferencias guardadas!"
+    },
+    "security": {
+      "title": "Seguridad",
+      "subtitle": "Administra tu contraseña y configuración de autenticación.",
+      "password": "Contraseña",
+      "changePassword": "Cambiar Contraseña",
+      "changePasswordDesc": "Actualiza tu contraseña regularmente para mantener tu cuenta segura.",
+      "update": "Actualizar",
+      "passwordUpdated": "¡Contraseña actualizada!",
+      "authentication": "Autenticación",
+      "twoFactor": "Autenticación de Dos Factores",
+      "twoFactorDesc": "Añade una capa extra de seguridad a tu cuenta.",
+      "sessionAlerts": "Alertas de Sesión",
+      "sessionAlertsDesc": "Recibe notificaciones cuando un nuevo dispositivo inicia sesión.",
+      "sessions": "Sesiones Activas",
+      "signOutAll": "Cerrar Sesión en Todos los Dispositivos",
+      "signOutAllDesc": "Finaliza todas las sesiones activas.",
+      "signOut": "Cerrar Sesión",
+      "currentPassword": "Contraseña Actual",
+      "newPassword": "Nueva Contraseña",
+      "confirmPassword": "Confirmar Contraseña",
+      "currentRequired": "Ingresa tu contraseña actual.",
+      "passwordMin": "La contraseña debe tener al menos 8 caracteres.",
+      "mismatch": "Las contraseñas no coinciden."
+    }
   },
   "reports": {
     "title": "Reportes Ejecutivos PMO",
@@ -138,6 +228,27 @@
         "riskAssessment":   "Problemas abiertos y registros de mitigación",
         "companyLogo":      "Agrega identidad de marca al encabezado"
       }
+    }
+  },
+  "analytics": {
+    "title": "Panel de Analítica",
+    "subtitle": "Rendimiento del portafolio, asignación de recursos y seguimiento financiero en tiempo real.",
+    "burnRate": {
+      "title": "Tasa de Consumo vs Pronóstico",
+      "subtitle": "Seguimiento de gastos en tiempo real contra el presupuesto base."
+    },
+    "portfolioRoi": {
+      "title": "ROI del Portafolio",
+      "subtitle": "RENDIMIENTO AGREGADO"
+    },
+    "resourceSaturation": {
+      "title": "Saturación de Recursos",
+      "subtitle": "Asignación de capital humano por departamento."
+    },
+    "topMovers": {
+      "title": "Principales Cambios",
+      "subtitle": "Mayores impactos en este ciclo",
+      "liveUpdate": "ACTUALIZACIÓN EN VIVO"
     }
   },
   "projects": {
