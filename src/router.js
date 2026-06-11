@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Home from './shared/presentation/view1/views/home.vue';
+import HomeView2 from './shared/presentation/view2/views/home.vue'; // <-- Importamos la nueva vista
 import iamRoutes from './iam/presentation/iam-routes.js';
 import { authenticationGuard } from './iam/infrastructure/authentication.guard.js';
 
@@ -21,8 +22,8 @@ const meetings     = () => import('./meetings/presentation/views/meetings.vue');
 const support      = () => import('./support/presentation/views/view1/support.vue');
 const settings     = () => import('./settings/presentation/views/settings.vue');
 const chatHub      = () => import('./chat-hub/presentation/views/view1/chat-hub.vue');
-
-
+const riskCompliance = () => import('./risk-compliance/presentation/views/risk-compliance.vue');
+const resourcePlanning = () => import('./resource-planning/presentation/views/resource-planning.vue');
 // Routes version when IAM is not implemented
 const routes = [
     // Public route: Sign-in (root)
@@ -31,23 +32,36 @@ const routes = [
 
     // Protected routes: Main dashboard with layout
     { path: '/dashboard', component: layout, children: [
-        { path: '',                name: 'home',            component: Home,         meta: { title: 'Home' } },
-        { path: 'active-projects', name: 'active-projects', component: projects, meta: { title: 'Active Projects' } },
-        { path: 'team',            name: 'team',            component: taskCollaboration, meta: { title: 'Team' } },
-        { path: 'chat-hub',        name: 'chat-hub',        component: chatHub, meta: { title: 'Chat Hub' } }, // Updated: point to chatHub
-        { path: 'schedule',        name: 'schedule',        component: schedule,     meta: { title: 'Schedule' } },
-        { path: 'meetings',        name: 'meetings',        component: meetings,     meta: { title: 'Meetings' } },
-        { path: 'reports',         name: 'reports',         component: reports, meta: { title: 'Reports' } },
-        { path: 'analytics',       name: 'analytics',       component: analytics, meta: { title: 'Analytics' } },
-        { path: 'profile', component: profilePage, meta: { title: 'Profile' }, children: [
-            { path: '',              name: 'profile',             component: profileOverview    },
-            { path: 'preferences',   name: 'profile-preferences', component: profilePreferences },
-            { path: 'security',      name: 'profile-security',    component: profileSecurity    },
+            { path: '',                name: 'home',            component: Home,         meta: { title: 'Home' } },
+            { path: 'home-view2',      name: 'home-view2',      component: HomeView2,    meta: { title: 'Home View 2' } },
+            { path: 'active-projects', name: 'active-projects', component: projects, meta: { title: 'Active Projects' } },
+            { path: 'team',            name: 'team',            component: taskCollaboration, meta: { title: 'Team' } },
+            { path: 'chat-hub',        name: 'chat-hub',        component: chatHub, meta: { title: 'Chat Hub' } },
+            { path: 'schedule',        name: 'schedule',        component: schedule,     meta: { title: 'Schedule' } },
+            { path: 'meetings',        name: 'meetings',        component: meetings,     meta: { title: 'Meetings' } },
+            { path: 'reports',         name: 'reports',         component: reports, meta: { title: 'Reports' } },
+            { path: 'analytics',       name: 'analytics',       component: analytics, meta: { title: 'Analytics' } },
+            { path: 'profile', component: profilePage, meta: { title: 'Profile' }, children: [
+                    { path: '',              name: 'profile',             component: profileOverview    },
+                    { path: 'preferences',   name: 'profile-preferences', component: profilePreferences },
+                    { path: 'security',      name: 'profile-security',    component: profileSecurity    },
+                ]},
+            { path: 'support',         name: 'support',         component: support,      meta: { title: 'Support' } },
+            { path: 'settings',        name: 'settings',        component: settings,     meta: { title: 'Settings' } },
+            { path: 'system-administration/:section?', name: 'system-administration', component: systemAdministration, meta: { title: 'System Administration' } },
+            {
+                path: 'risk-compliance',
+                name: 'risk-compliance',
+                component: riskCompliance,
+                meta: { title: 'Risk & Compliance' }
+            },
+            {
+                path: 'resource-planning',
+                name: 'resource-planning',
+                component: resourcePlanning,
+                meta: { title: 'Resource Planning' }
+            },
         ]},
-        { path: 'support',         name: 'support',         component: support,      meta: { title: 'Support' } },
-        { path: 'settings',        name: 'settings',        component: settings,     meta: { title: 'Settings' } },
-        { path: 'system-administration/:section?', name: 'system-administration', component: systemAdministration, meta: { title: 'System Administration' } },
-    ]},
 
     { path: '/:pathMatch(.*)*', name: 'not-found', component: pageNotFound, meta: { title: 'Page Not Found' } }
 ];
@@ -57,20 +71,10 @@ const router = createRouter({
     routes: routes,
 });
 
-/**
- * Global navigation guard that updates the document title and delegates auth when enabled.
- *
- * @param {import('vue-router').RouteLocationNormalized} to - Target route.
- * @param {import('vue-router').RouteLocationNormalized} from - Previous route.
- * @param {import('vue-router').NavigationGuardNext} next - Guard continuation callback.
- * @returns {void}
- */
 router.beforeEach((to, from, next) => {
     console.log(`Navigating from ${from.name} to ${to.name}`);
-    // Set the page title
     let baseTitle = 'Vantage PMO';
     document.title = `${baseTitle} - ${to.meta['title']}`;
-    // Use authentication guard to protect routes
     return authenticationGuard(to, from, next);
 });
 
