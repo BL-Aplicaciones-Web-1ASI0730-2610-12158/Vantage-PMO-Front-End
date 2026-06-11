@@ -68,6 +68,12 @@ export const useProfileStore = defineStore('profile', () => {
     const error        = ref(null);
 
     async function fetchProfile(userId = 2, email = null) {
+        user.value = null;
+        stats.value = null;
+        skills.value = [];
+        endorsements.value = [];
+        projects.value = [];
+
         loading.value = true;
         error.value   = null;
         try {

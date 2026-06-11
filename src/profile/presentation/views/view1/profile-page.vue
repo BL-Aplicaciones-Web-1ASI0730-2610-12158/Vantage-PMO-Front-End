@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, computed } from 'vue';
+import { computed, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useProfileStore } from '../../../application/profile.store.js';
 import useIamStore from '../../../../iam/application/iam.store.js';
@@ -17,11 +17,12 @@ const tabs = [
 
 const activeTab = computed(() => route.name);
 
-onMounted(() => {
-  const userId = iamStore.currentUserId || 2;
-  const email  = iamStore.currentUserEmail || 'alex.sterling@vantagepmo.io';
-  if (!store.user) store.fetchProfile(userId, email);
-});
+
+watch(() => iamStore.currentUserId, (newId) => {
+  if (newId) {
+    store.fetchProfile(newId, iamStore.currentUserEmail);
+  }
+}, { immediate: true });
 
 function goTab(tab) {
   router.push({ name: tab.name });
