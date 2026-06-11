@@ -361,6 +361,37 @@
       "dueDate": "2026-06-15",
       "progress": 5,
       "department": ""
+    },
+    {
+      "id": 10,
+      "boardId": 1,
+      "project": "",
+      "title": "[R-22] Action Plan: Third-party dependency with known CVE-2024-3571 vulnerabilit",
+      "description": "Third-party dependency with known CVE-2024-3571 vulnerability in production build pipeline.",
+      "assignee": "DevSecOps",
+      "assigneeAvatar": "D",
+      "assigneeColor": "#6b7280",
+      "status": "To Do",
+      "priority": "High",
+      "priorityColor": "#6b7280",
+      "completed": false,
+      "comments": 0,
+      "attachments": 0,
+      "dueDate": "",
+      "progress": 0,
+      "department": ""
+    },
+    {
+      "title": "[R-22] Action Plan: Third-party dependency with known CVE-2024-3571 vulnerabilit",
+      "description": "Third-party dependency with known CVE-2024-3571 vulnerability in production build pipeline.",
+      "priority": "Critical",
+      "assignee": "DevSecOps",
+      "status": "To Do",
+      "completed": false,
+      "dueDate": "",
+      "progress": 0,
+      "boardId": 1,
+      "id": 11
     }
   ],
   "schedule": [
@@ -1691,6 +1722,225 @@
         "riskExposure": "Low",
         "mitigationPlans": 3
       }
+    }
+  ],
+  "risk-matrix": [
+    {
+      "id": 1,
+      "segment": "Segment B",
+      "environment": "LIVE ENVIRONMENT",
+      "heatmapCells": [
+        {
+          "impact": "HIGH",
+          "likelihood": "REMOTE",
+          "value": 4,
+          "level": "medium"
+        },
+        {
+          "impact": "HIGH",
+          "likelihood": "UNLIKELY",
+          "value": 9,
+          "level": "medium"
+        },
+        {
+          "impact": "HIGH",
+          "likelihood": "POSSIBLE",
+          "value": 3,
+          "level": "high"
+        },
+        {
+          "impact": "HIGH",
+          "likelihood": "PROBABLE",
+          "value": 8,
+          "level": "high"
+        },
+        {
+          "impact": "HIGH",
+          "likelihood": "CERTAIN",
+          "value": 11,
+          "level": "critical"
+        },
+        {
+          "impact": "MEDIUM",
+          "likelihood": "REMOTE",
+          "value": 16,
+          "level": "low"
+        },
+        {
+          "impact": "MEDIUM",
+          "likelihood": "UNLIKELY",
+          "value": 5,
+          "level": "low"
+        },
+        {
+          "impact": "MEDIUM",
+          "likelihood": "POSSIBLE",
+          "value": 7,
+          "level": "medium"
+        },
+        {
+          "impact": "MEDIUM",
+          "likelihood": "PROBABLE",
+          "value": 9,
+          "level": "high"
+        },
+        {
+          "impact": "MEDIUM",
+          "likelihood": "CERTAIN",
+          "value": 6,
+          "level": "high"
+        },
+        {
+          "impact": "LOW",
+          "likelihood": "REMOTE",
+          "value": 32,
+          "level": "low"
+        },
+        {
+          "impact": "LOW",
+          "likelihood": "UNLIKELY",
+          "value": 22,
+          "level": "low"
+        },
+        {
+          "impact": "LOW",
+          "likelihood": "POSSIBLE",
+          "value": 33,
+          "level": "low"
+        },
+        {
+          "impact": "LOW",
+          "likelihood": "PROBABLE",
+          "value": 7,
+          "level": "low"
+        },
+        {
+          "impact": "LOW",
+          "likelihood": "CERTAIN",
+          "value": 5,
+          "level": "medium"
+        }
+      ]
+    }
+  ],
+  "risks": [
+    {
+      "id": 1,
+      "riskId": "R-01",
+      "description": "Cloud API Vulnerability detected in Segment B staging environments. Unauthorized access potential via deprecated OAuth endpoint.",
+      "severity": "CRITICAL",
+      "likelihood": "POSSIBLE",
+      "impact": "HIGH",
+      "status": "open",
+      "auditTrail": "Flagged by AI",
+      "auditDate": "Jun 1",
+      "flaggedBy": "Al Thorne",
+      "daysOpen": 12,
+      "hasActionPlan": true,
+      "segment": "Segment B",
+      "controlLog": "Triage initiated by Al Thorne · 329"
+    },
+    {
+      "id": 2,
+      "riskId": "R-54",
+      "description": "Latency notice passing through non-compliant region. GDPR violation risk in cross-border transfers.",
+      "severity": "CRITICAL",
+      "likelihood": "POSSIBLE",
+      "impact": "HIGH",
+      "status": "open",
+      "auditTrail": "Compliance Alert",
+      "auditDate": "Jun 3",
+      "flaggedBy": "Marcus Thorne",
+      "daysOpen": 9,
+      "hasActionPlan": true,
+      "segment": "Segment B",
+      "controlLog": "Compliance Alert · 601"
+    },
+    {
+      "id": 3,
+      "riskId": "R-09",
+      "description": "Automated key rotation failed for Cluster-02. Master keys exceeding 90-day validity window.",
+      "severity": "HIGH",
+      "likelihood": "PROBABLE",
+      "impact": "MEDIUM",
+      "status": "open",
+      "auditTrail": "Auto-retry Scheduled",
+      "auditDate": "Jun 5",
+      "flaggedBy": "System",
+      "daysOpen": 7,
+      "hasActionPlan": true,
+      "segment": "Segment B",
+      "controlLog": "Auto-retry Scheduled · 44"
+    },
+    {
+      "id": 4,
+      "riskId": "R-22",
+      "description": "Third-party dependency with known CVE-2024-3571 vulnerability in production build pipeline.",
+      "severity": "HIGH",
+      "likelihood": "UNLIKELY",
+      "impact": "HIGH",
+      "status": "open",
+      "auditTrail": "Security Scan",
+      "auditDate": "Jun 7",
+      "flaggedBy": "DevSecOps",
+      "daysOpen": 4,
+      "hasActionPlan": false,
+      "segment": "Segment B",
+      "controlLog": "Security Scan · 18"
+    },
+    {
+      "id": 5,
+      "riskId": "R-37",
+      "description": "Incomplete audit trail for data deletion events. Missing confirmation logs for GDPR Article 17 compliance.",
+      "severity": "MEDIUM",
+      "likelihood": "POSSIBLE",
+      "impact": "MEDIUM",
+      "status": "monitoring",
+      "auditTrail": "Manual Review",
+      "auditDate": "Jun 8",
+      "flaggedBy": "Compliance Team",
+      "daysOpen": 3,
+      "hasActionPlan": true,
+      "segment": "Segment B",
+      "controlLog": "Manual Review · 7"
+    }
+  ],
+  "compliance-metrics": [
+    {
+      "id": 1,
+      "integrityPulse": 98.4,
+      "integrityDelta": 0.2,
+      "docCompliance": 94,
+      "slaCompliance": 100,
+      "systemIntegrityAlerts": [
+        {
+          "id": "N-1.01",
+          "code": "N1-14",
+          "title": "Node: Anomaly Detection",
+          "description": "Burst traffic from 199.86.124 – 3σ deviation detected. Auto-throttle engaged.",
+          "severity": "HIGH",
+          "time": "11:42",
+          "status": "active"
+        },
+        {
+          "id": "Q1-14",
+          "code": "Q1-14",
+          "title": "Audit: Firewall Rule Mod",
+          "description": "Inbound rule modified via LiveEnvironment: 172.x IPv6 Transition. Logged in audit trail.",
+          "severity": "MEDIUM",
+          "time": "10:31",
+          "status": "active"
+        },
+        {
+          "id": "G1-4",
+          "code": "G1-4",
+          "title": "NextBoot: Database Sync",
+          "description": "Secondary application database update cycle committed. Delta 0.1 committed.",
+          "severity": "LOW",
+          "time": "09:11",
+          "status": "resolved"
+        }
+      ]
     }
   ]
 }

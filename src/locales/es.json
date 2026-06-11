@@ -764,5 +764,82 @@
       "q3":     "¿Cómo conecto herramientas de terceros?",
       "a3":     "Abre la sección Integraciones y haz clic en Conectar en cualquier servicio listado."
     }
+  },
+  "riskCompliance": {
+    "title": "Matriz de Riesgo: Segmento B",
+    "subtitle": "Análisis de Impacto vs. Probabilidad para la infraestructura del Segmento B.",
+    "heatmap": {
+      "title":                "Mapa de Calor de Cumplimiento",
+      "subtitle":             "Análisis de Impacto vs. Probabilidad para la infraestructura de {segment}.",
+      "impact":               "IMPACTO",
+      "likelihoodProbability":"PROBABILIDAD DE OCURRENCIA",
+      "levelLow":             "BAJO",
+      "levelMedium":          "MEDIO",
+      "levelHigh":            "ALTO",
+      "levelCritical":        "CRÍTICO"
+    },
+    "impact": {
+      "high":   "ALTO",
+      "medium": "MEDIO",
+      "low":    "BAJO"
+    },
+    "likelihood": {
+      "remote":   "REMOTO",
+      "unlikely": "IMPROBABLE",
+      "possible": "POSIBLE",
+      "probable": "PROBABLE",
+      "certain":  "SEGURO"
+    },
+    "pulse": {
+      "title":    "PULSO DE INTEGRIDAD",
+      "subtitle": "Puntuación de integridad del sistema en todos los nodos activos."
+    },
+    "systemIntegrity": {
+      "title":    "INTEGRIDAD DEL SISTEMA",
+      "viewAll":  "VER REGISTRO COMPLETO",
+      "noAlerts": "Sin alertas de integridad activas."
+    },
+    "posture": {
+      "title":    "POSTURA DE CUMPLIMIENTO",
+      "docFils":  "DOC FILS",
+      "slaAlign": "ALINEACIÓN SLA"
+    },
+    "table": {
+      "title":         "Riesgos Críticos y Registros de Control",
+      "subtitle":      "Registro de riesgos en vivo con trazabilidad de auditoría y planes de acción.",
+      "exportPdf":     "EXPORTAR PDF",
+      "bulkAudit":     "AUDITORÍA MASIVA",
+      "colRiskId":     "ID RIESGO",
+      "colDescription":"DESCRIPCIÓN",
+      "colAuditTrail": "RASTRO DE AUDITORÍA",
+      "colFlaggedBy":  "MARCADO POR",
+      "colActions":    "ACCIONES",
+      "actionPlan":    "Plan de Acción",
+      "actionNew":     "Nuevo Plan",
+      "noRisks":       "No se detectaron riesgos críticos.",
+      "daysOpen":      "abierto"
+    },
+    "actionPlan": {
+      "title":       "Crear Tarea de Plan de Acción",
+      "taskTitle":   "Título de la Tarea",
+      "description": "Descripción",
+      "priority":    "Prioridad",
+      "assignee":    "Asignado a",
+      "cancel":      "Cancelar",
+      "createTask":  "Crear Tarea en Tablero",
+      "taskCreated": "¡Tarea creada exitosamente en Colaboración de Tareas!",
+      "viewInBoard": "Ver en Tablero",
+      "boardHint":   "Esta tarea aparecerá en el tablero de Colaboración de Tareas en 'Por Hacer'."
+    },
+    "atRiskProjects": {
+      "title":      "PROYECTOS EN RIESGO",
+      "viewAll":    "Ver Todos",
+      "allHealthy": "Todos los proyectos están saludables actualmente."
+    },
+    "loading": "Cargando datos de riesgo y cumplimiento...",
+    "actions": {
+      "exportAlert":    "Generando exportación PDF del registro de riesgos...",
+      "bulkAuditAlert": "Auditoría masiva iniciada para todos los riesgos abiertos."
+    }
   }
 }

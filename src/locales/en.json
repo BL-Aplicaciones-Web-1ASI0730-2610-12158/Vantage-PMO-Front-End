@@ -764,5 +764,82 @@
       "q3": "How do I connect third-party tools?",
       "a3": "Open the Integrations section and click Connect on any listed service."
     }
+  },
+  "riskCompliance": {
+    "title": "Risk Matrix: Segment B",
+    "subtitle": "Impact vs. Likelihood analysis for Segment B infrastructure.",
+    "heatmap": {
+      "title": "Compliance Heatmap",
+      "subtitle": "Impact vs. Likelihood analysis for {segment} infrastructure.",
+      "impact": "IMPACT",
+      "likelihoodProbability": "LIKELIHOOD PROBABILITY",
+      "levelLow": "LOW",
+      "levelMedium": "MEDIUM",
+      "levelHigh": "HIGH",
+      "levelCritical": "CRITICAL"
+    },
+    "impact": {
+      "high":   "HIGH",
+      "medium": "MEDIUM",
+      "low":    "LOW"
+    },
+    "likelihood": {
+      "remote":   "REMOTE",
+      "unlikely": "UNLIKELY",
+      "possible": "POSSIBLE",
+      "probable": "PROBABLE",
+      "certain":  "CERTAIN"
+    },
+    "pulse": {
+      "title":    "INTEGRITY PULSE",
+      "subtitle": "System integrity score across all active nodes."
+    },
+    "systemIntegrity": {
+      "title":    "SYSTEM INTEGRITY",
+      "viewAll":  "VIEW ALL AUDIT LOG",
+      "noAlerts": "No active integrity alerts."
+    },
+    "posture": {
+      "title":   "COMPLIANCE POSTURE",
+      "docFils": "DOC FILS",
+      "slaAlign":"SLA ALIGN"
+    },
+    "table": {
+      "title":         "Critical Risks & Control Logs",
+      "subtitle":      "Live risk register with audit trail and action-plan linkage.",
+      "exportPdf":     "EXPORT PDF",
+      "bulkAudit":     "BULK AUDIT",
+      "colRiskId":     "RISK ID",
+      "colDescription":"DESCRIPTION",
+      "colAuditTrail": "AUDIT TRAIL",
+      "colFlaggedBy":  "FLAGGED BY",
+      "colActions":    "ACTIONS",
+      "actionPlan":    "Action Plan",
+      "actionNew":     "New Plan",
+      "noRisks":       "No critical risks detected.",
+      "daysOpen":      "open"
+    },
+    "actionPlan": {
+      "title":       "Create Action Plan Task",
+      "taskTitle":   "Task Title",
+      "description": "Description",
+      "priority":    "Priority",
+      "assignee":    "Assignee",
+      "cancel":      "Cancel",
+      "createTask":  "Create Task in Board",
+      "taskCreated": "Task successfully created in Task Collaboration!",
+      "viewInBoard": "View in Board",
+      "boardHint":   "This task will appear in the Task Collaboration board under 'To Do'."
+    },
+    "atRiskProjects": {
+      "title":      "AT-RISK PROJECTS",
+      "viewAll":    "View All",
+      "allHealthy": "All projects are currently healthy."
+    },
+    "loading": "Loading risk & compliance data...",
+    "actions": {
+      "exportAlert":    "Generating PDF export for risk register...",
+      "bulkAuditAlert": "Bulk audit initiated for all open risks."
+    }
   }
 }
