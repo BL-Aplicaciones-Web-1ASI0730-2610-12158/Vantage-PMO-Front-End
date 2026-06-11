@@ -1,24 +1,45 @@
 <script setup>
 import { useRouter, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
+import useIamStore from '../../../../iam/application/iam.store.js'
 
 const router = useRouter()
 const route  = useRoute()
 const { t }  = useI18n()
+const iamStore = useIamStore()
 const sidebarOpen = ref(false)
 
-const navItems = [
-  { labelKey: 'nav.home',           icon: 'pi pi-home',        name: 'home' },
-  { labelKey: 'nav.activeProjects', icon: 'pi pi-folder-open', name: 'active-projects' },
-  { labelKey: 'nav.team',           icon: 'pi pi-users',       name: 'team' },
-  { labelKey: 'nav.chatHub',        icon: 'pi pi-comments',    name: 'chat-hub' },
-  { labelKey: 'nav.schedule',       icon: 'pi pi-calendar',    name: 'schedule' },
-  { labelKey: 'nav.meetings',       icon: 'pi pi-video',       name: 'meetings' },
-  { labelKey: 'nav.reports',        icon: 'pi pi-chart-bar',   name: 'reports' },
-  { labelKey: 'nav.analytics',      icon: 'pi pi-chart-line',  name: 'analytics' },
-  { labelKey: 'nav.systemAdministration', icon: 'pi pi-cog', name: 'system-administration' },
-]
+const navItems = computed(() => {
+  const items = [
+    { labelKey: 'nav.home',           icon: 'pi pi-home',        name: 'home' },
+    { labelKey: 'nav.activeProjects', icon: 'pi pi-folder-open', name: 'active-projects' },
+    { labelKey: 'nav.team',           icon: 'pi pi-users',       name: 'team' },
+    { labelKey: 'nav.chatHub',        icon: 'pi pi-comments',    name: 'chat-hub' },
+    { labelKey: 'nav.schedule',       icon: 'pi pi-calendar',    name: 'schedule' },
+    { labelKey: 'nav.meetings',       icon: 'pi pi-video',       name: 'meetings' },
+    { labelKey: 'nav.reports',        icon: 'pi pi-chart-bar',   name: 'reports' },
+    { labelKey: 'nav.analytics',      icon: 'pi pi-chart-line',  name: 'analytics' },
+    { labelKey: 'nav.systemAdministration', icon: 'pi pi-cog', name: 'system-administration' },
+  ];
+
+  // Si es view2, agregamos las opciones
+  if (iamStore.viewType === 'view2') {
+    items.push({
+      labelKey: 'nav.riskCompliance',
+      icon: 'pi pi-shield',
+      name: 'risk-compliance'
+    });
+
+    items.push({
+      labelKey: 'nav.resourcePlanning',
+      icon: 'pi pi-briefcase',
+      name: 'resource-planning'
+    });
+  }
+
+  return items;
+});
 
 const bottomItems = [
   { labelKey: 'nav.profile',  icon: 'pi pi-user',            name: 'profile' },
@@ -34,6 +55,7 @@ function navigate(name) {
   }
   sidebarOpen.value = false;
 }
+
 function isActive(name) {
   if (name === 'profile') return route.path.startsWith('/dashboard/profile');
   return route.name === name;
@@ -42,17 +64,13 @@ function isActive(name) {
 
 <template>
   <div class="app-shell">
-    <!-- Mobile overlay -->
     <div class="sidebar-overlay" :class="{ active: sidebarOpen }" @click="sidebarOpen = false"></div>
 
-    <!-- Sidebar -->
     <aside class="sidebar" :class="{ open: sidebarOpen }">
-      <!-- Close btn (mobile) -->
       <button class="sidebar-close" @click="sidebarOpen = false">
         <i class="pi pi-times"></i>
       </button>
 
-      <!-- Logo -->
       <div class="sidebar-logo">
         <div class="logo-icon"><i class="pi pi-compass"></i></div>
         <div class="logo-text">
@@ -61,7 +79,6 @@ function isActive(name) {
         </div>
       </div>
 
-      <!-- Create Project Button -->
       <div class="sidebar-create">
         <button class="create-btn" @click="navigate('active-projects')">
           <i class="pi pi-plus"></i>
@@ -69,28 +86,26 @@ function isActive(name) {
         </button>
       </div>
 
-      <!-- Main Navigation -->
       <nav class="sidebar-nav">
         <button
-          v-for="item in navItems"
-          :key="item.name"
-          class="nav-item"
-          :class="{ active: isActive(item.name) }"
-          @click="navigate(item.name)"
+            v-for="item in navItems"
+            :key="item.name"
+            class="nav-item"
+            :class="{ active: isActive(item.name) }"
+            @click="navigate(item.name)"
         >
           <i :class="item.icon"></i>
           <span>{{ t(item.labelKey) }}</span>
         </button>
       </nav>
 
-      <!-- Bottom Items -->
       <div class="sidebar-bottom">
         <button
-          v-for="item in bottomItems"
-          :key="item.name"
-          class="nav-item"
-          :class="{ active: isActive(item.name) }"
-          @click="navigate(item.name)"
+            v-for="item in bottomItems"
+            :key="item.name"
+            class="nav-item"
+            :class="{ active: isActive(item.name) }"
+            @click="navigate(item.name)"
         >
           <i :class="item.icon"></i>
           <span>{{ t(item.labelKey) }}</span>
@@ -98,11 +113,8 @@ function isActive(name) {
       </div>
     </aside>
 
-    <!-- Main Content -->
     <div class="main-area">
-      <!-- Top Bar -->
       <header class="topbar">
-        <!-- Hamburger (mobile only) -->
         <button class="hamburger" @click="sidebarOpen = !sidebarOpen">
           <i class="pi pi-bars"></i>
         </button>
@@ -122,7 +134,6 @@ function isActive(name) {
         </div>
       </header>
 
-      <!-- Page Content -->
       <main class="content">
         <router-view />
       </main>

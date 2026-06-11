@@ -16,7 +16,9 @@
     "support": "Soporte",
     "settings": "Configuración",
     "profile": "Perfil",
-    "createProject": "Crear Proyecto"
+    "createProject": "Crear Proyecto",
+    "riskCompliance": "Riesgo y Cumplimiento",
+    "resourcePlanning": "Planificación de Recursos"
   },
   "topbar": {
     "search": "Buscar espacio de trabajo, archivos o tareas...",

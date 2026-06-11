@@ -16,7 +16,9 @@
     "support": "Support",
     "settings": "Settings",
     "profile": "Profile",
-    "createProject": "Create Project"
+    "createProject": "Create Project",
+    "riskCompliance": "Risk & Compliance",
+    "resourcePlanning": "Resource Planning"
   },
   "topbar": {
     "search": "Search workspace, files, or tasks...",

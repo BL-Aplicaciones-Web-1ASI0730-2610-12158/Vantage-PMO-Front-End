@@ -1,13 +1,14 @@
-import {IamApi} from "../infrastructure/iam-api.js";
-import {defineStore} from "pinia";
-import {computed, ref} from "vue";
-import {SignInAssembler} from "../infrastructure/sign-in.assembler.js";
-import {UserAssembler} from "../infrastructure/user.assembler.js";
-import {SignUpAssembler} from "../infrastructure/sign-up.assembler.js";
-import {RegisterAccountCommand} from "../domain/register-account.command.js";
-import { useWorkspaceStore } from "../../workspace/application/workspace.store.js"
+import { IamApi } from "../infrastructure/iam-api.js";
+import { defineStore } from "pinia";
+import { computed, ref } from "vue";
+import { SignInAssembler } from "../infrastructure/sign-in.assembler.js";
+import { UserAssembler } from "../infrastructure/user.assembler.js";
+import { SignUpAssembler } from "../infrastructure/sign-up.assembler.js";
+import { RegisterAccountCommand } from "../domain/register-account.command.js";
+import { useWorkspaceStore } from "../../workspace/application/workspace.store.js";
 
 const iamApi = new IamApi();
+
 /**
  * Application service store for the IAM bounded context.
  * It coordinates authentication commands and exposes UI-facing auth state.
@@ -15,20 +16,31 @@ const iamApi = new IamApi();
  * @returns {Object} Store state and actions.
  */
 const useIamStore = defineStore('iam', () => {
+
     /** @type {import('vue').Ref<Array<User>>} Array of user entities. */
     const users = ref([]);
+
     /** @type {import('vue').Ref<Array<Error>>} Array of error messages. */
     const errors = ref([]);
+
     /** @type {import('vue').Ref<boolean>} Flag indicating if users have been loaded. */
     const usersLoaded = ref(false);
+
     /** @type {import('vue').Ref<boolean>} Flag indicating if a user is signed in. */
     const isSignedIn = ref(false);
+
     /** @type {import('vue').Ref<string|null>} Username of the currently authenticated user, or null when signed out. */
     const currentUsername = ref(localStorage.getItem('username') || null);
+
     /** @type {import('vue').Ref<number>} Identifier of the currently authenticated user, or 0 when signed out. */
     const currentUserId = ref(Number(localStorage.getItem('userId')) || 0);
+
     /** @type {import('vue').Ref<string|null>} Email of the currently authenticated user. */
     const currentUserEmail = ref(localStorage.getItem('userEmail') || null);
+
+    // Variable reactiva para la vista
+    const viewType = ref(localStorage.getItem('viewType') || 'view1');
+
     /** @type {import('vue').ComputedRef<string|null>} Bearer token for the active session, or null when signed out. */
     const currentToken = computed(() => isSignedIn.value ? localStorage.getItem('token') : null);
 
@@ -55,18 +67,29 @@ const useIamStore = defineStore('iam', () => {
                     currentUsername.value = currentUser.username;
                     currentUserId.value = currentUser.id;
                     currentUserEmail.value = signInResource.email ?? null;
+
+                    // Actualizamos la vista reactiva
+                    viewType.value = signInResource.viewType ?? 'view1';
+
                     localStorage.setItem('token', signInResource.token);
                     localStorage.setItem('userId', String(currentUser.id));
                     localStorage.setItem('username', currentUser.username ?? '');
+                    localStorage.setItem('viewType', viewType.value);
+
                     if (signInResource.email) {
                         localStorage.setItem('userEmail', signInResource.email);
                     }
+
                     isSignedIn.value = true;
-                    console.log(`User signed in: ${currentUsername.value}`);
+                    console.log(`User signed in: ${currentUsername.value}, View: ${viewType.value}`);
                     errors.value = [];
+
                     const workspaceStore = useWorkspaceStore();
                     workspaceStore.loadUserWorkspace();
-                    router.push({name: 'home'});
+
+                    const targetRoute = viewType.value === 'view2' ? 'home-view2' : 'home';
+                    router.push({name: targetRoute});
+
                     return true;
                 } else {
                     isSignedIn.value = false;
@@ -126,8 +149,6 @@ const useIamStore = defineStore('iam', () => {
     /** @type {import('vue').Ref<number|null>} ID of the user pending password reset. */
     const recoveryUserId = ref(null);
 
-    // ...existing code...
-
     /**
      * Looks up an account by email to start the recovery flow.
      * @param {string} email - Email address to recover.
@@ -174,10 +195,12 @@ const useIamStore = defineStore('iam', () => {
         currentUsername.value = null;
         currentUserId.value = 0;
         currentUserEmail.value = null;
+        viewType.value = 'view1'; // Reset a vista 1
         localStorage.removeItem('token');
         localStorage.removeItem('userId');
         localStorage.removeItem('username');
         localStorage.removeItem('userEmail');
+        localStorage.removeItem('viewType');
         isSignedIn.value = false;
         console.log('User signed out');
         errors.value = [];
@@ -209,6 +232,7 @@ const useIamStore = defineStore('iam', () => {
         currentToken,
         isSignedIn,
         recoveryUserId,
+        viewType,
         signIn,
         registerAccount,
         signOut,
