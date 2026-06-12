@@ -125,8 +125,6 @@ function isActive(name) {
         </div>
         <div class="topbar-actions">
           <button class="icon-btn"><i class="pi pi-bell"></i></button>
-          <button class="icon-btn hide-sm"><i class="pi pi-history"></i></button>
-          <button class="icon-btn hide-sm"><i class="pi pi-sliders-h"></i></button>
           <button class="dashboard-btn hide-md">{{ $t('topbar.executiveDashboard') }} <i class="pi pi-chevron-down"></i></button>
           <button class="profile-btn" @click="navigate('profile')">
             <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Alex" alt="Profile" class="avatar" />
