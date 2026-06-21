@@ -108,11 +108,11 @@ function contactAdmin() {
             <span class="step-line" :class="{ completed: currentStep > 1 }"></span>
             <span class="step" :class="{ active: currentStep === 2 }">2</span>
           </div>
-          <h1>{{ currentStep === 1 ? 'Create Account' : 'Select Your Workspace' }}</h1>
+          <h1>{{ currentStep === 1 ? 'Create Account' : 'Select Your Segment' }}</h1>
           <p>
             {{ currentStep === 1
               ? 'Join Vantage PMO to manage your projects efficiently'
-              : 'Choose how you\'d like to work with Vantage PMO' }}
+              : 'Choose Segment 1 or Segment 2 to personalize your workspace' }}
           </p>
         </div>
 
@@ -258,6 +258,11 @@ function contactAdmin() {
         <div v-else class="workspace-step">
           <workspace-selector v-model="selectedWorkspace" />
 
+          <div v-if="selectedWorkspace" class="selection-hint">
+            <i class="pi pi-check-circle"></i>
+            <span>Segment selected. Click Create Account to finish.</span>
+          </div>
+
           <div v-if="errorMsg" class="error-msg">
             <i class="pi pi-exclamation-triangle"></i>
             {{ errorMsg }}
@@ -274,7 +279,7 @@ function contactAdmin() {
               label="Create Account"
               class="signup-btn"
               :loading="loading"
-              :disabled="!selectedWorkspace || loading"
+              :disabled="loading"
               icon="pi pi-check"
               @click="performRegisterAccount"
             />
@@ -462,6 +467,15 @@ function contactAdmin() {
   display: flex;
   flex-direction: column;
   gap: 20px;
+}
+
+.selection-hint {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #16a34a;
+  font-size: 13px;
+  font-weight: 600;
 }
 
 .workspace-actions {

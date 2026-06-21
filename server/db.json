@@ -72,6 +72,25 @@
       "role": "Project Manager",
       "department": "Executive",
       "viewType": "view2"
+    },
+    {
+      "password": "pass123",
+      "name": "Test User",
+      "birthDate": "1990-01-01",
+      "username": "newuser123",
+      "email": "newuser123@test.com",
+      "role": "PM",
+      "id": 8
+    },
+    {
+      "username": "olaser",
+      "email": "ola@ola.com",
+      "password": "12345678",
+      "name": "cesar",
+      "role": "ola",
+      "birthDate": "2007-02-04",
+      "viewType": "view1",
+      "id": 9
     }
   ],
   "stats": [
@@ -1337,6 +1356,16 @@
       "userId": 5,
       "selectedRole": "PROJECT_LEADER",
       "id": 4
+    },
+    {
+      "userId": 8,
+      "selectedRole": "PROJECT_LEADER",
+      "id": 5
+    },
+    {
+      "userId": 9,
+      "selectedRole": "PROJECT_LEADER",
+      "id": 6
     }
   ],
   "login-attempts": [

@@ -23,12 +23,13 @@ const useWorkspaceStore = defineStore('workspace', () => {
   /**
    * Guarda la selección del workspace/rol del usuario en el backend y actualiza el estado local.
    * @param {string} selectedRole - El tipo de rol/workspace seleccionado (ej. 'PROJECT_LEADER', 'ENTERPRISE_OWNER').
+   * @param {number} [userIdOverride] - ID del usuario cuando aún no está sincronizado en el store IAM.
    * @returns {Promise<boolean>} True si es exitoso, false en caso contrario.
    */
-  async function setUserWorkspace(selectedRole) {
+  async function setUserWorkspace(selectedRole, userIdOverride) {
     loading.value = true;
     const iamStore = useIamStore();
-    const userId = iamStore.currentUserId;
+    const userId = userIdOverride ?? iamStore.currentUserId;
 
     if (!userId) {
       console.error('User ID no disponible para establecer el workspace.');

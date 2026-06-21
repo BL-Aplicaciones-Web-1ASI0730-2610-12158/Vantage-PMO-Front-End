@@ -1,25 +1,23 @@
 <script setup>
 import { WORKSPACE_OPTIONS } from '../../domain/model/workspace-type.js';
 
-defineProps({
-  modelValue: {
-    type: String,
-    default: null,
-  },
-});
+const selected = defineModel({ type: String, default: null });
 
-const emit = defineEmits(['update:modelValue']);
+function selectWorkspace(workspaceId) {
+  selected.value = workspaceId;
+}
 </script>
 
 <template>
   <div class="workspace-selector">
     <div class="workspace-grid">
-      <div
+      <button
         v-for="option in WORKSPACE_OPTIONS"
         :key="option.id"
+        type="button"
         class="workspace-option"
-        :class="{ selected: modelValue === option.id }"
-        @click="emit('update:modelValue', option.id)"
+        :class="{ selected: selected === option.id }"
+        @click="selectWorkspace(option.id)"
       >
         <div class="option-header" :style="{ background: option.color }">
           <i :class="option.icon"></i>
@@ -39,11 +37,11 @@ const emit = defineEmits(['update:modelValue']);
           </div>
         </div>
         <div class="option-checkbox">
-          <div class="checkbox" :class="{ checked: modelValue === option.id }">
-            <i v-if="modelValue === option.id" class="pi pi-check"></i>
+          <div class="checkbox" :class="{ checked: selected === option.id }">
+            <i v-if="selected === option.id" class="pi pi-check"></i>
           </div>
         </div>
-      </div>
+      </button>
     </div>
   </div>
 </template>
@@ -63,6 +61,11 @@ const emit = defineEmits(['update:modelValue']);
   transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
+  background: white;
+  padding: 0;
+  text-align: left;
+  width: 100%;
+  font: inherit;
 }
 
 .workspace-option:hover {

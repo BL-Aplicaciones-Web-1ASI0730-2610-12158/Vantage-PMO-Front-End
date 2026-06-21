@@ -112,36 +112,55 @@ const useIamStore = defineStore('iam', () => {
      * @returns {Promise<boolean>} True when registration completes successfully.
      */
     async function registerAccount(registerCommand, router) {
+        errors.value = [];
+
         try {
             const response = await iamApi.signUp(registerCommand.signUp);
             const signUpResource = SignUpAssembler.toResourceFromResponse(response);
 
             if (!signUpResource) {
-                errors.value.push(new Error('Registration failed'));
+                errors.value.push(new Error('Registration failed. Please verify your account details.'));
                 return false;
             }
 
             const token = btoa(`${signUpResource.username}:${signUpResource.id}:${Date.now()}`);
+            const resolvedViewType = registerCommand.viewType ?? 'view1';
+
             currentUsername.value = signUpResource.username;
             currentUserId.value = signUpResource.id;
+            currentUserEmail.value = signUpResource.email ?? registerCommand.signUp.email ?? null;
+            viewType.value = resolvedViewType;
+
             localStorage.setItem('token', token);
+            localStorage.setItem('userId', String(signUpResource.id));
+            localStorage.setItem('username', signUpResource.username ?? '');
+            localStorage.setItem('viewType', resolvedViewType);
+
+            if (currentUserEmail.value) {
+                localStorage.setItem('userEmail', currentUserEmail.value);
+            }
+
             isSignedIn.value = true;
-            errors.value = [];
 
             const workspaceStore = useWorkspaceStore();
-            const workspaceSaved = await workspaceStore.setUserWorkspace(registerCommand.workspaceType);
+            const workspaceSaved = await workspaceStore.setUserWorkspace(
+                registerCommand.workspaceType,
+                signUpResource.id,
+            );
 
             if (!workspaceSaved) {
-                errors.value.push(new Error('Account created but workspace selection could not be saved.'));
+                errors.value.push(new Error('Account created but workspace selection could not be saved. Make sure the API server is running.'));
                 return false;
             }
 
-            console.log(`User registered: ${signUpResource.username}`);
-            router.push({ name: 'home' });
+            console.log(`User registered: ${signUpResource.username}, View: ${resolvedViewType}`);
+            const targetRoute = resolvedViewType === 'view2' ? 'home-view2' : 'home';
+            router.push({ name: targetRoute });
             return true;
         } catch (error) {
-            console.log(error);
-            errors.value.push(error);
+            console.error('Registration error:', error);
+            const apiMessage = error?.response?.data?.message || error?.message;
+            errors.value.push(new Error(apiMessage || 'Registration failed. Please try again.'));
             return false;
         }
     }

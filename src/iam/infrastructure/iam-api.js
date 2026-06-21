@@ -40,7 +40,15 @@ export class IamApi {
      * @returns {Promise<Object>} Created user object.
      */
     signUp(signUpRequest) {
-        return this.#signUpEndpoint.create(signUpRequest);
+        return this.#signUpEndpoint.create({
+            username: signUpRequest.username,
+            email: signUpRequest.email,
+            password: signUpRequest.password,
+            name: signUpRequest.name,
+            role: signUpRequest.role,
+            birthDate: signUpRequest.birthDate,
+            viewType: signUpRequest.viewType,
+        });
     }
 
     /**
