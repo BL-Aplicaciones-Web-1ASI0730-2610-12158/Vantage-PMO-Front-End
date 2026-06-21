@@ -1,5 +1,13 @@
 {
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "functions": {
+    "api/server.cjs": {
+      "includeFiles": "server/**"
+    }
+  },
   "rewrites": [
+    { "source": "/api/v1/:path*", "destination": "/api/server?route=:path*" },
     { "source": "/((?!api/).*)", "destination": "/index.html" }
   ]
 }
