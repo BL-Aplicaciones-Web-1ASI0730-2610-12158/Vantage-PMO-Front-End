@@ -279,7 +279,7 @@ function contactAdmin() {
               label="Create Account"
               class="signup-btn"
               :loading="loading"
-              :disabled="loading"
+              :disabled="!selectedWorkspace || loading"
               icon="pi pi-check"
               @click="performRegisterAccount"
             />

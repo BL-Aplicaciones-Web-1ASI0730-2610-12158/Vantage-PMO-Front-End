@@ -42,8 +42,7 @@ const selectWorkspace = async () => {
 
   try {
     // Save workspace selection to current user
-    const selectedOption = workspaceOptions.find(w => w.id === selectedWorkspace.value);
-    await workspaceStore.setUserWorkspace(iamStore.currentUserId, selectedWorkspace.value, selectedOption.name);
+    await workspaceStore.setUserWorkspace(selectedWorkspace.value, iamStore.currentUserId);
 
     // Redirect to dashboard
     router.push({ name: 'home' });

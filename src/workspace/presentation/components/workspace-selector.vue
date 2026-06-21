@@ -1,10 +1,17 @@
 <script setup>
 import { WORKSPACE_OPTIONS } from '../../domain/model/workspace-type.js';
 
-const selected = defineModel({ type: String, default: null });
+defineProps({
+  modelValue: {
+    type: String,
+    default: null,
+  },
+});
+
+const emit = defineEmits(['update:modelValue']);
 
 function selectWorkspace(workspaceId) {
-  selected.value = workspaceId;
+  emit('update:modelValue', workspaceId);
 }
 </script>
 
@@ -16,7 +23,7 @@ function selectWorkspace(workspaceId) {
         :key="option.id"
         type="button"
         class="workspace-option"
-        :class="{ selected: selected === option.id }"
+        :class="{ 'is-selected': modelValue === option.id }"
         @click="selectWorkspace(option.id)"
       >
         <div class="option-header" :style="{ background: option.color }">
@@ -37,8 +44,8 @@ function selectWorkspace(workspaceId) {
           </div>
         </div>
         <div class="option-checkbox">
-          <div class="checkbox" :class="{ checked: selected === option.id }">
-            <i v-if="selected === option.id" class="pi pi-check"></i>
+          <div class="checkbox" :class="{ checked: modelValue === option.id }">
+            <i v-if="modelValue === option.id" class="pi pi-check"></i>
           </div>
         </div>
       </button>
@@ -73,7 +80,7 @@ function selectWorkspace(workspaceId) {
   box-shadow: 0 8px 24px rgba(37, 99, 235, 0.1);
 }
 
-.workspace-option.selected {
+.workspace-option.is-selected {
   border-color: #2563eb;
   background: #f0f9ff;
   box-shadow: 0 12px 32px rgba(37, 99, 235, 0.15);

@@ -91,6 +91,16 @@
       "birthDate": "2007-02-04",
       "viewType": "view1",
       "id": 9
+    },
+    {
+      "username": "ola",
+      "email": "ola@ola.com",
+      "password": "12345678",
+      "name": "hola",
+      "role": "rasd",
+      "birthDate": "2008-02-22",
+      "viewType": "view1",
+      "id": 10
     }
   ],
   "stats": [
@@ -1366,6 +1376,11 @@
       "userId": 9,
       "selectedRole": "PROJECT_LEADER",
       "id": 6
+    },
+    {
+      "userId": 10,
+      "selectedRole": "PROJECT_LEADER",
+      "id": 7
     }
   ],
   "login-attempts": [
