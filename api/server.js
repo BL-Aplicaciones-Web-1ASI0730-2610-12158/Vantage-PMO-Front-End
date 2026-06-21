@@ -1,3 +1,6 @@
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
 const jsonServer = require('json-server');
 const db = require('../server/db.json');
 const routes = require('../server/routes.json');
@@ -24,8 +27,8 @@ server.use((req, _res, next) => {
 server.use(rewriter);
 server.use(router);
 
-module.exports = (req, res) => {
+export default function handler(req, res) {
   server(req, res, () => {
     res.status(404).json({ error: 'Not found' });
   });
-};
+}
