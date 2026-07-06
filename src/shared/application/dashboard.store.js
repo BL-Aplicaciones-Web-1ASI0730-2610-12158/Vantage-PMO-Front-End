@@ -13,14 +13,14 @@ export const useDashboardStore = defineStore('dashboard', () => {
     const stats       = ref(null);
     const loading     = ref(false);
 
-    async function fetchAll() {
+    async function fetchAll(userId = 1) {
         loading.value = true;
         try {
             [tasks.value, schedule.value, departments.value, stats.value] = await Promise.all([
                 tasksApi.getAll(),
                 scheduleApi.getAll(),
                 departmentsApi.getAll(),
-                statsApi.getFirst(),
+                statsApi.getByUserId(userId),
             ]);
         } finally {
             loading.value = false;

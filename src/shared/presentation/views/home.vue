@@ -1,12 +1,46 @@
 <script setup>
-import { onMounted, computed } from 'vue';
+import { onMounted, onActivated, computed, watch } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 import { useDashboardStore } from '../../application/dashboard.store.js';
 import useIamStore from '../../../iam/application/iam.store.js';
 
+const router = useRouter();
+const route = useRoute();
 const store = useDashboardStore();
 const iamStore = useIamStore();
 
-onMounted(() => store.fetchAll());
+function goToSchedule() {
+  router.push({ name: 'schedule' });
+}
+
+function resolveUserId() {
+  return iamStore.currentUserId > 0 ? iamStore.currentUserId : 1;
+}
+
+function refreshDashboard() {
+  return store.fetchAll(resolveUserId());
+}
+
+onMounted(refreshDashboard);
+onActivated(refreshDashboard);
+
+watch(
+  () => iamStore.currentUserId,
+  (userId, previousUserId) => {
+    if (userId > 0 && userId !== previousUserId) {
+      refreshDashboard();
+    }
+  }
+);
+
+watch(
+  () => route.name,
+  (name) => {
+    if (name === 'home') {
+      refreshDashboard();
+    }
+  }
+);
 
 const priorityTasks = computed(() => store.tasks);
 const scheduleItems = computed(() => store.schedule);
@@ -48,7 +82,7 @@ const currentUsername = computed(() => iamStore.currentUsername || 'User');
           <div class="stat-value-row">
             <span class="stat-value green">{{ stats.onTrack }}</span>
           </div>
-          <div class="progress-bar"><div class="progress-fill green-fill" :style="{ width: (stats.onTrack / stats.totalProjects * 100) + '%' }"></div></div>
+          <div class="progress-bar"><div class="progress-fill green-fill" :style="{ width: (stats.totalProjects ? (stats.onTrack / stats.totalProjects * 100) : 0) + '%' }"></div></div>
         </div>
         <div class="stat-card at-risk">
           <span class="stat-label">{{ $t('home.atRisk') }}</span>
@@ -116,7 +150,7 @@ const currentUsername = computed(() => iamStore.currentUsername || 'User');
             </div>
           </div>
         </div>
-        <button class="manage-cal-btn">{{ $t('home.manageCalendar') }}</button>
+        <button type="button" class="manage-cal-btn" @click="goToSchedule">{{ $t('home.manageCalendar') }}</button>
       </div>
     </div>
 

@@ -26,9 +26,33 @@ const useIamStore = defineStore('iam', () => {
     /** @type {import('vue').Ref<string|null>} Username of the currently authenticated user, or null when signed out. */
     const currentUsername = ref(null);
     /** @type {import('vue').Ref<number>} Identifier of the currently authenticated user, or 0 when signed out. */
-    const currentUserId = ref(0);
+    const currentUserId = ref(restoreStoredUserId());
     /** @type {import('vue').ComputedRef<string|null>} Bearer token for the active session, or null when signed out. */
     const currentToken = computed(() => isSignedIn.value ? localStorage.getItem('token') : null);
+
+    function restoreStoredUserId() {
+        const storedUserId = Number(localStorage.getItem('userId'));
+        return Number.isFinite(storedUserId) && storedUserId > 0 ? storedUserId : 0;
+    }
+
+    function restoreStoredUsername() {
+        return localStorage.getItem('username');
+    }
+
+    function persistSession(user) {
+        localStorage.setItem('token', user.token);
+        localStorage.setItem('userId', String(user.id));
+        localStorage.setItem('username', user.username);
+        currentUsername.value = user.username;
+        currentUserId.value = user.id;
+        isSignedIn.value = true;
+    }
+
+    if (localStorage.getItem('token')) {
+        isSignedIn.value = true;
+        currentUsername.value = restoreStoredUsername();
+        currentUserId.value = restoreStoredUserId();
+    }
 
     /**
      * Executes the sign-in use case and updates authentication state.
@@ -43,10 +67,11 @@ const useIamStore = defineStore('iam', () => {
                 let signInResource = SignInAssembler.toResourceFromResponse(response);
                 if (signInResource) {
                     let currentUser = UserAssembler.toEntityFromResource(signInResource);
-                    currentUsername.value = currentUser.username;
-                    currentUserId.value = currentUser.id;
-                    localStorage.setItem('token', signInResource.token);
-                    isSignedIn.value = true;
+                    persistSession({
+                        id: currentUser.id,
+                        username: currentUser.username,
+                        token: signInResource.token,
+                    });
                     console.log(`User signed in: ${currentUsername.value}`);
                     errors.value = [];
                     router.push({name: 'home'});
@@ -144,6 +169,8 @@ const useIamStore = defineStore('iam', () => {
         currentUsername.value = null;
         currentUserId.value = 0;
         localStorage.removeItem('token');
+        localStorage.removeItem('userId');
+        localStorage.removeItem('username');
         isSignedIn.value = false;
         console.log('User signed out');
         errors.value = [];

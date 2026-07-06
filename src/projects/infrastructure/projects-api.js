@@ -9,6 +9,11 @@ class ProjectsApi extends BaseEndpoint{
         const data = await super.getAll();
         return ProjectAssembler.toEntities(data);
     }
+
+    async createProject(payload) {
+        const data = await super.create(payload);
+        return ProjectAssembler.toEntity(data);
+    }
 }
 
 export const projectsApi = new ProjectsApi();

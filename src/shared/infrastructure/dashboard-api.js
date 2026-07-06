@@ -33,6 +33,11 @@ class DepartmentsApi extends BaseEndpoint {
 
 class StatsApi extends BaseEndpoint {
     constructor() { super(import.meta.env.VITE_STATS_ENDPOINT_PATH); }
+    async getByUserId(userId) {
+        const data = await this.getByQuery({ userId });
+        return data.length ? StatsAssembler.toEntity(data[0]) : null;
+    }
+
     async getFirst() {
         const data = await super.getAll();
         return StatsAssembler.toEntity(data[0]);

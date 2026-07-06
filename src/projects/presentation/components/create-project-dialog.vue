@@ -1,6 +1,8 @@
 <script setup>
 import { ref, watch } from 'vue';
 import { ProjectStore } from '../../application/project.store.js';
+import { useDashboardStore } from '../../../shared/application/dashboard.store.js';
+import useIamStore from '../../../iam/application/iam.store.js';
 
 const props = defineProps({
   visible: { type: Boolean, default: false }
@@ -8,6 +10,8 @@ const props = defineProps({
 const emit = defineEmits(['update:visible', 'created']);
 
 const store = ProjectStore();
+const dashboardStore = useDashboardStore();
+const iamStore = useIamStore();
 
 const categories = [
   'Infrastructure Modernization', 'Commercial Real Estate', 'Logistics Optimization',
@@ -101,12 +105,15 @@ async function submit() {
       manager: form.value.manager,
       startDate: form.value.startDate,
       endDate: form.value.endDate,
+      userId: iamStore.currentUserId > 0 ? iamStore.currentUserId : 1,
       teamMembers: form.value.teamMembers.map((m, i) => ({
         id: i + 1, name: m.name, avatar: m.avatar[0]
       })),
       milestones: []
     };
     const created = await store.createProject(payload);
+    const userId = iamStore.currentUserId > 0 ? iamStore.currentUserId : 1;
+    await dashboardStore.fetchAll(userId);
     emit('created', created);
     close();
   } catch (e) {

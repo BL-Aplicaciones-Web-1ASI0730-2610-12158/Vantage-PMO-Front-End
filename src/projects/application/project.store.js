@@ -14,9 +14,17 @@ export const ProjectStore = defineStore('project', () => {
             loading.value = false;
         }
     }
+
+    async function createProject(payload) {
+        const created = await projectsApi.createProject(payload);
+        projects.value = [created, ...projects.value];
+        return created;
+    }
+
     return {
         projects,
         loading,
-        fetchProjects
+        fetchProjects,
+        createProject,
     };
 })
