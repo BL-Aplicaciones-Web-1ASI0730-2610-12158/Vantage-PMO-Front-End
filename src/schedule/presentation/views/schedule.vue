@@ -3,15 +3,108 @@ import { onMounted, computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useScheduleStore } from '../../application/schedule.store.js';
 import { useMeetingsStore } from '../../../meetings/application/meetings.store.js';
+import { ProjectStore } from '../../../projects/application/project.store.js';
+import { taskCollaborationApi } from '../../../task-collaboration/infrastructure/task-collaboration-api.js';
+import useIamStore from '../../../iam/application/iam.store.js';
+import { normalizeCalendarDate, toLocalIsoDate } from '../../../shared/infrastructure/calendar-date.js';
 
 const { t } = useI18n();
 const scheduleStore = useScheduleStore();
 const meetingsStore = useMeetingsStore();
+const projectStore = ProjectStore();
+const iamStore = useIamStore();
+const collaborationTasks = ref([]);
+const projectsLoading = ref(false);
+const tasksLoading = ref(false);
 
-onMounted(() => {
-    scheduleStore.fetchItems();
-    meetingsStore.fetchMeetings();
+onMounted(async () => {
+    await Promise.all([
+        scheduleStore.fetchItems(),
+        meetingsStore.fetchMeetings(),
+        loadProjects(),
+        loadCollaborationTasks(),
+    ]);
 });
+
+async function loadProjects() {
+    projectsLoading.value = true;
+    try {
+        await projectStore.fetchProjects();
+    } finally {
+        projectsLoading.value = false;
+    }
+}
+
+async function loadCollaborationTasks() {
+    tasksLoading.value = true;
+    try {
+        collaborationTasks.value = await taskCollaborationApi.getAllCollaborationTasks();
+    } finally {
+        tasksLoading.value = false;
+    }
+}
+
+function resolveUserId() {
+    return iamStore.currentUserId > 0 ? iamStore.currentUserId : null;
+}
+
+function userProjects() {
+    const userId = resolveUserId();
+    if (!userId) return projectStore.projects;
+    return projectStore.projects.filter(project => !project.userId || project.userId === userId);
+}
+
+function buildProjectEvents(project, referenceDate) {
+    const events = [];
+    const addEvent = (suffix, rawDate, title, subtitle, kind, time = '09:00', duration = 60) => {
+        const date = normalizeCalendarDate(rawDate, referenceDate);
+        if (!date) return;
+        events.push({
+            id: `p-${project.id}-${suffix}`,
+            date,
+            time,
+            duration,
+            title,
+            subtitle,
+            kind,
+            source: 'project',
+        });
+    };
+
+    addEvent('start', project.startDate, `${project.name} — Start`, project.manager || project.category, 'planning');
+    addEvent('end', project.endDate, `${project.name} — End`, project.manager || project.category, 'review');
+    addEvent('due', project.dueDate, `${project.name} — Due`, project.manager || project.category, 'workshop');
+
+    (project.milestones ?? []).forEach(milestone => {
+        addEvent(
+            `ms-${milestone.id}`,
+            milestone.date,
+            milestone.name,
+            project.name,
+            milestone.type === 'warning' ? 'workshop' : 'work',
+            '10:00',
+            45,
+        );
+    });
+
+    return events;
+}
+
+function buildTaskEvents(task, referenceDate) {
+    const date = normalizeCalendarDate(task.dueDate, referenceDate);
+    if (!date) return [];
+
+    return [{
+        id: `t-${task.id}`,
+        date,
+        time: '11:00',
+        duration: 60,
+        title: task.title,
+        subtitle: task.project || task.department || task.assignee,
+        kind: task.completed ? 'focus' : 'work',
+        source: 'task',
+    }];
+}
 
 // ─── View mode ─────────────────────────────────────────────────────────────────
 const viewMode = ref('week'); // 'week' | 'month'
@@ -39,7 +132,7 @@ const MONTHS_EN = ['January','February','March','April','May','June',
 const DAYS_SHORT = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 
 function fmt(date) { return `${MONTHS_EN[date.getMonth()]} ${date.getFullYear()}`; }
-function isoDate(date) { return date.toISOString().split('T')[0]; }
+function isoDate(date) { return toLocalIsoDate(date); }
 function isToday(date) { return isoDate(date) === isoDate(today); }
 
 // ─── Week grid ─────────────────────────────────────────────────────────────────
@@ -75,24 +168,39 @@ const monthDays = computed(() => {
     return cells;
 });
 
-// ─── All events (schedule + meetings) ─────────────────────────────────────────
+// ─── All events (schedule + meetings + projects + tasks) ─────────────────────
 const allEvents = computed(() => {
     const events = [];
+    const referenceDate = currentDate.value;
+
     scheduleStore.items.forEach(item => {
-        if (!item.date) return;
+        const date = normalizeCalendarDate(item.date, referenceDate);
+        if (!date) return;
         events.push({
-            id: `s-${item.id}`, date: item.date, time: item.time,
-            duration: item.duration, title: item.title, subtitle: item.detail,
+            id: `s-${item.id}`, date, time: item.time || '09:00',
+            duration: item.duration ?? 60, title: item.title, subtitle: item.detail,
             kind: item.type ?? 'work', source: 'schedule'
         });
     });
+
     meetingsStore.meetings.forEach(m => {
+        const date = normalizeCalendarDate(m.date, referenceDate);
+        if (!date) return;
         events.push({
-            id: `m-${m.id}`, date: m.date, time: m.time,
-            duration: m.duration, title: m.title, subtitle: m.location,
+            id: `m-${m.id}`, date, time: m.time || '09:00',
+            duration: m.duration ?? 60, title: m.title, subtitle: m.location,
             kind: 'meeting', source: 'meeting'
         });
     });
+
+    userProjects().forEach(project => {
+        events.push(...buildProjectEvents(project, referenceDate));
+    });
+
+    collaborationTasks.value.forEach(task => {
+        events.push(...buildTaskEvents(task, referenceDate));
+    });
+
     return events;
 });
 
@@ -130,8 +238,14 @@ const kindColor = {
     focus:    '#f59e0b',
     planning: '#06b6d4',
     workshop: '#ef4444',
+    project:  '#0ea5e9',
+    task:     '#a855f7',
 };
-function eventColor(kind) { return kindColor[kind] ?? '#6b7280'; }
+function eventColor(kind, source) {
+    if (source === 'project') return kindColor.project;
+    if (source === 'task') return kindColor.task;
+    return kindColor[kind] ?? '#6b7280';
+}
 
 // ─── Selected day panel ─────────────────────────────────────────────────────────
 const selectedDay = ref(null);
@@ -167,7 +281,7 @@ const viewOptions = computed(() => [
       </div>
     </div>
 
-    <div v-if="scheduleStore.loading || meetingsStore.loading" class="loading-state">
+    <div v-if="scheduleStore.loading || meetingsStore.loading || projectsLoading || tasksLoading" class="loading-state">
       <i class="pi pi-spin pi-spinner" style="font-size:2rem" />
     </div>
 
@@ -193,7 +307,7 @@ const viewOptions = computed(() => [
                 v-for="ev in eventsForDate(cell).slice(0, 3)"
                 :key="ev.id"
                 class="cell-chip"
-                :style="{ background: eventColor(ev.kind) }"
+                :style="{ background: eventColor(ev.kind, ev.source) }"
             >{{ ev.time }} {{ ev.title }}</div>
             <div v-if="eventsForDate(cell).length > 3" class="cell-more">
               +{{ eventsForDate(cell).length - 3 }} {{ t('schedule.more') }}
@@ -213,7 +327,7 @@ const viewOptions = computed(() => [
           </div>
           <div class="panel-events">
             <div v-for="ev in selectedDayEvents" :key="ev.id" class="panel-event">
-              <div class="panel-dot" :style="{ background: eventColor(ev.kind) }" />
+              <div class="panel-dot" :style="{ background: eventColor(ev.kind, ev.source) }" />
               <div class="panel-event-body">
                 <div class="panel-event-time">{{ ev.time }} · {{ ev.duration }}min</div>
                 <div class="panel-event-title">{{ ev.title }}</div>
@@ -278,7 +392,7 @@ const viewOptions = computed(() => [
                 v-for="ev in eventsForDayWeek(day)"
                 :key="ev.id"
                 class="week-event"
-                :style="{ ...eventStyle(ev), background: eventColor(ev.kind) }"
+                :style="{ ...eventStyle(ev), background: eventColor(ev.kind, ev.source) }"
                 :title="`${ev.time} - ${ev.title}\n${ev.subtitle}`"
             >
               <div class="we-time">{{ ev.time }}</div>

@@ -389,7 +389,9 @@
       "work": "Work",
       "focus": "Focus",
       "planning": "Planning",
-      "workshop": "Workshop"
+      "workshop": "Workshop",
+      "project": "Project",
+      "task": "Task"
     }
   },
   "meetings": {

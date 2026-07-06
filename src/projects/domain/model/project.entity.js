@@ -12,9 +12,11 @@ export class Project{
         status,
         startDate,
         endDate,
+        dueDate,
         milestones,
         teamMembers,
-        manager
+        manager,
+        userId,
     }) {
         this.id = id;
         this.name = name;
@@ -24,8 +26,10 @@ export class Project{
         this.status = status;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.dueDate = dueDate;
         this.milestones = milestones || [];
         this.teamMembers = teamMembers || [];
         this.manager = manager;
+        this.userId = userId;
     }
 }

@@ -389,7 +389,9 @@
       "work": "Trabajo",
       "focus": "Enfoque",
       "planning": "Planificación",
-      "workshop": "Taller"
+      "workshop": "Taller",
+      "project": "Proyecto",
+      "task": "Tarea"
     }
   },
   "meetings": {

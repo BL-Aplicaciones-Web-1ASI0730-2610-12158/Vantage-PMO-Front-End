@@ -16,6 +16,11 @@ class TaskCollaborationApi extends BaseEndpoint {
         return TaskAssembler.toEntities(data);
     }
 
+    async getAllCollaborationTasks() {
+        const data = await super.getByQuery({ scope: 'collaboration' });
+        return TaskAssembler.toEntities(data);
+    }
+
     async createTask(task) {
         const data = await super.create(task);
         return TaskAssembler.toEntity(data);

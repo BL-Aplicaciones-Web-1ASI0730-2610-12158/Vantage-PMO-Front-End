@@ -11,9 +11,11 @@ export class ProjectAssembler {
             status: ProjectAssembler.normalizeStatus(resource.status),
             startDate: resource.startDate,
             endDate: resource.endDate,
+            dueDate: resource.dueDate,
             milestones: resource.milestones || [],
             teamMembers: resource.teamMembers || [],
-            manager: resource.manager
+            manager: resource.manager,
+            userId: resource.userId,
         });
     }
 
