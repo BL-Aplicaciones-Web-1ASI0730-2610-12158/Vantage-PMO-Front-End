@@ -1,13 +1,16 @@
-<script setup>
+﻿<script setup>
 import { onMounted, onActivated, computed, watch } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import { useDashboardStore } from '../../application/dashboard.store.js';
-import useIamStore from '../../../iam/application/iam.store.js';
+import { useDashboardStore } from '../../../application/dashboard.store.js';
+import useIamStore from '../../../../iam/application/iam.store.js';
+import { useDialog } from 'primevue/usedialog';
+import AiInsightsPanel from '../../../../chat-hub/presentation/components/ai-insights-panel.vue';
 
 const router = useRouter();
 const route = useRoute();
 const store = useDashboardStore();
 const iamStore = useIamStore();
+const dialog = useDialog();
 
 function goToSchedule() {
   router.push({ name: 'schedule' });
@@ -51,6 +54,22 @@ const scheduleItems = computed(() => store.schedule);
 const departments   = computed(() => store.departments);
 const stats         = computed(() => store.stats);
 const currentUsername = computed(() => iamStore.currentUsername || 'User');
+
+// Funci├│n para abrir el di├ílogo con AiInsightsPanel
+const openAiInsightsDialog = () => {
+  dialog.open(AiInsightsPanel, {
+    props: {
+      header: 'AI Insights Overview',
+      modal: true,
+      style: { width: '50vw' }, // Ancho del di├ílogo, ajusta seg├║n necesidad
+      breakpoints:{ '960px': '75vw', '641px': '100vw' }
+    },
+    // Puedes pasar props al AiInsightsPanel si fuera necesario
+    // data: {
+    //   someProp: 'someValue'
+    // }
+  });
+};
 </script>
 
 <template>
@@ -86,7 +105,7 @@ const currentUsername = computed(() => iamStore.currentUsername || 'User');
           <div class="stat-value-row">
             <span class="stat-value green">{{ stats.onTrack }}</span>
           </div>
-          <div class="progress-bar"><div class="progress-fill green-fill" :style="{ width: (stats.totalProjects ? (stats.onTrack / stats.totalProjects * 100) : 0) + '%' }"></div></div>
+          <div class="progress-bar"><div class="progress-fill green-fill" :style="{ width: (stats.onTrack / stats.totalProjects * 100) + '%' }"></div></div>
         </div>
         <div class="stat-card at-risk">
           <span class="stat-label">{{ $t('home.atRisk') }}</span>
@@ -104,7 +123,8 @@ const currentUsername = computed(() => iamStore.currentUsername || 'User');
           <span class="ai-title">{{ $t('home.aiInsights') }}</span>
         </div>
         <p class="ai-text">{{ $t('home.aiText') }}</p>
-        <button class="apply-btn">{{ $t('home.applyOptimization') }}</button>
+        <!-- Bot├│n para abrir el di├ílogo con AiInsightsPanel -->
+        <button class="apply-btn" @click="openAiInsightsDialog">View AI Insights</button>
       </div>
     </div>
 
@@ -123,7 +143,7 @@ const currentUsername = computed(() => iamStore.currentUsername || 'User');
             </div>
             <div class="task-info">
               <span class="task-title">{{ task.title }}</span>
-              <span class="task-meta">{{ $t('home.assignedTo') }} {{ task.assignee }} • {{ task.department }}</span>
+              <span class="task-meta">{{ $t('home.assignedTo') }} {{ task.assignee }} ÔÇó {{ task.department }}</span>
             </div>
             <div class="task-right">
               <span
@@ -651,7 +671,7 @@ const currentUsername = computed(() => iamStore.currentUsername || 'User');
   border-radius: 4px;
 }
 
-/* ── RESPONSIVE ── */
+/* ÔöÇÔöÇ RESPONSIVE ÔöÇÔöÇ */
 @media (max-width: 1024px) {
   .stats-row {
     flex-direction: column;
