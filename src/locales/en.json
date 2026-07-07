@@ -841,5 +841,53 @@
       "exportAlert":    "Generating PDF export for risk register...",
       "bulkAuditAlert": "Bulk audit initiated for all open risks."
     }
+  },
+  "resourcePlanning": {
+    "title": "Resource Planning",
+    "subtitle": "Real-time portfolio capacity, allocations, and gap visibility.",
+    "loading": "Loading resource planning data...",
+    "summary": {
+      "totalResources": "Total Resources",
+      "totalResourcesSub": "Active FTE across portfolio",
+      "avgUtilization": "Avg Utilization",
+      "avgUtilizationSub": "Weighted average by department",
+      "overAllocated": "Over-allocated",
+      "overAllocatedSub": "Resources above 100%",
+      "benchAvailable": "Bench Available",
+      "benchAvailableSub": "Ready-to-assign capacity"
+    },
+    "departmentCapacity": {
+      "title": "Department Capacity",
+      "subtitle": "Current utilization vs. planned capacity.",
+      "utilization": "utilization"
+    },
+    "allocations": {
+      "title": "Resource Allocation Matrix",
+      "subtitle": "FTE distribution by project and load status.",
+      "liveUpdate": "LIVE UPDATE",
+      "colResource": "Resource",
+      "colDepartment": "Department",
+      "colProjects": "Projects",
+      "colTotal": "Total",
+      "colStatus": "Status",
+      "empty": "No allocations recorded.",
+      "status": {
+        "optimal": "Optimal",
+        "warning": "Warning",
+        "over": "Over-allocated",
+        "bench": "Bench"
+      }
+    },
+    "capacityGaps": {
+      "title": "Capacity Gaps",
+      "subtitle": "Roles needed soon on active projects.",
+      "noGaps": "No critical capacity gaps detected.",
+      "headcount": "FTE required",
+      "neededBy": "Needed by"
+    },
+    "actions": {
+      "optimize": "Optimize Allocations",
+      "optimizeAlert": "Resource optimization engine coming soon."
+    }
   }
 }

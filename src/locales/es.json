@@ -841,5 +841,53 @@
       "exportAlert":    "Generando exportación PDF del registro de riesgos...",
       "bulkAuditAlert": "Auditoría masiva iniciada para todos los riesgos abiertos."
     }
+  },
+  "resourcePlanning": {
+    "title": "Planificación de Recursos",
+    "subtitle": "Visibilidad de capacidad, asignaciones y brechas del portafolio en tiempo real.",
+    "loading": "Cargando planificación de recursos...",
+    "summary": {
+      "totalResources": "Recursos Totales",
+      "totalResourcesSub": "FTE activos en el portafolio",
+      "avgUtilization": "Utilización Promedio",
+      "avgUtilizationSub": "Promedio ponderado por departamento",
+      "overAllocated": "Sobre-asignados",
+      "overAllocatedSub": "Recursos por encima del 100%",
+      "benchAvailable": "Bench Disponible",
+      "benchAvailableSub": "Capacidad lista para asignar"
+    },
+    "departmentCapacity": {
+      "title": "Capacidad por Departamento",
+      "subtitle": "Utilización actual vs. capacidad planificada.",
+      "utilization": "utilización"
+    },
+    "allocations": {
+      "title": "Matriz de Asignación de Recursos",
+      "subtitle": "Distribución de FTE por proyecto y estado de carga.",
+      "liveUpdate": "ACTUALIZACIÓN EN VIVO",
+      "colResource": "Recurso",
+      "colDepartment": "Departamento",
+      "colProjects": "Proyectos",
+      "colTotal": "Total",
+      "colStatus": "Estado",
+      "empty": "No hay asignaciones registradas.",
+      "status": {
+        "optimal": "Óptimo",
+        "warning": "Alerta",
+        "over": "Sobre-asignado",
+        "bench": "Bench"
+      }
+    },
+    "capacityGaps": {
+      "title": "Brechas de Capacidad",
+      "subtitle": "Roles requeridos próximamente en proyectos activos.",
+      "noGaps": "Sin brechas críticas detectadas.",
+      "headcount": "FTE requeridos",
+      "neededBy": "Requerido para"
+    },
+    "actions": {
+      "optimize": "Optimizar Asignaciones",
+      "optimizeAlert": "El motor de optimización de recursos estará disponible próximamente."
+    }
   }
 }

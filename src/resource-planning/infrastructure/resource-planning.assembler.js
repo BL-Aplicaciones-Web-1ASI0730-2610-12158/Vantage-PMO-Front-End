@@ -1,7 +1,11 @@
-import { ResourcePlan } from '../domain/model/resource-plan.entity';
+import { ResourcePlanningDashboard } from '../domain/model/resource-planning.entity.js';
 
-export const ResourcePlanningAssembler = {
-    toDomain(data) {
-        return new ResourcePlan(data.id, data.name, data.allocation, data.status);
+export class ResourcePlanningAssembler {
+    static toEntity(resource) {
+        return new ResourcePlanningDashboard(resource);
     }
-};
+
+    static toEntities(resources) {
+        return resources.map(ResourcePlanningAssembler.toEntity);
+    }
+}

@@ -1986,5 +1986,134 @@
         }
       ]
     }
+  ],
+  "resource-planning": [
+    {
+      "id": 1,
+      "period": "Q3 2026",
+      "summaryKpis": {
+        "totalResources": 48,
+        "avgUtilization": 87,
+        "overAllocated": 3,
+        "benchAvailable": 6
+      },
+      "departmentCapacity": [
+        { "department": "Engineering", "utilization": 94, "status": "warning" },
+        { "department": "Product Design", "utilization": 78, "status": "normal" },
+        { "department": "Data Science", "utilization": 112, "status": "over" },
+        { "department": "Strategy & Ops", "utilization": 45, "status": "normal" }
+      ],
+      "allocations": [
+        {
+          "id": 1,
+          "resourceName": "Alex Sterling",
+          "role": "Lead Architect",
+          "department": "Engineering",
+          "avatar": "AS",
+          "avatarColor": "#3b82f6",
+          "projects": [
+            { "name": "Aura Mixed-Use", "allocation": 60 },
+            { "name": "Nexus Data Hub", "allocation": 30 }
+          ],
+          "totalAllocation": 90,
+          "status": "optimal"
+        },
+        {
+          "id": 2,
+          "resourceName": "Marcus R.",
+          "role": "Senior Engineer",
+          "department": "Engineering",
+          "avatar": "MR",
+          "avatarColor": "#f59e0b",
+          "projects": [
+            { "name": "Cloud Migration", "allocation": 70 },
+            { "name": "Mobile App V3", "allocation": 45 }
+          ],
+          "totalAllocation": 115,
+          "status": "over"
+        },
+        {
+          "id": 3,
+          "resourceName": "Diana K.",
+          "role": "UX Lead",
+          "department": "Product Design",
+          "avatar": "DK",
+          "avatarColor": "#8b5cf6",
+          "projects": [
+            { "name": "Aura Mixed-Use", "allocation": 50 },
+            { "name": "B2B Integration", "allocation": 25 }
+          ],
+          "totalAllocation": 75,
+          "status": "optimal"
+        },
+        {
+          "id": 4,
+          "resourceName": "Elena V.",
+          "role": "Data Scientist",
+          "department": "Data Science",
+          "avatar": "EV",
+          "avatarColor": "#ec4899",
+          "projects": [
+            { "name": "Data Lake 2.0", "allocation": 80 },
+            { "name": "Nexus Data Hub", "allocation": 35 }
+          ],
+          "totalAllocation": 115,
+          "status": "over"
+        },
+        {
+          "id": 5,
+          "resourceName": "Jordan P.",
+          "role": "PMO Analyst",
+          "department": "Strategy & Ops",
+          "avatar": "JP",
+          "avatarColor": "#10b981",
+          "projects": [
+            { "name": "Portfolio Reporting", "allocation": 40 }
+          ],
+          "totalAllocation": 40,
+          "status": "bench"
+        },
+        {
+          "id": 6,
+          "resourceName": "Catherine L.",
+          "role": "DevOps Engineer",
+          "department": "Engineering",
+          "avatar": "CL",
+          "avatarColor": "#06b6d4",
+          "projects": [
+            { "name": "Cloud Migration", "allocation": 55 },
+            { "name": "Nexus Data Hub", "allocation": 50 }
+          ],
+          "totalAllocation": 105,
+          "status": "warning"
+        }
+      ],
+      "capacityGaps": [
+        {
+          "id": 1,
+          "project": "Cloud Migration",
+          "role": "Data Engineer",
+          "gapDate": "Aug 12",
+          "headcount": 2,
+          "severity": "high"
+        },
+        {
+          "id": 2,
+          "project": "Aura Mixed-Use",
+          "role": "Structural Engineer",
+          "gapDate": "Sep 01",
+          "headcount": 1,
+          "severity": "medium"
+        },
+        {
+          "id": 3,
+          "project": "B2B Integration",
+          "role": "Integration Specialist",
+          "gapDate": "Oct 15",
+          "headcount": 1,
+          "severity": "low"
+        }
+      ]
+    }
   ]
 }
