@@ -1,12 +1,15 @@
 <script setup>
 import { ref, computed, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { MEETING_SEGMENTS } from '../../infrastructure/meetings-api.js';
 
 const props = defineProps({
     visible: { type: Boolean, default: false }
 });
 const emit = defineEmits(['update:visible', 'schedule']);
 const { t } = useI18n();
+
+const segmentOptions = MEETING_SEGMENTS;
 
 // ── Form state ────────────────────────────────────────────────────────────────
 const form = ref({
@@ -17,7 +20,7 @@ const form = ref({
     environment: 'Virtual',
     autoZoom:    true,
     agenda:      '',
-    segment:     'General'
+    segment:     segmentOptions[0]
 });
 
 // Reset form when dialog opens
@@ -25,7 +28,7 @@ watch(() => props.visible, (val) => {
     if (val) {
         form.value = {
             title: '', date: '', startTime: '', endTime: '',
-            environment: 'Virtual', autoZoom: true, agenda: '', segment: 'General'
+            environment: 'Virtual', autoZoom: true, agenda: '', segment: segmentOptions[0]
         };
         participantSearch.value = '';
         selectedParticipants.value = [...defaultParticipants];
@@ -145,6 +148,15 @@ function close() { emit('update:visible', false); }
           <pv-input-text
               v-model="form.title"
               :placeholder="t('meetings.dialog.titlePlaceholder')"
+              class="w-full"
+          />
+        </div>
+
+        <div class="smd-field">
+          <label class="smd-label">{{ t('meetings.dialog.segment') }}</label>
+          <pv-select
+              v-model="form.segment"
+              :options="segmentOptions"
               class="w-full"
           />
         </div>

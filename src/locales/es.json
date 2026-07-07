@@ -35,8 +35,14 @@
     "viewAll": "VER TODO",
     "assignedTo": "Asignado a",
     "manageCalendar": "GESTIONAR CALENDARIO",
+    "scheduleTitle": "Cronograma",
+    "scheduleToday": "Hoy",
+    "scheduleEmpty": "No hay eventos programados. Abre el calendario para agregar items.",
+    "noPriorityTasks": "No hay tareas prioritarias por ahora.",
     "portfolioVelocity": "Velocidad del Portafolio",
-    "velocitySub": "En 5 departamentos diferentes y 12 equipos."
+    "velocitySub": "En 5 departamentos diferentes y 12 equipos.",
+    "velocitySubDynamic": "En {n} departamentos con datos en vivo del portafolio.",
+    "velocityEmpty": "Los datos de velocidad por departamento aún no están disponibles."
   },
   "profile": {
     "title": "Perfil",
@@ -413,12 +419,21 @@
     "deadline": "Fecha Límite",
     "verifiedBy": "Verificado por",
     "minutesPending": "Las minutas se registrarán después de la reunión.",
+    "noMinutesRecorded": "No se registraron minutas para esta reunión.",
+    "noAgreementsYet": "No se capturaron decisiones ni acuerdos para esta reunión.",
+    "noSessionsInSegment": "No hay sesiones en este segmento.",
     "selectSession": "Selecciona una sesión para ver los detalles.",
     "upcoming": "Próximas",
     "completed": "Completadas",
+    "segments": {
+      "all": "Todos",
+      "segment1": "Segmento 1",
+      "segment2": "Segmento 2"
+    },
     "dialog": {
       "title": "Agendar Nueva Reunión",
       "subtitle": "Define los parámetros de tu sesión estratégica.",
+      "segment": "Segmento de Negocio",
       "meetingTitle": "Título de la Reunión",
       "titlePlaceholder": "ej., Revisión Estratégica Mensual",
       "date": "Fecha",

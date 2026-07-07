@@ -17,7 +17,7 @@ export const ProjectStore = defineStore('project', () => {
 
     async function createProject(payload) {
         const created = await projectsApi.createProject(payload);
-        projects.value = [created, ...projects.value];
+        projects.value = [created, ...projects.value.filter(project => project.id !== created.id)];
         return created;
     }
 

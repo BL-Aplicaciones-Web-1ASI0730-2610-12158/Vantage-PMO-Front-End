@@ -35,8 +35,14 @@
     "viewAll": "VIEW ALL",
     "assignedTo": "Assigned to",
     "manageCalendar": "MANAGE CALENDAR",
+    "scheduleTitle": "Schedule",
+    "scheduleToday": "Today",
+    "scheduleEmpty": "No events scheduled. Open the calendar to add items.",
+    "noPriorityTasks": "No priority tasks right now.",
     "portfolioVelocity": "Portfolio Velocity",
-    "velocitySub": "Across 5 different departments and 12 teams."
+    "velocitySub": "Across 5 different departments and 12 teams.",
+    "velocitySubDynamic": "Across {n} departments with live portfolio data.",
+    "velocityEmpty": "Department velocity data is not available yet."
   },
   "profile": {
     "title": "Profile",
@@ -413,12 +419,21 @@
     "deadline": "Deadline",
     "verifiedBy": "Verified by",
     "minutesPending": "Minutes will be recorded after the meeting.",
+    "noMinutesRecorded": "No session minutes were recorded for this meeting.",
+    "noAgreementsYet": "No decisions or agreements were captured for this meeting.",
+    "noSessionsInSegment": "No sessions found for this segment.",
     "selectSession": "Select a session to view details.",
     "upcoming": "Upcoming",
     "completed": "Completed",
+    "segments": {
+      "all": "All",
+      "segment1": "Segment 1",
+      "segment2": "Segment 2"
+    },
     "dialog": {
       "title": "Schedule New Meeting",
       "subtitle": "Define parameters for your strategic session.",
+      "segment": "Business Segment",
       "meetingTitle": "Meeting Title",
       "titlePlaceholder": "e.g., Monthly Strategic Review",
       "date": "Date",

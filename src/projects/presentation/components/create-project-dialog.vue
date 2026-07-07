@@ -105,6 +105,7 @@ async function submit() {
       manager: form.value.manager,
       startDate: form.value.startDate,
       endDate: form.value.endDate,
+      dueDate: form.value.endDate || form.value.startDate,
       userId: iamStore.currentUserId > 0 ? iamStore.currentUserId : 1,
       teamMembers: form.value.teamMembers.map((m, i) => ({
         id: i + 1, name: m.name, avatar: m.avatar[0]

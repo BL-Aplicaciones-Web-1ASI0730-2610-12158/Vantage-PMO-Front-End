@@ -16,12 +16,17 @@ export const useDashboardStore = defineStore('dashboard', () => {
     async function fetchAll(userId = 1) {
         loading.value = true;
         try {
-            [tasks.value, schedule.value, departments.value, stats.value] = await Promise.all([
+            const results = await Promise.allSettled([
                 tasksApi.getAll(),
                 scheduleApi.getAll(),
                 departmentsApi.getAll(),
                 statsApi.getByUserId(userId),
             ]);
+
+            if (results[0].status === 'fulfilled') tasks.value = results[0].value;
+            if (results[1].status === 'fulfilled') schedule.value = results[1].value;
+            if (results[2].status === 'fulfilled') departments.value = results[2].value;
+            if (results[3].status === 'fulfilled') stats.value = results[3].value;
         } finally {
             loading.value = false;
         }

@@ -1,5 +1,6 @@
 <script setup>
-import { onMounted, computed, ref } from 'vue';
+import { onMounted, onActivated, computed, ref, watch } from 'vue';
+import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useScheduleStore } from '../../application/schedule.store.js';
 import { useMeetingsStore } from '../../../meetings/application/meetings.store.js';
@@ -9,6 +10,7 @@ import useIamStore from '../../../iam/application/iam.store.js';
 import { normalizeCalendarDate, toLocalIsoDate } from '../../../shared/infrastructure/calendar-date.js';
 
 const { t } = useI18n();
+const route = useRoute();
 const scheduleStore = useScheduleStore();
 const meetingsStore = useMeetingsStore();
 const projectStore = ProjectStore();
@@ -16,15 +18,10 @@ const iamStore = useIamStore();
 const collaborationTasks = ref([]);
 const projectsLoading = ref(false);
 const tasksLoading = ref(false);
-
-onMounted(async () => {
-    await Promise.all([
-        scheduleStore.fetchItems(),
-        meetingsStore.fetchMeetings(),
-        loadProjects(),
-        loadCollaborationTasks(),
-    ]);
-});
+const viewMode = ref('week');
+const today = new Date();
+const currentDate = ref(new Date(today));
+const selectedDay = ref(null);
 
 async function loadProjects() {
     projectsLoading.value = true;
@@ -43,6 +40,65 @@ async function loadCollaborationTasks() {
         tasksLoading.value = false;
     }
 }
+
+async function refreshCalendarData() {
+    await Promise.all([
+        scheduleStore.fetchItems(),
+        meetingsStore.fetchMeetings(),
+        loadProjects(),
+        loadCollaborationTasks(),
+    ]);
+}
+
+function focusCalendarOnDate(rawDate) {
+    const normalized = normalizeCalendarDate(rawDate);
+    if (!normalized) return;
+    const [year, month, day] = normalized.split('-').map(Number);
+    currentDate.value = new Date(year, month - 1, day);
+    selectedDay.value = new Date(year, month - 1, day);
+}
+
+onMounted(async () => {
+    await refreshCalendarData();
+    if (route.query.focus) {
+        focusCalendarOnDate(String(route.query.focus));
+    }
+});
+
+onActivated(async () => {
+    await refreshCalendarData();
+    if (route.query.focus) {
+        focusCalendarOnDate(String(route.query.focus));
+    }
+});
+
+watch(
+    () => route.name,
+    async (name) => {
+        if (name === 'schedule') {
+            await refreshCalendarData();
+            if (route.query.focus) {
+                focusCalendarOnDate(String(route.query.focus));
+            }
+        }
+    }
+);
+
+watch(
+    () => route.query.focus,
+    (focus) => {
+        if (focus) focusCalendarOnDate(String(focus));
+    }
+);
+
+watch(
+    () => projectStore.projects.length,
+    () => {
+        if (route.name === 'schedule' && route.query.focus) {
+            focusCalendarOnDate(String(route.query.focus));
+        }
+    }
+);
 
 function resolveUserId() {
     return iamStore.currentUserId > 0 ? iamStore.currentUserId : null;
@@ -73,7 +129,7 @@ function buildProjectEvents(project, referenceDate) {
 
     addEvent('start', project.startDate, `${project.name} — Start`, project.manager || project.category, 'planning');
     addEvent('end', project.endDate, `${project.name} — End`, project.manager || project.category, 'review');
-    addEvent('due', project.dueDate, `${project.name} — Due`, project.manager || project.category, 'workshop');
+    addEvent('due', project.dueDate || project.endDate, `${project.name} — Due`, project.manager || project.category, 'workshop');
 
     (project.milestones ?? []).forEach(milestone => {
         addEvent(
@@ -107,9 +163,6 @@ function buildTaskEvents(task, referenceDate) {
 }
 
 // ─── View mode ─────────────────────────────────────────────────────────────────
-const viewMode = ref('week'); // 'week' | 'month'
-const today = new Date();
-const currentDate = ref(new Date(today));
 
 // ─── Navigation ────────────────────────────────────────────────────────────────
 function goToToday()  { currentDate.value = new Date(); }
@@ -248,7 +301,6 @@ function eventColor(kind, source) {
 }
 
 // ─── Selected day panel ─────────────────────────────────────────────────────────
-const selectedDay = ref(null);
 const selectedDayEvents = computed(() => selectedDay.value ? eventsForDate(selectedDay.value) : []);
 function selectDay(date) { if (date) selectedDay.value = date; }
 
@@ -334,7 +386,13 @@ const viewOptions = computed(() => [
                 <div class="panel-event-sub">{{ ev.subtitle }}</div>
               </div>
               <pv-tag
-                  :value="ev.source === 'meeting' ? t('schedule.meeting') : t('schedule.event')"
+                  :value="ev.source === 'meeting'
+                    ? t('schedule.meeting')
+                    : ev.source === 'project'
+                      ? t('schedule.project')
+                      : ev.source === 'task'
+                        ? t('schedule.task')
+                        : t('schedule.event')"
                   :severity="ev.source === 'meeting' ? 'info' : 'success'"
                   style="height:fit-content"
               />

@@ -35,6 +35,14 @@ function navigate(name) {
   sidebarOpen.value = false;
 }
 function isActive(name)  { return route.name === name }
+
+function onProjectCreated(project) {
+  const focusDate = project?.startDate || project?.endDate || project?.dueDate;
+  router.push({
+    name: 'schedule',
+    query: focusDate ? { focus: focusDate } : {},
+  });
+}
 </script>
 
 <template>
@@ -60,7 +68,7 @@ function isActive(name)  { return route.name === name }
 
       <!-- Create Project Button -->
       <div class="sidebar-create">
-        <button class="create-btn" @click="navigate('home')">
+        <button class="create-btn" @click="createDialogOpen = true">
           <i class="pi pi-plus"></i>
           <span>{{ $t('nav.createProject') }}</span>
         </button>
@@ -124,6 +132,11 @@ function isActive(name)  { return route.name === name }
         <router-view />
       </main>
     </div>
+
+    <CreateProjectDialog
+        v-model:visible="createDialogOpen"
+        @created="onProjectCreated"
+    />
   </div>
 </template>
 

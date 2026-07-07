@@ -1,9 +1,11 @@
 ﻿<script setup>
 import { onMounted, onActivated, computed, watch } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import { useDashboardStore } from '../../../application/dashboard.store.js';
 import useIamStore from '../../../../iam/application/iam.store.js';
 import { useDialog } from 'primevue/usedialog';
+import { toLocalIsoDate } from '../../../infrastructure/calendar-date.js';
 import AiInsightsPanel from '../../../../chat-hub/presentation/components/ai-insights-panel.vue';
 
 const router = useRouter();
@@ -11,6 +13,7 @@ const route = useRoute();
 const store = useDashboardStore();
 const iamStore = useIamStore();
 const dialog = useDialog();
+const { t, locale } = useI18n();
 
 function goToSchedule() {
   router.push({ name: 'schedule' });
@@ -54,6 +57,54 @@ const scheduleItems = computed(() => store.schedule);
 const departments   = computed(() => store.departments);
 const stats         = computed(() => store.stats);
 const currentUsername = computed(() => iamStore.currentUsername || 'User');
+
+function formatDisplayDate(dateStr) {
+  if (!dateStr) return '';
+  const d = new Date(`${dateStr}T12:00:00`);
+  if (Number.isNaN(d.getTime())) return dateStr;
+  const localeTag = locale.value === 'es' ? 'es-ES' : 'en-US';
+  return d.toLocaleDateString(localeTag, { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+const scheduleDateLabel = computed(() => {
+  const items = scheduleItems.value;
+  const today = toLocalIsoDate(new Date());
+  if (!items.length) return formatDisplayDate(today);
+
+  const todayItems = items.filter(item => item.date === today);
+  if (todayItems.length) return t('home.scheduleToday');
+
+  const sortedDates = [...new Set(items.map(item => item.date).filter(Boolean))].sort();
+  return formatDisplayDate(sortedDates[0] ?? today);
+});
+
+const displayedScheduleItems = computed(() => {
+  const items = scheduleItems.value;
+  if (!items.length) return [];
+
+  const today = toLocalIsoDate(new Date());
+  const todayItems = items.filter(item => item.date === today);
+  const source = todayItems.length ? todayItems : items;
+
+  return [...source]
+    .sort((a, b) => String(a.time).localeCompare(String(b.time)))
+    .slice(0, 4);
+});
+
+const velocityBars = computed(() => {
+  const depts = departments.value;
+  if (!depts.length) return [];
+
+  return depts.map((dept, index) => ({
+    key: dept.id ?? dept.name ?? index,
+    height: Math.max(16, Math.round(dept.percent)),
+    active: index === depts.length - 1,
+  }));
+});
+
+const velocitySubtitle = computed(() =>
+  t('home.velocitySubDynamic', { n: departments.value.length || 0 })
+);
 
 // Funci├│n para abrir el di├ílogo con AiInsightsPanel
 const openAiInsightsDialog = () => {
@@ -105,7 +156,7 @@ const openAiInsightsDialog = () => {
           <div class="stat-value-row">
             <span class="stat-value green">{{ stats.onTrack }}</span>
           </div>
-          <div class="progress-bar"><div class="progress-fill green-fill" :style="{ width: (stats.onTrack / stats.totalProjects * 100) + '%' }"></div></div>
+          <div class="progress-bar"><div class="progress-fill green-fill" :style="{ width: (stats.totalProjects ? (stats.onTrack / stats.totalProjects * 100) : 0) + '%' }"></div></div>
         </div>
         <div class="stat-card at-risk">
           <span class="stat-label">{{ $t('home.atRisk') }}</span>
@@ -137,6 +188,12 @@ const openAiInsightsDialog = () => {
           <button type="button" class="view-all" @click="goToTeam">{{ $t('home.viewAll') }}</button>
         </div>
         <div class="task-list">
+          <div v-if="store.loading" class="section-placeholder">
+            <i class="pi pi-spin pi-spinner" />
+          </div>
+          <div v-else-if="!priorityTasks.length" class="section-placeholder">
+            <p>{{ t('home.noPriorityTasks') }}</p>
+          </div>
           <div v-for="task in priorityTasks" :key="task.id" class="task-card">
             <div class="task-icon" :style="{ background: task.iconBg }">
               <i :class="task.icon"></i>
@@ -162,11 +219,22 @@ const openAiInsightsDialog = () => {
       <!-- Schedule -->
       <div class="schedule-section">
         <div class="section-header">
-          <h2 class="section-title">Schedule</h2>
-          <span class="schedule-date">Oct 24, 2023</span>
+          <h2 class="section-title">{{ $t('home.scheduleTitle') }}</h2>
+          <span class="schedule-date">{{ scheduleDateLabel }}</span>
         </div>
         <div class="schedule-list">
-          <div v-for="item in scheduleItems" :key="item.time" class="schedule-item" :class="{ inactive: !item.active }">
+          <div v-if="store.loading" class="section-placeholder">
+            <i class="pi pi-spin pi-spinner" />
+          </div>
+          <div v-else-if="!displayedScheduleItems.length" class="section-placeholder">
+            <p>{{ t('home.scheduleEmpty') }}</p>
+          </div>
+          <div
+            v-for="item in displayedScheduleItems"
+            :key="item.id ?? `${item.date}-${item.time}`"
+            class="schedule-item"
+            :class="{ inactive: !item.active }"
+          >
             <span class="schedule-time">{{ item.time }}</span>
             <div class="schedule-block" :class="{ 'schedule-block-active': item.active }">
               <span class="schedule-event">{{ item.title }}</span>
@@ -181,27 +249,35 @@ const openAiInsightsDialog = () => {
     <!-- Portfolio Velocity -->
     <div class="velocity-section">
       <h2 class="section-title">{{ $t('home.portfolioVelocity') }}</h2>
-      <p class="velocity-sub">{{ $t('home.velocitySub') }}</p>
+      <p class="velocity-sub">{{ velocitySubtitle }}</p>
       <div class="velocity-content">
-        <div class="velocity-chart">
-          <div
-            v-for="(h, i) in [30, 40, 50, 65, 80, 100, 90, 60, 45]"
-            :key="i"
-            class="bar"
-            :class="{ 'bar-active': i === 6 }"
-            :style="{ height: h + 'px' }"
-          ></div>
+        <div v-if="store.loading" class="section-placeholder">
+          <i class="pi pi-spin pi-spinner" />
         </div>
-        <div class="velocity-stats">
-          <div v-for="dept in departments" :key="dept.name" class="dept-row">
-            <div class="dept-header">
-              <span class="dept-name">{{ dept.name }}</span>
-              <span class="dept-percent">{{ dept.percent }}%</span>
-            </div>
-            <div class="dept-bar">
-              <div class="dept-fill" :style="{ width: dept.percent + '%' }"></div>
+        <template v-else-if="departments.length">
+          <div class="velocity-chart">
+            <div
+              v-for="bar in velocityBars"
+              :key="bar.key"
+              class="bar"
+              :class="{ 'bar-active': bar.active }"
+              :style="{ height: bar.height + 'px' }"
+            ></div>
+          </div>
+          <div class="velocity-stats">
+            <div v-for="dept in departments" :key="dept.name" class="dept-row">
+              <div class="dept-header">
+                <span class="dept-name">{{ dept.name }}</span>
+                <span class="dept-percent">{{ dept.percent }}%</span>
+              </div>
+              <div class="dept-bar">
+                <div class="dept-fill" :style="{ width: dept.percent + '%' }"></div>
+              </div>
             </div>
           </div>
+        </template>
+        <div v-else class="section-placeholder velocity-empty">
+          <p>{{ t('home.velocityEmpty') }}</p>
         </div>
       </div>
     </div>
@@ -589,6 +665,25 @@ const openAiInsightsDialog = () => {
 }
 
 .manage-cal-btn:hover { background: #f1f5f9; }
+
+.section-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 72px;
+  color: #94a3b8;
+  font-size: 13px;
+  text-align: center;
+}
+
+.section-placeholder p {
+  margin: 0;
+}
+
+.velocity-empty {
+  width: 100%;
+  min-height: 120px;
+}
 
 /* Velocity */
 .velocity-section {

@@ -1,35 +1,109 @@
 <script setup>
 import { onMounted, ref, computed, watch } from 'vue';
+import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useMeetingsStore } from '../../application/meetings.store.js';
+import { matchesMeetingSegmentFilter, isMeetingSegment1, isMeetingSegment2 } from '../../infrastructure/meetings-api.js';
+import { normalizeCalendarDate } from '../../../shared/infrastructure/calendar-date.js';
 import ScheduleMeetingDialog from '../components/schedule-meeting-dialog.vue';
 import ExportMinutesDialog from '../components/export-minutes-dialog.vue';
 
 const { t } = useI18n();
+const router = useRouter();
 const store = useMeetingsStore();
 
 onMounted(() => store.fetchMeetings());
 
 const selected = ref(null);
+const segmentFilter = ref('all');
 const showScheduleDialog = ref(false);
 const showExportDialog   = ref(false);
 
-function onExportMinutes(payload) {
-    alert(`Exporting ${payload.format} minutes for: ${selected.value?.title ?? 'All meetings'}`);
+const segmentTabs = computed(() => [
+    { key: 'all', label: t('meetings.segments.all') },
+    { key: 'segment1', label: t('meetings.segments.segment1') },
+    { key: 'segment2', label: t('meetings.segments.segment2') },
+]);
+
+const meetings = computed(() => store.meetings);
+
+const filteredMeetings = computed(() =>
+    meetings.value.filter(m => matchesMeetingSegmentFilter(m, segmentFilter.value))
+);
+
+function pickDefaultMeeting(list) {
+    if (!list.length) return null;
+    return list.find(m => m.minutes.length || m.agreements.length) ?? list[0];
 }
 
-// Auto-select first meeting once loaded
-const meetings = computed(() => store.meetings);
 function selectFirst() {
-    if (meetings.value.length && !selected.value) {
-        selected.value = meetings.value[0];
+    if (filteredMeetings.value.length) {
+        const stillVisible = filteredMeetings.value.some(m => m.id === selected.value?.id);
+        if (!stillVisible) selected.value = pickDefaultMeeting(filteredMeetings.value);
+        return;
     }
+    selected.value = null;
 }
-watch(meetings, selectFirst, { immediate: true });
+
+watch(filteredMeetings, selectFirst, { immediate: true });
 
 async function onSchedule(payload) {
-    const created = await store.scheduleMeeting(payload);
-    if (created) selected.value = created;
+    try {
+        const created = await store.scheduleMeeting(payload);
+        if (created) {
+            selected.value = created;
+            segmentFilter.value = isMeetingSegment1(created.segment)
+                ? 'segment1'
+                : isMeetingSegment2(created.segment)
+                    ? 'segment2'
+                    : 'all';
+        }
+    } catch (error) {
+        console.error('Failed to schedule meeting', error);
+    }
+}
+
+async function onConvertToTask(agreement) {
+    if (!selected.value || agreement.status === 'converted') return;
+    try {
+        const result = await store.convertAgreementToTask(selected.value.id, agreement.id);
+        if (result?.meeting) selected.value = result.meeting;
+    } catch (error) {
+        console.error('Failed to convert agreement to task', error);
+    }
+}
+
+function parseTaskId(taskRef) {
+    if (!taskRef) return null;
+    const match = String(taskRef).match(/(\d+)/);
+    return match ? Number(match[1]) : null;
+}
+
+function onViewTask(agreement) {
+    const taskId = parseTaskId(agreement.taskRef);
+    router.push({ name: 'team', query: taskId ? { taskId: String(taskId) } : {} });
+}
+
+async function onExportMinutes(payload) {
+    if (!selected.value) return;
+    try {
+        const response = await store.exportMinutes(selected.value.id, payload);
+        const format = (payload.format ?? 'CSV').toLowerCase();
+        const extension = format === 'excel' ? 'csv' : format;
+        const blob = response.data instanceof Blob
+            ? response.data
+            : new Blob([JSON.stringify(response.data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `${selected.value.title.replace(/\s+/g, '_')}-minutes.${extension}`;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        URL.revokeObjectURL(url);
+    } catch (error) {
+        console.error('Failed to export meeting minutes', error);
+    }
 }
 
 
@@ -61,13 +135,17 @@ function avatarColor(name) {
     return colors[hash % colors.length];
 }
 function formatDate(dateStr) {
-    if (!dateStr) return '';
-    const d = new Date(dateStr);
+    const normalized = normalizeCalendarDate(dateStr);
+    if (!normalized) return dateStr ?? '';
+    const d = new Date(`${normalized}T00:00:00`);
+    if (Number.isNaN(d.getTime())) return dateStr;
     return d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
 }
 function formatShortDate(dateStr) {
-    if (!dateStr) return '';
-    const d = new Date(dateStr);
+    const normalized = normalizeCalendarDate(dateStr);
+    if (!normalized) return dateStr ?? '';
+    const d = new Date(`${normalized}T00:00:00`);
+    if (Number.isNaN(d.getTime())) return dateStr;
     return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 }
 </script>
@@ -107,12 +185,28 @@ function formatShortDate(dateStr) {
       <div class="sessions-panel">
         <div class="sessions-header">
           <span class="sessions-label">{{ t('meetings.recentSessions') }}</span>
-          <span class="sessions-count">{{ meetings.length }} {{ t('meetings.total') }}</span>
+          <span class="sessions-count">{{ filteredMeetings.length }} {{ t('meetings.total') }}</span>
+        </div>
+
+        <div class="segment-tabs">
+          <button
+              v-for="tab in segmentTabs"
+              :key="tab.key"
+              type="button"
+              :class="['segment-tab', { active: segmentFilter === tab.key }]"
+              @click="segmentFilter = tab.key"
+          >
+            {{ tab.label }}
+          </button>
         </div>
 
         <div class="sessions-list">
+          <div v-if="!filteredMeetings.length" class="empty-filter-state">
+            <i class="pi pi-filter-slash" />
+            <p>{{ t('meetings.noSessionsInSegment') }}</p>
+          </div>
           <div
-              v-for="m in meetings"
+              v-for="m in filteredMeetings"
               :key="m.id"
               :class="['session-card', { 'session-active': selected?.id === m.id }]"
               @click="selected = m"
@@ -187,9 +281,14 @@ function formatShortDate(dateStr) {
           </div>
         </div>
 
-        <div v-if="selected.status === 'Upcoming' && !selected.minutes.length" class="empty-minutes">
+        <div v-else-if="selected.status === 'Upcoming'" class="empty-minutes">
           <i class="pi pi-clock" style="font-size:2rem; color:#d1d5db" />
           <p>{{ t('meetings.minutesPending') }}</p>
+        </div>
+
+        <div v-else class="empty-minutes">
+          <i class="pi pi-file-edit" style="font-size:2rem; color:#d1d5db" />
+          <p>{{ t('meetings.noMinutesRecorded') }}</p>
         </div>
 
         <!-- Decisions & Agreements -->
@@ -223,7 +322,7 @@ function formatShortDate(dateStr) {
                     <i class="pi pi-check-circle" style="color:#10b981" />
                     {{ t('meetings.convertedTo') }} {{ ag.taskRef }}
                   </span>
-                  <pv-button text :label="t('meetings.viewTask')" size="small" />
+                  <pv-button text :label="t('meetings.viewTask')" size="small" @click="onViewTask(ag)" />
                 </template>
                 <pv-button
                     v-else
@@ -231,10 +330,17 @@ function formatShortDate(dateStr) {
                     icon="pi pi-list-check"
                     size="small"
                     outlined
+                    :loading="store.actionLoading"
+                    @click="onConvertToTask(ag)"
                 />
               </div>
             </div>
           </div>
+        </div>
+
+        <div v-else class="empty-minutes">
+          <i class="pi pi-check-square" style="font-size:2rem; color:#d1d5db" />
+          <p>{{ t('meetings.noAgreementsYet') }}</p>
         </div>
 
       </div>
@@ -321,7 +427,42 @@ function formatShortDate(dateStr) {
 .sessions-label { font-size: .7rem; font-weight: 800; color: #6b7280; text-transform: uppercase; letter-spacing: .08em; }
 .sessions-count { font-size: .75rem; font-weight: 700; color: #fff; background: #3b82f6; border-radius: 99px; padding: 2px 8px; }
 
+.segment-tabs {
+  display: flex;
+  gap: .35rem;
+  padding: 0 1rem .75rem;
+  flex-wrap: wrap;
+}
+.segment-tab {
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  color: #6b7280;
+  border-radius: 999px;
+  padding: .25rem .65rem;
+  font-size: .72rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.segment-tab.active {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+  color: #2563eb;
+}
+
 .sessions-list { flex: 1; overflow-y: auto; padding: .5rem; display: flex; flex-direction: column; gap: .25rem; }
+
+.empty-filter-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .75rem;
+  padding: 2rem 1rem;
+  color: #9ca3af;
+  text-align: center;
+  font-size: .85rem;
+}
+
+.empty-filter-state p { margin: 0; }
 
 .session-card {
   padding: .9rem 1rem;
